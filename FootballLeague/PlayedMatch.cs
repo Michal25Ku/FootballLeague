@@ -14,6 +14,9 @@ namespace FootballLeagueLib
         public int IdHomeTeam { get; }
         public int IdAwayTeam { get; }
 
+        public string HomeTeamName { get; }
+        public string AwayTeamName { get; }
+
         public PlayedMatch(int idHomeTeam, int idAwayTeam, DateTime matchDate = default)
         {
             using var db = new FootballLeague();
@@ -24,6 +27,8 @@ namespace FootballLeagueLib
             if (idHomeTeam != db.Clubs.FirstOrDefault(c => c.IdClub == idHomeTeam).IdClub || idAwayTeam != db.Clubs.FirstOrDefault(c => c.IdClub == idAwayTeam).IdClub)
                 throw new ArgumentException("Podana drużyna nie istnieje!");
 
+            HomeTeamName = db.Clubs.Where(c => c.IdClub == idHomeTeam).Select(c => c.ClubName).FirstOrDefault();
+            AwayTeamName = db.Clubs.Where(c => c.IdClub == idAwayTeam).Select(c => c.ClubName).FirstOrDefault();
             IdHomeTeam = idHomeTeam;
             IdAwayTeam = idAwayTeam;
             PlayMatch(idHomeTeam, idAwayTeam, matchDate);
@@ -35,6 +40,10 @@ namespace FootballLeagueLib
 
             var newMatch = new Match
             {
+                HomeTeam = HomeTeamName,
+                AwayTeam = AwayTeamName,
+                MatchName = HomeTeamName + " - " + AwayTeamName,
+
                 MatchDate = matchDate,
                 IdHomeTeam = idHomeTeam,
                 IdAwayTeam = idAwayTeam
