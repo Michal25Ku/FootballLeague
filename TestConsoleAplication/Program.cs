@@ -6,7 +6,7 @@ namespace TestConsoleAplication
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            PlayedMatch nowyMecz = new PlayedMatch(1, 2);
         }
     }
 }

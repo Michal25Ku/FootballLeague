@@ -1,4 +1,5 @@
 ﻿using FootballLeagueLib.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,18 +21,15 @@ namespace FootballLeagueLib
             if (matchDate == default)
                 matchDate = DateTime.Now;
 
-            foreach (var c in db.Clubs.Select(i => i.IdClub))
-            {
-                if (idHomeTeam != c || idAwayTeam != c)
-                    throw new ArgumentException("Podana drużyna nie istnieje!");
-            }
+            if (idHomeTeam != db.Clubs.FirstOrDefault(c => c.IdClub == idHomeTeam).IdClub || idAwayTeam != db.Clubs.FirstOrDefault(c => c.IdClub == idAwayTeam).IdClub)
+                throw new ArgumentException("Podana drużyna nie istnieje!");
 
             IdHomeTeam = idHomeTeam;
             IdAwayTeam = idAwayTeam;
             PlayMatch(idHomeTeam, idAwayTeam, matchDate);
         }
 
-        public static bool PlayMatch(int idHomeTeam, int idAwayTeam, DateTime matchDate)
+        bool PlayMatch(int idHomeTeam, int idAwayTeam, DateTime matchDate)
         {
             using var db = new FootballLeague();
 
@@ -39,8 +37,10 @@ namespace FootballLeagueLib
             {
                 MatchDate = matchDate,
                 IdHomeTeam = idHomeTeam,
-                IdAwayTeam = idAwayTeam,
+                IdAwayTeam = idAwayTeam
             };
+
+            db.Matches.Add(newMatch);
 
             return SaveChange(db);
         }
