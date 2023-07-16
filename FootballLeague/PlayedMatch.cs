@@ -149,6 +149,44 @@ namespace FootballLeagueLib
             return SaveChange(db);
         }
 
+        public bool UpdateAfterMatch()
+        {
+            using var db = new FootballLeague();
+
+            var match = db.Matches.FirstOrDefault(c => c.IdMatch == this.IdMatch);
+
+            if (match.GoalsHomeTeam > match.GoalsAwayTeam)
+            {
+                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdHomeTeam);
+                clubToUpdate.Wins += 1;
+                clubToUpdate.Points += 3;
+
+                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdAwayTeam);
+                clubToUpdate.Failures += 1;
+            }
+            else if (match.GoalsHomeTeam == match.GoalsAwayTeam)
+            {
+                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdHomeTeam);
+                clubToUpdate.Draws += 1;
+                clubToUpdate.Points += 1;
+
+                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdAwayTeam);
+                clubToUpdate.Draws += 1;
+                clubToUpdate.Points += 1;
+            }
+            else if (match.GoalsHomeTeam < match.GoalsAwayTeam)
+            {
+                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdHomeTeam);
+                clubToUpdate.Failures += 1;
+
+                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdAwayTeam);
+                clubToUpdate.Wins += 1;
+                clubToUpdate.Points += 3;
+            }
+
+            return SaveChange(db);
+        }
+
         static bool SaveChange(FootballLeague db)
         {
             int result = db.SaveChanges();

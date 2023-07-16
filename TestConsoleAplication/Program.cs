@@ -7,8 +7,9 @@ namespace TestConsoleAplication
         static void Main(string[] args)
         {
             PlayedMatch nowyMecz = new PlayedMatch(1, 2);
-            if (nowyMecz.ShootGoal(2, 1, 1))
-                Console.WriteLine("Strzelono gola!");
+
+            MatchTracking rozegrajMecz = new MatchTracking(12, nowyMecz);
+            rozegrajMecz.StartMatch();
 
         }
     }

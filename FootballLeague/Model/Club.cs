@@ -30,6 +30,7 @@ namespace FootballLeagueLib.Model
         public int Wins { get; set; }
         public int Draws { get; set; }
         public int Failures { get; set; }
+        public int Points { get; set; }
         #endregion
 
         public virtual ICollection<Player> Players { get; set; }
@@ -47,6 +48,7 @@ namespace FootballLeagueLib.Model
             Wins = 0;
             Draws = 0;
             Failures = 0;
+            Points = 0;
 
             this.Players = new HashSet<Player>();
             this.MatchesGuest = new HashSet<Match>();
