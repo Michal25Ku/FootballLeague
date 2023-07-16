@@ -80,6 +80,7 @@ namespace FootballLeagueLib
             db.Goals.Add(newGoal);
             UpdateMatchAfterGoal(idClub);
             UpdatePlayerCount(idPlayer);
+            UpdateClubGoals(idClub);
             return SaveChange(db);
         }
 
@@ -116,6 +117,34 @@ namespace FootballLeagueLib
                 return false;
 
             playerToUpdate.GoalsScored += 1;
+
+            return SaveChange(db);
+        }
+
+        bool UpdateClubGoals(int idClub) 
+        {
+            using var db = new FootballLeague();
+
+            if (idClub == IdHomeTeam)
+            {
+                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdHomeTeam);
+                clubToUpdate.GoalsScored += 1;
+                clubToUpdate.GoalBalance += 1;
+
+                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdAwayTeam);
+                clubToUpdate.GoalsScored -= 1;
+                clubToUpdate.GoalBalance -= 1;
+            }
+            else if(idClub == IdAwayTeam) 
+            {
+                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdAwayTeam);
+                clubToUpdate.GoalsScored += 1;
+                clubToUpdate.GoalBalance += 1;
+
+                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdHomeTeam);
+                clubToUpdate.GoalsScored -= 1;
+                clubToUpdate.GoalBalance -= 1;
+            }
 
             return SaveChange(db);
         }
