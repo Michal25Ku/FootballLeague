@@ -57,17 +57,17 @@ namespace FootballLeagueLib
         public bool ShootGoal(int minuteOfMatch, int idClub, int idPlayer)
         {
             if (minuteOfMatch < 1 || minuteOfMatch > 90)
-                throw new ArgumentOutOfRangeException("Podano nieprawidłową minutę meczu!");
+                return false;
             if (idClub != IdHomeTeam && idClub != IdAwayTeam)
-                throw new ArgumentException("Podana drużyna nie gra w tym meczu!");
+                return false;
 
             using var db = new FootballLeague();
 
             if (db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).IdClub != IdHomeTeam && db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).IdClub != IdAwayTeam)
-                throw new ArgumentException("Podany zawodnik nie gra w tym meczu!");
+                return false;
 
             if (db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).IdClub != idClub)
-                throw new ArgumentException("Podany zawodnik nie gra dla tego klubu!");
+                return false;
 
             var newGoal = new Goal
             {
@@ -78,6 +78,30 @@ namespace FootballLeagueLib
             };
 
             db.Goals.Add(newGoal);
+            UpdateMatchAfterGoal(idClub);
+            return SaveChange(db);
+        }
+
+        bool UpdateMatchAfterGoal(int idClub)
+        {
+            using var db = new FootballLeague();
+
+            var matchToUpdate = db.Matches.FirstOrDefault(m => m.IdMatch == this.IdMatch);
+
+            if(matchToUpdate is null)
+                return false;
+
+            if(idClub == db.Matches.FirstOrDefault(m => m.IdMatch == this.IdMatch).IdHomeTeam)
+            {
+                matchToUpdate.GoalsHomeTeam += 1;
+            }
+            else if (idClub == db.Matches.FirstOrDefault(m => m.IdMatch == this.IdMatch).IdAwayTeam)
+            {
+                matchToUpdate.GoalsAwayTeam += 1;
+            }
+
+            matchToUpdate.Result = matchToUpdate.GoalsHomeTeam + " - " + matchToUpdate.GoalsAwayTeam;
+
             return SaveChange(db);
         }
 
