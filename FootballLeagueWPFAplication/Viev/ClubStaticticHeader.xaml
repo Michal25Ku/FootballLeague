@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="FootballLeagueWPFAplication.Viev.ClubStaticticHeader"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FootballLeagueWPFAplication.Viev"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="600">
+    <Grid Width="600">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="Ranking" Text="" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="1" x:Name="ClubName" Text="Club name" FontSize="20" FontWeight="Light" VerticalAlignment="Center" Foreground="Black" Margin="5,0,0,0" />
+        <TextBlock Grid.Column="2" x:Name="MatchCount" Text="RM" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="3" x:Name="Wins" Text="W" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="4" x:Name="Draws" Text="D" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="5" x:Name="Failures" Text="F" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="6" x:Name="GoalScored" Text="GS" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="7" x:Name="GoalsConceded" Text="GC" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="8" x:Name="GoalsBalance" Text="GB" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="9" x:Name="Point" Text="Pt" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+    </Grid>
+</UserControl>
