@@ -23,17 +23,16 @@ namespace FootballLeagueWPFAplication
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<Club> ClubList { get; set; }
+        public List<ClubData> ClubList { get; set; }
+        public int MatchRound { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            using var db = new FootballLeague();
+            UpdateClubStatistic();
 
-            ClubList = db.Clubs.ToList();
-
-            lvEntries.ItemsSource = ClubList;
+            MatchRound = 1;
         }
 
         private void Table_Click(object sender, RoutedEventArgs e)
@@ -44,8 +43,36 @@ namespace FootballLeagueWPFAplication
             MatchTracking rozegrajMecz = new MatchTracking(50, nowyMecz1);
             rozegrajMecz.StartMatch();
 
+            UpdateClubStatistic();
+
             ICollectionView view = CollectionViewSource.GetDefaultView(lvEntries.ItemsSource);
             view.Refresh();
+        }
+
+        private void UpdateClubStatistic()
+        {
+            using var db = new FootballLeague();
+
+            ClubList = db.Clubs.Select(c => new ClubData
+            {
+                ClubName = c.ClubName,
+                MatchCount = db.Matches.Count(m => m.IdHomeTeam == c.IdClub || m.IdAwayTeam == c.IdClub) / 2,
+                Wins = c.Wins,
+                Draws = c.Draws,
+                Failures = c.Failures,
+                GoalScored = c.GoalsScored,
+                GoalsConceded = c.GoalsConceded,
+                GoalsBalance = c.GoalBalance,
+                Point = c.Points
+            }).ToList();
+
+            lvEntries.ItemsSource = ClubList;
+        }
+
+        private void MatchRoundBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (ma <= ClubList.Count)
+                MatchRound++;
         }
     }
 }
