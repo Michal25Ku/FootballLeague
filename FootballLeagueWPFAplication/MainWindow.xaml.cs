@@ -24,6 +24,11 @@ namespace FootballLeagueWPFAplication
     public partial class MainWindow : Window
     {
         public List<ClubData> ClubList { get; set; }
+
+        private string _matchRoundBtnContent;
+
+        public string MatchRoundBtnContent { get; set; }
+
         public int MatchRound { get; set; }
 
         public MainWindow()
@@ -33,6 +38,8 @@ namespace FootballLeagueWPFAplication
             UpdateClubStatistic();
 
             MatchRound = 1;
+            MatchRoundBtnContent = $"Play {MatchRound} round";
+            MatchRoundBtn.Content = MatchRoundBtnContent;
         }
 
         private void Table_Click(object sender, RoutedEventArgs e)
@@ -71,8 +78,17 @@ namespace FootballLeagueWPFAplication
 
         private void MatchRoundBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (ma <= ClubList.Count)
-                MatchRound++;
+            if (MatchRound < ClubList.Count)
+            {
+                MatchRoundBtnContent = $"Play {++MatchRound} round";
+
+                MatchRoundBtn.Content = MatchRoundBtnContent;
+            }
+            else
+            {
+                MatchRoundBtnContent = $"The season ended";
+                MatchRoundBtn.Content = MatchRoundBtnContent;
+            }
         }
     }
 }

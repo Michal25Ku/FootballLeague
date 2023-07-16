@@ -27,7 +27,7 @@
                 Background="Transparent" Content="Table" BorderThickness="0" FontSize="20" Click="Table_Click"/>
 
             <Button Grid.Column="1" x:Name="MatchRoundBtn" Width="200" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"
-                Background="Transparent" Content="{Binding matchRound}" BorderThickness="0" FontSize="20" Click="MatchRoundBtn_Click"/>
+                Background="Transparent" Content="{Binding MatchRoundBtnContent}" BorderThickness="0" FontSize="20" Click="MatchRoundBtn_Click"/>
 
             <Button Grid.Column="2" Name="Matches" Width="200" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"
                 Background="Transparent" Content="Matches" BorderThickness="0" FontSize="20"/>
