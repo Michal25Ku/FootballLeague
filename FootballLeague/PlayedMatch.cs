@@ -132,7 +132,7 @@ namespace FootballLeagueLib
                 clubToUpdate.GoalBalance += 1;
 
                 clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdAwayTeam);
-                clubToUpdate.GoalsScored -= 1;
+                clubToUpdate.GoalsConceded += 1;
                 clubToUpdate.GoalBalance -= 1;
             }
             else if(idClub == IdAwayTeam) 
@@ -142,7 +142,7 @@ namespace FootballLeagueLib
                 clubToUpdate.GoalBalance += 1;
 
                 clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == IdHomeTeam);
-                clubToUpdate.GoalsScored -= 1;
+                clubToUpdate.GoalsConceded += 1;
                 clubToUpdate.GoalBalance -= 1;
             }
 
