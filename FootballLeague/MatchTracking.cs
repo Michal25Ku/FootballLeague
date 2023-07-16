@@ -43,13 +43,13 @@ namespace FootballLeagueLib
                     if(teamShoot == 0)
                     {
                         int playerShoot = rand.Next(PlayersHomeTeam.Count);
-                        Match.ShootGoal(i, Match.IdHomeTeam, playerShoot);
+                        Match.ShootGoal(i, Match.IdHomeTeam, PlayersHomeTeam[playerShoot].IdPlayer);
                         Console.WriteLine($"Drużyna {Match.HomeTeamName} strzeliła gola");
                     }
                     else
                     {
                         int playerShoot = rand.Next(PlayersHomeTeam.Count);
-                        Match.ShootGoal(i, Match.IdAwayTeam, playerShoot);
+                        Match.ShootGoal(i, Match.IdAwayTeam, PlayersAwayTeam[playerShoot].IdPlayer);
                         Console.WriteLine($"Drużyna {Match.AwayTeamName} strzeliła gola");
                     }
                 }
