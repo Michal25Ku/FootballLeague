@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FootballLeagueLib
@@ -13,34 +14,50 @@ namespace FootballLeagueLib
         public static int actualRound = 1;
         public int RoundCount => Db.Clubs.Count() * 2 - 2;
         FootballLeague Db { get; }
-        public List<PlayedMatch> PlayedMatches { get; private set; }
+        public List<MatchTracking> PlayedMatches { get; private set; }
         public List<Club> Clubs { get; private set; }
 
         public Round()
         {
             Db = new FootballLeague();
-            PlayedMatches = new List<PlayedMatch>();
+            PlayedMatches = new List<MatchTracking>();
             Clubs = Db.Clubs.ToList();
 
-            if(actualRound < RoundCount - 1)
+            int matchPerRound = Clubs.Count / 2;
+
+            if (actualRound < RoundCount - 1)
             {
-                for (int i = 0; i < RoundCount / 2; i++)
+                for (int i = 0; i < RoundCount; i++)
                 {
-                    for (int j = RoundCount - 1; j >= RoundCount / 2; j--)
+                    for (int j = 0; j < matchPerRound; j++)
                     {
-                        PlayedMatches.Add(new PlayedMatch(Clubs[i].IdClub, Clubs[j].IdClub, DateTime.Now));
+                        int homeTeamIndex = (i + j) % (Clubs.Count - 1);
+                        int awayTeamIndex = (Clubs.Count - 1 - j + i) % (Clubs.Count - 1);
+
+                        int homeTeamId = Clubs[homeTeamIndex].IdClub;
+                        int awayTeamId = Clubs[awayTeamIndex].IdClub;
+
+                        PlayedMatches.Add(new MatchTracking(25, new PlayedMatch(homeTeamId, awayTeamId, DateTime.Now)));
                     }
+
                 }
                 actualRound++;
             }
             else
             {
-                for (int i = 0; i < RoundCount / 2; i++)
+                for (int i = 0; i < RoundCount; i++)
                 {
-                    for (int j = RoundCount - 1; j >= RoundCount / 2; j--)
+                    for (int j = 0; j < matchPerRound; j++)
                     {
-                        PlayedMatches.Add(new PlayedMatch(Clubs[j].IdClub, Clubs[i].IdClub, DateTime.Now));
+                        int homeTeamIndex = (i + j) % (Clubs.Count - 1);
+                        int awayTeamIndex = (Clubs.Count - 1 - j + i) % (Clubs.Count - 1);
+
+                        int homeTeamId = Clubs[homeTeamIndex].IdClub;
+                        int awayTeamId = Clubs[awayTeamIndex].IdClub;
+
+                        PlayedMatches.Add(new MatchTracking(25, new PlayedMatch(awayTeamId, homeTeamId, DateTime.Now)));
                     }
+
                 }
                 actualRound++;
             }
