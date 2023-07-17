@@ -10,9 +10,8 @@ namespace FootballLeagueLib
 {
     public class Round
     {
-        Random rand = new Random();
         public static int actualRound = 1;
-        public int RoundCount => Db.Clubs.Count() * 2 - 2;
+        public int RoundCount => (Db.Clubs.Count() * (Db.Clubs.Count()-1)) / 2;
         FootballLeague Db { get; }
         public List<MatchTracking> PlayedMatches { get; private set; }
         public List<Club> Clubs { get; private set; }
@@ -23,46 +22,52 @@ namespace FootballLeagueLib
             PlayedMatches = new List<MatchTracking>();
             Clubs = Db.Clubs.ToList();
 
-            int matchPerRound = Clubs.Count / 2;
+            GenerateAllMatchesForSeason();
+        }
 
-            if (actualRound < RoundCount - 1)
+        void GenerateAllMatchesForSeason()
+        {
+            for(int round = 0; round < RoundCount; round++)
             {
-                for (int i = 0; i < RoundCount; i++)
+                int matchPerRound = Clubs.Count / 2;
+
+                if (actualRound < RoundCount / 2)
                 {
-                    for (int j = 0; j < matchPerRound; j++)
+                    for (int match = 0; match < matchPerRound; match++)
                     {
-                        int homeTeamIndex = (i + j) % (Clubs.Count - 1);
-                        int awayTeamIndex = (Clubs.Count - 1 - j + i) % (Clubs.Count - 1);
+                        int homeTeamIndex = (round + match) % (Clubs.Count);
+                        int awayTeamIndex = (Clubs.Count - match - round - 1) % (Clubs.Count);
+
+                        // 0 - 0,3; 1,2; 
+                        // 1 - 1,2; 2,1
+                        // 2 - 2,1; 3,0
 
                         int homeTeamId = Clubs[homeTeamIndex].IdClub;
                         int awayTeamId = Clubs[awayTeamIndex].IdClub;
 
                         PlayedMatches.Add(new MatchTracking(25, new PlayedMatch(homeTeamId, awayTeamId, DateTime.Now)));
                     }
-
+                    actualRound++;
                 }
-                actualRound++;
-            }
-            else
-            {
-                for (int i = 0; i < RoundCount; i++)
+                else
                 {
-                    for (int j = 0; j < matchPerRound; j++)
+                    for (int i = 0; i < RoundCount; i++)
                     {
-                        int homeTeamIndex = (i + j) % (Clubs.Count - 1);
-                        int awayTeamIndex = (Clubs.Count - 1 - j + i) % (Clubs.Count - 1);
+                        for (int j = 0; j < matchPerRound; j++)
+                        {
+                            int homeTeamIndex = (i + j) % (Clubs.Count - 1);
+                            int awayTeamIndex = (Clubs.Count - 1 - j + i) % (Clubs.Count - 1);
 
-                        int homeTeamId = Clubs[homeTeamIndex].IdClub;
-                        int awayTeamId = Clubs[awayTeamIndex].IdClub;
+                            int homeTeamId = Clubs[homeTeamIndex].IdClub;
+                            int awayTeamId = Clubs[awayTeamIndex].IdClub;
 
-                        PlayedMatches.Add(new MatchTracking(25, new PlayedMatch(awayTeamId, homeTeamId, DateTime.Now)));
+                            PlayedMatches.Add(new MatchTracking(25, new PlayedMatch(awayTeamId, homeTeamId, DateTime.Now)));
+                        }
+
                     }
-
+                    actualRound++;
                 }
-                actualRound++;
             }
         }
-
-
     }
 }
