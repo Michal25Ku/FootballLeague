@@ -7,6 +7,7 @@ namespace TestConsoleAplication
         static void Main(string[] args)
         {
             Season seaon1 = new Season();
+            seaon1.GenerateRound();
             //rozegrajMecz.StartMatch();
 
         }

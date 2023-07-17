@@ -10,7 +10,7 @@ namespace FootballLeagueLib
 {
     public class Season
     {
-        public static int actualRound = 1;
+        public static int actualRound = 0;
         public int RoundCount => (Db.Clubs.Count() * (Db.Clubs.Count()-1)) / 2;
         FootballLeague Db { get; }
         public List<MatchTracking> PlayedMatches { get; private set; }
@@ -22,12 +22,13 @@ namespace FootballLeagueLib
             PlayedMatches = new List<MatchTracking>();
             Clubs = Db.Clubs.ToList();
 
-            GenerateAllMatchesForSeason();
+            GenerateAllMatches();
         }
 
-        void GenerateAllMatchesForSeason()
+        public void GenerateAllMatches()
         {
             List<string> pary = new List<string>();
+
             for (int round = 0; round < RoundCount; round++)
             {
                 for (int match = 0; match < Clubs.Count; match++)
@@ -41,7 +42,7 @@ namespace FootballLeagueLib
 
                     if (homeTeamId != awayTeamId)
                     {
-                        if(!pary.Contains(para))
+                        if (!pary.Contains(para))
                         {
                             PlayedMatches.Add(new MatchTracking(25, new PlayedMatch(homeTeamId, awayTeamId, DateTime.Now)));
                         }
@@ -55,6 +56,11 @@ namespace FootballLeagueLib
             {
                 Console.WriteLine(p.Match.HomeTeamName + "-" + p.Match.AwayTeamName);
             }
+        }
+
+        void StartRound()
+        {
+
         }
     }
 }
