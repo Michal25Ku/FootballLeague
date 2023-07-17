@@ -24,22 +24,47 @@ namespace FootballLeagueWPFAplication
     public partial class MainWindow : Window
     {
         public List<ClubData> ClubList { get; set; }
-
+        public Season season { get; }
         private string _matchRoundBtnContent;
-
         public string MatchRoundBtnContent { get; set; }
-
         public int MatchRound { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+            ResetDatabase();
 
             UpdateClubStatistic();
 
             MatchRound = 1;
             MatchRoundBtnContent = $"Play {MatchRound} round";
-            MatchRoundBtn.Content = MatchRoundBtnContent;
+            season = new Season();
+        }
+
+        void ResetDatabase()
+        {
+            using var db = new FootballLeague();
+
+            db.Goals.RemoveRange();
+            db.Matches.RemoveRange();
+            
+            foreach(var club in db.Clubs)
+            {
+                club.Wins = 0;
+                club.Draws = 0;
+                club.Failures = 0;
+                club.GoalsScored = 0;
+                club.GoalsConceded = 0;
+                club.GoalBalance = 0;
+                club.Points = 0;
+            }
+
+            foreach(var player in db.Players)
+            {
+                player.GoalsScored = 0;
+            }
+
+            db.SaveChanges();
         }
 
         private void Table_Click(object sender, RoutedEventArgs e)
@@ -51,9 +76,6 @@ namespace FootballLeagueWPFAplication
             rozegrajMecz.StartMatch();
 
             UpdateClubStatistic();
-
-            ICollectionView view = CollectionViewSource.GetDefaultView(lvEntries.ItemsSource);
-            view.Refresh();
         }
 
         private void UpdateClubStatistic()
@@ -74,21 +96,15 @@ namespace FootballLeagueWPFAplication
             }).ToList();
 
             lvEntries.ItemsSource = ClubList;
+
+            ICollectionView view = CollectionViewSource.GetDefaultView(lvEntries.ItemsSource);
+            view.Refresh();
         }
 
-        private void MatchRoundBtn_Click(object sender, RoutedEventArgs e)
+        private void PlayMatchBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (MatchRound < ClubList.Count)
-            {
-                MatchRoundBtnContent = $"Play {++MatchRound} round";
-
-                MatchRoundBtn.Content = MatchRoundBtnContent;
-            }
-            else
-            {
-                MatchRoundBtnContent = $"The season ended";
-                MatchRoundBtn.Content = MatchRoundBtnContent;
-            }
+            season.StartMatch();
+            UpdateClubStatistic();
         }
     }
 }

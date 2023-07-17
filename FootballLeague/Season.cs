@@ -10,7 +10,7 @@ namespace FootballLeagueLib
 {
     public class Season
     {
-        public static int actualRound = 0;
+        public static int actualMatch = 0;
         public int RoundCount => (Db.Clubs.Count() * (Db.Clubs.Count()-1)) / 2;
         FootballLeague Db { get; }
         public List<MatchTracking> PlayedMatches { get; private set; }
@@ -49,7 +49,6 @@ namespace FootballLeagueLib
                         pary.Add(para);
                     }
                 }
-                actualRound++;
             }
 
             foreach (var p in PlayedMatches)
@@ -58,9 +57,10 @@ namespace FootballLeagueLib
             }
         }
 
-        void StartRound()
+        public void StartMatch()
         {
-
+            PlayedMatches[actualMatch].StartMatch();
+            actualMatch++;
         }
     }
 }
