@@ -44,7 +44,7 @@ namespace FootballLeagueLib
                     {
                         if (!pary.Contains(para))
                         {
-                            PlayedMatches.Add(new MatchTracking(25, new PlayedMatch(homeTeamId, awayTeamId, DateTime.Now)));
+                            PlayedMatches.Add(new MatchTracking(1000, new PlayedMatch(homeTeamId, awayTeamId, DateTime.Now)));
                         }
                         pary.Add(para);
                     }

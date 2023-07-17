@@ -17,7 +17,9 @@ namespace FootballLeagueLib
 
         public List<Player> PlayersHomeTeam { get; private set; }
         public List<Player> PlayersAwayTeam { get; private set; }
-        
+
+        public bool IsPlayed { get; private set; }
+
         public MatchTracking(int simulationSpeedMultiplier, PlayedMatch match)
         {
             SimulationSpeedMultiplier = simulationSpeedMultiplier;
@@ -25,10 +27,12 @@ namespace FootballLeagueLib
             TimeInMatch = 0;
             PlayersHomeTeam = new List<Player>();
             PlayersAwayTeam = new List<Player>();
+            IsPlayed = false;
         }
 
         public void StartMatch()
         {
+            IsPlayed = true;
             var rand = new Random();
             PlayersHomeTeam = PlayersWhoPlay(Match.IdHomeTeam);
             PlayersAwayTeam = PlayersWhoPlay(Match.IdAwayTeam);

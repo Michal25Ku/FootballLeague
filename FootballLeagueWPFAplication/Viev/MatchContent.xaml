@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="FootballLeagueWPFAplication.Viev.MatchContent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FootballLeagueWPFAplication.Viev"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="homeTeam" Text="{Binding HomeTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+            <TextBlock Grid.Column="1" x:Name="result" Text="{Binding Result}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+            <TextBlock Grid.Column="2" x:Name="awayTeam" Text="{Binding awayTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <ListView Name="lvEntriesHomeScorer" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <ListView Name="lvEntriesAwayScorer" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
