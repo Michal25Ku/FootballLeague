@@ -359,5 +359,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/FootballLeague/FootballLeague.mdf
-/FootballLeague/FootballLeague_log.ldf
