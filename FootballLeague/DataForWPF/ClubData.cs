@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FootballLeagueLib
+namespace FootballLeagueLib.DataForWPF
 {
     public class ClubData
     {
