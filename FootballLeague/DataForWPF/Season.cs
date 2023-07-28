@@ -17,7 +17,6 @@ namespace FootballLeagueLib.DataForWPF
         FootballLeague Db { get; }
         public List<MatchTracking> Matches { get; private set; }
         public List<Club> Clubs { get; private set; }
-        public List<List<MatchTracking>> Rounds { get; private set; }
 
         public Season()
         {
@@ -30,40 +29,94 @@ namespace FootballLeagueLib.DataForWPF
 
         public void GenerateAllMatches()
         {
-            Rounds = new List<List<MatchTracking>>();
+            Stack<Club> clubsQueue = new Stack<Club>();
+            List<Tuple<int, int>> coupleClubs = new List<Tuple<int, int>>();
 
-            for (int round = 0; round < ClubCount; round++)
+            for (int round = 0; round < RoundCount; round++)
             {
-                for (int clubHome = 0; clubHome < ClubCount; clubHome++)
+                for(int club = 0; club < ClubCount; club++)
                 {
-                    int homeTeamId = Clubs[clubHome].IdClub;
-                    int awayTeamId = Clubs[(clubHome + round) % ClubCount].IdClub;
+                    clubsQueue.Push(Clubs[club]);
+                }
 
-                    if (awayTeamId != homeTeamId)
+                foreach (var c in clubsQueue)
+                    Console.WriteLine(c.ClubName);
+
+                Console.WriteLine("-----------");
+
+                Clubs.RemoveRange(0, Clubs.Count);
+
+                for (int i = 0; i < ClubCount; i += 2)
+                {
+                    int homeTeamId = clubsQueue.Pop().IdClub;
+                    int awayTeamId = clubsQueue.Pop().IdClub;
+
+                    Tuple<int, int> couple = new Tuple<int, int>(homeTeamId, awayTeamId);
+
+                    if(!coupleClubs.Contains(couple))
                     {
-                        Console.WriteLine(homeTeamId + "-" + awayTeamId);
                         Matches.Add(new MatchTracking(1000, new Model.Match(homeTeamId, awayTeamId, DateTime.Now)));
+                    }
+                    else
+                    {
+                        Matches.Add(new MatchTracking(1000, new Model.Match(awayTeamId, homeTeamId, DateTime.Now)));
+                    }
+
+                    coupleClubs.Add(couple);
+                }
+
+                if (round % 2 == 0)
+                {
+                    for (int i = Matches.Count - ClubCount / 2; i < Matches.Count; i++)
+                    {
+                        Clubs.Add(Db.Clubs.FirstOrDefault(c => coupleClubs[i].Item2 == c.IdClub));
+                    }
+
+                    for (int i = Matches.Count - ClubCount/2; i < Matches.Count; i++)
+                    {
+                        Clubs.Add(Db.Clubs.FirstOrDefault(c => coupleClubs[i].Item1 == c.IdClub));
+                    }
+                }
+                else
+                {
+                    for (int i = Matches.Count - ClubCount / 2; i < Matches.Count; i++)
+                    {
+                        if(i % 2 == 0)
+                        {
+                            Clubs.Add(Db.Clubs.FirstOrDefault(c => coupleClubs[i].Item1 == c.IdClub));
+                        }
+                        else
+                        {
+                            Clubs.Add(Db.Clubs.FirstOrDefault(c => coupleClubs[i].Item2 == c.IdClub));
+                        }
+                    }
+
+                    for (int i = Matches.Count - 1; i >= Matches.Count - ClubCount / 2; i--)
+                    {
+                        if (i % 2 != 0)
+                        {
+                            Clubs.Add(Db.Clubs.FirstOrDefault(c => coupleClubs[i].Item1 == c.IdClub));
+                        }
+                        else
+                        {
+                            Clubs.Add(Db.Clubs.FirstOrDefault(c => coupleClubs[i].Item2 == c.IdClub));
+                        }
                     }
                 }
             }
 
-            Rounds.Add(Matches);
+            
+
+            foreach (var p in Matches)
+            {
+                Console.WriteLine(p.PlayedMatch.HomeTeam + "-" + p.PlayedMatch.AwayTeam);
+            }
         }
 
-        public void StartRound()
+        public void StartMatch()
         {
-            if (actualMatch < Rounds.Count)
-            {
-                foreach (var match in Rounds[actualMatch])
-                {
-                    match.StartMatch();
-                }
-                actualMatch++;
-            }
-            else
-            {
-                Console.WriteLine("Season completed. All matches have been played.");
-            }
+            Matches[actualMatch].StartMatch();
+            actualMatch++;
         }
     }
 }

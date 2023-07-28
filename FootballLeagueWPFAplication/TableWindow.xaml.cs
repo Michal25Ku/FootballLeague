@@ -120,7 +120,7 @@ namespace FootballLeagueWPFAplication
 
         private void PlayMatchBtn_Click(object sender, RoutedEventArgs e)
         {
-            season.StartRound();
+            season.StartMatch();
             UpdateMatches();
             UpdateClubStatistic();
         }
