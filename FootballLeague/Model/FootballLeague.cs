@@ -17,7 +17,7 @@ namespace FootballLeagueLib.Model
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string path = System.IO.Path.Combine(System.Environment.CurrentDirectory, "FootballLeague.mdf");
-            optionsBuilder.UseSqlServer($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\mkuci\\source\\repos\\FootballLeague1\\FootballLeague\\FootballLeague.mdf;Integrated Security=True");
+            optionsBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\mkuci\source\repos\FootballLeague\FootballLeague\FootballLeague.mdf;Integrated Security=True");
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FootballLeagueLib.DataForWPF;
 using FootballLeagueLib.Model;
+using FootballLeagueLib.Season;
 
 namespace FootballLeagueWPFAplication
 {

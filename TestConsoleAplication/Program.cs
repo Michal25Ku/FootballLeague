@@ -1,5 +1,5 @@
-﻿using FootballLeagueLib.DataForWPF;
-using FootballLeagueLib.Model;
+﻿using FootballLeagueLib.Model;
+using FootballLeagueLib.Season;
 
 namespace TestConsoleAplication
 {

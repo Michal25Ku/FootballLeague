@@ -27,6 +27,8 @@ public partial class Matches
 
     public bool IsPlayed { get; set; }
 
+    public int Round { get; set; }
+
     public virtual ICollection<Goals> Goals { get; set; } = new List<Goals>();
 
     public virtual Clubs IdAwayTeamNavigation { get; set; }

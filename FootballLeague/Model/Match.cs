@@ -14,44 +14,45 @@ namespace FootballLeagueLib.Model
         [Key]
         [Column("IdMatch")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdMatch { get; private set; }
+        public int IdMatch { get; set; }
 
         [Required]
         [StringLength(30)]
-        public string HomeTeam { get; private set; }
+        public string HomeTeam { get; set; }
 
         [Required]
         [StringLength(30)]
-        public string AwayTeam { get; private set; }
+        public string AwayTeam { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string MatchName { get; private set; }
+        public string MatchName { get; set; }
 
-        public DateTime MatchDate { get; private set; }
+        public DateTime MatchDate { get; set; }
 
-        public int GoalsHomeTeam { get; private set; }
-        public int GoalsAwayTeam { get; private set; }
+        public int GoalsHomeTeam { get; set; }
+        public int GoalsAwayTeam { get; set; }
 
         [Required]
         [StringLength(20)]
-        public string Result { get; private set; }
+        public string Result { get; set; }
 
-        public bool IsPlayed { get; private set; }
+        public bool IsPlayed { get; set; }
+        public int Round { get; set; }
         #endregion
 
-        public virtual ICollection<Goal> Goals { get; private set; }
+        public virtual ICollection<Goal> Goals { get; set; }
 
         #region Foreign key
         [ForeignKey("ClubHost")]
         [Column("IdHomeTeam")]
-        public int IdHomeTeam { get; private set; }
-        public virtual Club ClubHost { get; private set; }
+        public int IdHomeTeam { get; set; }
+        public virtual Club ClubHost { get; set; }
 
         [ForeignKey("ClubGuest")]
         [Column("IdAwayTeam")]
-        public int IdAwayTeam { get; private set; }
-        public virtual Club ClubGuest { get; private set; }
+        public int IdAwayTeam { get; set; }
+        public virtual Club ClubGuest { get; set; }
         #endregion
 
         public Match(int idHomeTeam, int idAwayTeam, DateTime matchDate = default)
@@ -74,6 +75,7 @@ namespace FootballLeagueLib.Model
             IsPlayed = false;
             IdHomeTeam = idHomeTeam;
             IdAwayTeam = idAwayTeam;
+            Round = 0;
 
             this.Goals = new HashSet<Goal>();
 
