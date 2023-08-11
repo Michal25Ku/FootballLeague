@@ -14,38 +14,22 @@ namespace FootballLeagueLib.PlayMatch
         public const int MATCH_TIME = 90;
 
         public int TimeInMatch { get; private set; }
-        public int SimulationSpeedMultiplier { get; set; }
 
         public Match PlayedMatch { get; }
         private readonly MatchScoredGoal MatchScoredGoal;
         private readonly IEndMatch<Match> EndMatch;
+        private readonly IGetPlayers MatchPlayers;
 
         public List<Player> PlayersHomeTeam { get; private set; }
         public List<Player> PlayersAwayTeam { get; private set; }
 
-        public MatchManager(int simulationSpeedMultiplier, Match playedMatch)
+        public MatchManager(Match playedMatch)
         {
-            SimulationSpeedMultiplier = simulationSpeedMultiplier;
             PlayedMatch = playedMatch;
             TimeInMatch = 0;
-            PlayersHomeTeam = PlayersWhoPlay(playedMatch.IdHomeTeam);
-            PlayersAwayTeam = PlayersWhoPlay(playedMatch.IdAwayTeam);
+            PlayersHomeTeam = MatchPlayers.HomeTeamPlayers(playedMatch.IdHomeTeam);
+            PlayersAwayTeam = MatchPlayers.AwayTeamPlayers(playedMatch.IdAwayTeam);
             MatchScoredGoal = new MatchScoredGoal(this);
-        }
-
-        List<Player> PlayersWhoPlay(int idClub)
-        {
-            Random rand = new Random();
-            using var db = new FootballLeague();
-            List<Player> players = db.Players.Where(p => p.IdClub == idClub).ToList();
-
-            while (players.Count > 11)
-            {
-                if (!(players[rand.Next(players.Count)] is null))
-                    players.Remove(players[rand.Next(players.Count)]);
-            }
-
-            return players;
         }
 
         public void StartMatch()

@@ -26,7 +26,7 @@ namespace FootballLeagueWPFAplication
     {
         public List<ClubData> ClubList { get; set; }
         public List<MatchData> MatchList { get; set; }
-        public Season season { get; }
+        public SeasonPlayRound season { get; }
         public string MatchRoundBtnContent { get; set; }
         public int MatchRound { get; set; }
 
@@ -39,7 +39,7 @@ namespace FootballLeagueWPFAplication
 
             MatchRound = 1;
             MatchRoundBtnContent = $"Play {MatchRound} round";
-            season = new Season();
+            season = new SeasonPlayRound();
         }
 
         void ResetDatabase()
