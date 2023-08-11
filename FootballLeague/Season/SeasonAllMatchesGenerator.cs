@@ -16,8 +16,6 @@ namespace FootballLeagueLib.Season
             int clubCount = db.Clubs.Count();
             int RoundCount = (clubCount - 1) * 2;
 
-            List<Model.Match> matches = new List<Model.Match>();
-
             for (int clubHome = 0; clubHome < clubCount; clubHome++)
             {
                 for (int clubAway = 0; clubAway < clubCount; clubAway++)
@@ -27,39 +25,48 @@ namespace FootballLeagueLib.Season
 
                     if (awayTeamId != homeTeamId)
                     {
-                        matches.Add(new Model.Match(homeTeamId, awayTeamId, DateTime.Now));
+                        db.Matches.Add(new Model.Match(homeTeamId, awayTeamId, DateTime.Now));
                     }
                 }
             }
 
-            return matches;
+            db.SaveChanges();
+            return db.Matches.ToList();
         }
 
-        public Dictionary<int, IList<Match>> SortMatchesIntoRound(IList<Match> AllMatchesList)
+        // To do
+        public Dictionary<int, IList<Match>> SortMatchesIntoRound(IList<Match> allMatchesList)
         {
-            Dictionary<int, IList<Match>> matchesIntoRounds = new Dictionary<int, IList<Match>>();
-            List<Club> clubs = new List<Club>();
+            using var db = new FootballLeague();
             int round = 1;
+            Dictionary<int, IList<Match>> matchesIntoRounds = new Dictionary<int, IList<Match>>();
 
-            while (AllMatchesList.Count <= 0)
+            while (allMatchesList.Count > 0)
             {
                 List<Match> matchesIntoRound = new List<Match>();
+                List<Club> clubs = db.Clubs.ToList();
 
-                foreach (Match match in AllMatchesList)
+                foreach (var match in allMatchesList.Reverse().ToList())
                 {
-                    if (!(clubs.Contains(match.ClubHost) || clubs.Contains(match.ClubGuest)))
+                    if (clubs.Count <= 0)
+                        break;
+
+                    if (clubs.Any(c => c.IdClub == match.IdHomeTeam) && clubs.Any(c => c.IdClub == match.IdAwayTeam))
                     {
-                        clubs.Add(match.ClubHost);
-                        clubs.Add(match.ClubGuest);
+                        clubs.RemoveAll(c => c.IdClub == match.IdHomeTeam || c.IdClub == match.IdAwayTeam);
+
+                        var matchToUpdate = db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch);
+                        matchToUpdate.Round = round;
+                        db.SaveChanges();
+
                         matchesIntoRound.Add(match);
-                        AllMatchesList.Remove(match);
+                        allMatchesList.Remove(match);
                     }
                 }
 
                 if (!matchesIntoRounds.ContainsKey(round))
                     matchesIntoRounds.Add(round, matchesIntoRound);
 
-                clubs.Clear();
                 round++;
             }
 
