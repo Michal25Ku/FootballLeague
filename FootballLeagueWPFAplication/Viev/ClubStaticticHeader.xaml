@@ -26,9 +26,9 @@
         <TextBlock Grid.Column="3" x:Name="Wins" Text="W" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
         <TextBlock Grid.Column="4" x:Name="Draws" Text="D" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
         <TextBlock Grid.Column="5" x:Name="Failures" Text="F" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
-        <TextBlock Grid.Column="6" x:Name="GoalScored" Text="GS" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
-        <TextBlock Grid.Column="7" x:Name="GoalsConceded" Text="GC" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
-        <TextBlock Grid.Column="8" x:Name="GoalsBalance" Text="GB" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
-        <TextBlock Grid.Column="9" x:Name="Point" Text="Pt" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="6" x:Name="Point" Text="Pt" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="7" x:Name="GoalScored" Text="GS" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="8" x:Name="GoalsConceded" Text="GC" FontSize="20" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        <TextBlock Grid.Column="9" x:Name="GoalsBalance" Text="GB" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
     </Grid>
 </UserControl>

@@ -1,5 +1,6 @@
 ﻿using FootballLeagueLib.Model;
 using FootballLeagueLib.Season;
+using FootballLeagueLib.Table;
 
 namespace TestConsoleAplication
 {
@@ -14,10 +15,12 @@ namespace TestConsoleAplication
             db.SaveChanges();
 
             SeasonManager seaon1 = new SeasonManager();
-            foreach(var r in seaon1.Rounds)
+
+            TableData tb = new TableData();
+
+            foreach(var c in tb.Table)
             {
-                foreach (var m in r.Value)
-                    Console.WriteLine(r.Key + ":" + m.HomeTeam + "-" + m.AwayTeam);
+                Console.WriteLine(c.Item1 + " " + c.Item2.ClubName + " " + c.Item3);
             }
 
         }
