@@ -23,7 +23,7 @@ namespace FootballLeagueWPFAplication.VievModel
         private SeasonManager _seasonManager;
         private List<Match> _matchList;
 
-        public MainVievModel() 
+        public MainVievModel()
         {
             using var db = new FootballLeague();
             _tableData = new TableData();
@@ -54,7 +54,6 @@ namespace FootballLeagueWPFAplication.VievModel
 
             TableStatistic = _tableData.UpdateTable();
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -11,15 +11,13 @@ namespace FootballLeagueLib.Table
 {
     public class TableData : ICreateUpdateTable
     {
-        public List<Tuple<int, Club, int>> Table { get; }
-        readonly IList<Club> clubs;
+        public List<Tuple<int, Club, int>> Table { get; private set; }
 
         public TableData() 
         {
             using var db = new FootballLeague();
-            clubs = db.Clubs.ToList();
 
-            Table = CreateTable(clubs);
+            Table = CreateTable(db.Clubs.ToList());
         }
 
         public List<Tuple<int, Club, int>> CreateTable(IList<Club> clubs)
@@ -37,18 +35,19 @@ namespace FootballLeagueLib.Table
 
         public List<Tuple<int, Club, int>> UpdateTable()
         {
-            List<Tuple<int, Club, int>> table = new List<Tuple<int, Club, int>>();
-            var query = clubs.OrderBy(c => c.Points).ThenBy(c => c.GoalBalance).ThenBy(c => c.GoalsConceded);
+            using var db = new FootballLeague();
+            Table = new List<Tuple<int, Club, int>>();
+            var query = db.Clubs.ToList().OrderByDescending(c => c.Points).ThenByDescending(c => c.GoalBalance).ThenByDescending(c => c.GoalsScored);
 
             int rank = 1;
 
             foreach(var c in query)
             {
-                table.Add(new Tuple<int, Club, int>(rank, c, 0));
+                Table.Add(new Tuple<int, Club, int>(rank, c, 0));
                 rank++;
             }
 
-            return table;
+            return Table;
         }
     }
 }
