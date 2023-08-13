@@ -21,7 +21,6 @@ namespace FootballLeagueWPFAplication.VievModel
         private List<Tuple<int, Club, int>> _tableStatistic;
 
         private SeasonManager _seasonManager;
-        private SeasonPlayMatch _seasonPlayMatch;
         private List<Match> _matchList;
 
         public MainVievModel() 
@@ -33,9 +32,8 @@ namespace FootballLeagueWPFAplication.VievModel
             _seasonManager = new SeasonManager();
 
             _matchList = db.Matches.ToList();
-            _seasonPlayMatch = new SeasonPlayMatch(_seasonManager);
 
-            PlayMatchCommand = new RelayCommand(PlayMatch);
+            PlayRoundCommand = new RelayCommand(PlayRound);
         }
 
         public List<Tuple<int, Club, int>> TableStatistic
@@ -48,11 +46,11 @@ namespace FootballLeagueWPFAplication.VievModel
             }
         }
 
-        public ICommand PlayMatchCommand { get; set; }
+        public ICommand PlayRoundCommand { get; set; }
 
-        private void PlayMatch(object obj)
+        private void PlayRound(object obj)
         {
-            _seasonPlayMatch.PlayMatch(_matchList.FirstOrDefault(m => !m.IsPlayed));
+            _seasonManager.PlayRound(_seasonManager.ActualRound);
         }
 
 

@@ -28,7 +28,7 @@
 
             <Button x:Name="Table" Content="Table" Click="Table_Click"/>
 
-            <Button Grid.Column="1" x:Name="PlayMatchBtn" Content="Play Match" Command="{Binding PlayMatchCommand}"/>
+            <Button Grid.Column="1" x:Name="PlayMatchBtn" Content="Play Round" Command="{Binding PlayRoundCommand}"/>
 
             <Button Grid.Column="2" Name="MatchesBtn" Content="Matches" Click="MatchesBtn_Click"/>
         </Grid>
