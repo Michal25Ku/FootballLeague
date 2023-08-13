@@ -17,14 +17,16 @@ namespace FootballLeagueLib.PlayMatch
 
         public Match PlayedMatch { get; }
         private readonly MatchScoredGoal MatchScoredGoal;
-        private readonly IEndMatch<Match> EndMatch;
-        private readonly IGetPlayers MatchPlayers;
+        private readonly MatchEnd EndMatch;
+        private readonly MatchPlayers MatchPlayers;
 
         public List<Player> PlayersHomeTeam { get; private set; }
         public List<Player> PlayersAwayTeam { get; private set; }
 
         public MatchManager(Match playedMatch)
         {
+            EndMatch = new MatchEnd();
+            MatchPlayers = new MatchPlayers();
             PlayedMatch = playedMatch;
             TimeInMatch = 0;
             PlayersHomeTeam = MatchPlayers.HomeTeamPlayers(playedMatch.IdHomeTeam);

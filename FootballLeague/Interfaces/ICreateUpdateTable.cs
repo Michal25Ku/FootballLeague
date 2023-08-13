@@ -9,7 +9,7 @@ namespace FootballLeagueLib.Interfaces
 {
     public interface ICreateUpdateTable
     {
-        List<(int, Club, int)> CreateTable(IList<Club> clubs);
+        List<Tuple<int, Club, int>> CreateTable(IList<Club> clubs);
 
         void UpdateTable (ref IList<Club> clubs);
     }

@@ -10,7 +10,7 @@ namespace FootballLeagueLib.Table
 {
     public class TableData : ICreateUpdateTable
     {
-        public List<(int, Club, int)> Table { get; }
+        public List<Tuple<int, Club, int>> Table { get; }
 
         public TableData() 
         {
@@ -19,14 +19,14 @@ namespace FootballLeagueLib.Table
             Table = CreateTable(db.Clubs.ToList());
         }
 
-        public List<(int, Club, int)> CreateTable(IList<Club> clubs)
+        public List<Tuple<int, Club, int>> CreateTable(IList<Club> clubs)
         {
-            List<(int, Club, int)> table = new List<(int, Club, int)>();
+            List<Tuple<int, Club, int>> table = new List<Tuple<int, Club, int>>();
             var query = clubs.OrderBy(c => c.ClubName);
 
             for(int i = 0; i < clubs.Count; i++)
             {
-                table.Add((i + 1, clubs[i], 0));
+                table.Add(new Tuple<int, Club, int>(i + 1, clubs[i], 0));
             }
 
             return table;
