@@ -15,7 +15,7 @@ namespace FootballLeagueLib.PlayMatch
 
         public int TimeInMatch { get; private set; }
 
-        public Match PlayedMatch { get; }
+        public Match PlayedMatch { get; private set; }
         private readonly MatchScoredGoal MatchScoredGoal;
         private readonly MatchEnd EndMatch;
         private readonly MatchPlayers MatchPlayers;
@@ -60,6 +60,9 @@ namespace FootballLeagueLib.PlayMatch
                 }
 
                 //Thread.Sleep(5000 / SimulationSpeedMultiplier);
+
+                using var db = new FootballLeague();
+                PlayedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch);
             }
 
             EndMatch.UpdateAfterMatchIsOver(PlayedMatch);
