@@ -42,7 +42,7 @@ namespace FootballLeagueLib.PlayMatch
                 clubToUpdate.Points += 3;
             }
 
-            match.IsPlayed = true;
+            db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch).IsPlayed = true;
 
             int result = db.SaveChanges();
             return result == 1;

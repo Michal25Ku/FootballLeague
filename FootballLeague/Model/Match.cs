@@ -71,7 +71,7 @@ namespace FootballLeagueLib.Model
             MatchDate = matchDate;
             GoalsHomeTeam = 0;
             GoalsAwayTeam = 0;
-            Result = "0-0";
+            Result = "0 - 0";
             IsPlayed = false;
             IdHomeTeam = idHomeTeam;
             IdAwayTeam = idAwayTeam;
