@@ -11,6 +11,6 @@ namespace FootballLeagueLib.Interfaces
     {
         List<Tuple<int, Club, int>> CreateTable(IList<Club> clubs);
 
-        void UpdateTable (ref IList<Club> clubs);
+        List<Tuple<int, Club, int>> UpdateTable();
     }
 }

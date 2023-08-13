@@ -51,6 +51,8 @@ namespace FootballLeagueWPFAplication.VievModel
         private void PlayRound(object obj)
         {
             _seasonManager.PlayRound(_seasonManager.ActualRound);
+
+            TableStatistic = _tableData.UpdateTable();
         }
 
 
