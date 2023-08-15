@@ -16,29 +16,15 @@ namespace FootballLeagueLib.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdMatch { get; set; }
 
-        [Required]
-        [StringLength(30)]
         public string HomeTeam { get; set; }
-
-        [Required]
-        [StringLength(30)]
         public string AwayTeam { get; set; }
-
-        [Required]
-        [StringLength(50)]
         public string MatchName { get; set; }
-
-        public DateTime MatchDate { get; set; }
-
-        public int GoalsHomeTeam { get; set; }
-        public int GoalsAwayTeam { get; set; }
-
-        [Required]
-        [StringLength(20)]
+        public DateTime? MatchDate { get; set; }
+        public int? GoalsHomeTeam { get; set; }
+        public int? GoalsAwayTeam { get; set; }
         public string Result { get; set; }
-
         public bool IsPlayed { get; set; }
-        public int Round { get; set; }
+        public int? Round { get; set; }
         #endregion
 
         public virtual ICollection<Goal> Goals { get; set; }
@@ -55,31 +41,25 @@ namespace FootballLeagueLib.Model
         public virtual Club ClubGuest { get; set; }
         #endregion
 
-        public Match(int idHomeTeam, int idAwayTeam, DateTime matchDate = default)
+        public Match(int idHomeTeam, int idAwayTeam, DateTime matchDate)
         {
             using var db = new FootballLeague();
-
-            if (matchDate == default)
-                matchDate = DateTime.Now;
 
             if (idHomeTeam != db.Clubs.FirstOrDefault(c => c.IdClub == idHomeTeam).IdClub || idAwayTeam != db.Clubs.FirstOrDefault(c => c.IdClub == idAwayTeam).IdClub)
                 throw new ArgumentException("Podana drużyna nie istnieje!");
 
             HomeTeam = db.Clubs.Where(c => c.IdClub == idHomeTeam).Select(c => c.ClubName).FirstOrDefault();
             AwayTeam = db.Clubs.Where(c => c.IdClub == idAwayTeam).Select(c => c.ClubName).FirstOrDefault();
-            MatchName = HomeTeam + " - " + AwayTeam;
             MatchDate = matchDate;
-            GoalsHomeTeam = 0;
-            GoalsAwayTeam = 0;
-            Result = "0 - 0";
-            IsPlayed = false;
             IdHomeTeam = idHomeTeam;
             IdAwayTeam = idAwayTeam;
-            Round = 0;
+            MatchName = HomeTeam + " - " + AwayTeam;
 
             this.Goals = new HashSet<Goal>();
 
             db.SaveChanges();
         }
+
+        public Match(int idHomeTeam, int idAwayTeam) : this(idHomeTeam, idAwayTeam, DateTime.Now) { }
     }
 }

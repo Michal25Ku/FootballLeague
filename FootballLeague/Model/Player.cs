@@ -16,23 +16,12 @@ namespace FootballLeagueLib.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPlayer { get; set; }
 
-        [Required]
-        [StringLength(30)]
         public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(30)]
         public string LastName { get; set; }
-
         public string PESEL { get; set; }
-
         public int ShirtNumber { get; set; }
-
-        [Required]
-        [StringLength(30)]
         public string Position { get; set; }
-
-        public int GoalsScored { get; set; }
+        public int? GoalsScored { get; set; }
         #endregion
 
         public virtual ICollection<Goal> Goals { get; set; }
@@ -45,8 +34,6 @@ namespace FootballLeagueLib.Model
 
         public Player()
         {
-            GoalsScored = 0;
-
             this.Goals = new HashSet<Goal>();
         }
     }

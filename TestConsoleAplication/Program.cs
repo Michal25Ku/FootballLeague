@@ -10,17 +10,16 @@ namespace TestConsoleAplication
         {
             using var db = new FootballLeague();
 
-            db.Goals.RemoveRange();
+            db.Goals.RemoveRange(db.Goals.Select(m => m));
             db.Matches.RemoveRange(db.Matches.Select(m => m));
             db.SaveChanges();
 
             SeasonManager seaon1 = new SeasonManager();
 
-            TableData tb = new TableData();
-
-            foreach(var c in tb.Table)
+            foreach(var r in seaon1.Rounds)
             {
-                Console.WriteLine(c.Item1 + " " + c.Item2.ClubName + " " + c.Item3);
+                foreach(var m in r.Value)
+                Console.WriteLine(m.ClubHost.ClubName + " - " + m.ClubGuest.ClubName);
             }
 
         }
