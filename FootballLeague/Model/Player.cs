@@ -27,7 +27,6 @@ namespace FootballLeagueLib.Model
         public virtual ICollection<Goal> Goals { get; set; }
 
         #region Foreign key
-        [ForeignKey("Club")]
         public int IdClub { get; set; }
         public virtual Club Club { get; set; }
         #endregion

@@ -33,6 +33,8 @@ namespace FootballLeagueLib.Model
                 eb.Property(c => c.Draws).HasDefaultValue(0);
                 eb.Property(c => c.Failures).HasDefaultValue(0);
                 eb.Property(c => c.Points).HasDefaultValue(0);
+                eb.HasOne(c => c.Players)
+                .WithMany(p => p.)
             });
 
             modelBuilder.Entity<Player>(eb =>

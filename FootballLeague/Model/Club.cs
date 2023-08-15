@@ -29,9 +29,7 @@ namespace FootballLeagueLib.Model
 
         public virtual ICollection<Player> Players { get; set; }
 
-        [NotMapped]
         public virtual ICollection<Match> MatchesGuest { get; set; }
-        [NotMapped]
         public virtual ICollection<Match> MatchesHost { get; set; }
 
         public Club()
