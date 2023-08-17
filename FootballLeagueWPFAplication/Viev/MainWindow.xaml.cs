@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FootballLeagueLib.DataForWPF;
-using FootballLeagueLib.Model;
+using FootballLeagueLib.Entities;
 using FootballLeagueLib.Season;
 using FootballLeagueWPFAplication.VievModel;
 
@@ -33,7 +33,7 @@ namespace FootballLeagueWPFAplication
         public MainWindow()
         {
             InitializeComponent();
-            ResetDatabase();
+            ResetDatabase(); 
             DataContext = new MainVievModel();
 
             //UpdateClubStatistic();
@@ -45,8 +45,7 @@ namespace FootballLeagueWPFAplication
 
         void ResetDatabase()
         {
-            using var db = new FootballLeague();
-
+            using var db = new FootballLeagueContext();
             db.Goals.RemoveRange(db.Goals.Select(g => g));
             db.Matches.RemoveRange(db.Matches.Select(m => m));
 
@@ -59,11 +58,15 @@ namespace FootballLeagueWPFAplication
                 club.GoalsConceded = 0;
                 club.GoalBalance = 0;
                 club.Points = 0;
+                club.Players.Clear();
+                club.MatchesAwayTeam.Clear();
+                club.MatchesHomeTeam.Clear();
             }
 
-            foreach(var player in db.Players)
+            foreach (var player in db.Players)
             {
                 player.GoalsScored = 0;
+                player.Goals.Clear();
             }
 
             db.SaveChanges();

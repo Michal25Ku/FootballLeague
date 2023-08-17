@@ -1,4 +1,4 @@
-﻿using FootballLeagueLib.Model;
+﻿using FootballLeagueLib.Entities;
 using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
 using FootballLeagueWPFAplication.Commands;
@@ -21,19 +21,32 @@ namespace FootballLeagueWPFAplication.VievModel
         private List<Tuple<int, Club, int>> _tableStatistic;
 
         private SeasonManager _seasonManager;
-        private List<Match> _matchList;
 
         public MainVievModel()
         {
-            using var db = new FootballLeague();
+            using var db = new FootballLeagueContext();
             _tableData = new TableData();
             TableStatistic = _tableData.Table;
 
             _seasonManager = new SeasonManager();
 
-            _matchList = db.Matches.ToList();
-
             PlayRoundCommand = new RelayCommand(PlayRound);
+            var clubs = db.Clubs.ToList();
+
+            for (int i = 0; i < clubs.Count(); i++)
+            {
+                var c = db.Clubs.FirstOrDefault(c => c.IdClub == clubs[i].IdClub);
+
+                foreach (var p in db.Players)
+                {
+                    if (c.IdClub == p.ClubId)
+                    {
+                        c.Players.Add(p);
+                    }
+                }
+            }
+
+            db.SaveChanges();
         }
 
         public List<Tuple<int, Club, int>> TableStatistic

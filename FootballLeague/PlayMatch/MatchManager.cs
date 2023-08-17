@@ -1,4 +1,4 @@
-﻿using FootballLeagueLib.Model;
+﻿using FootballLeagueLib.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +32,8 @@ namespace FootballLeagueLib.PlayMatch
 
             PlayedMatch = playedMatch;
 
-            PlayersHomeTeam = MatchPlayers.HomeTeamPlayers(playedMatch.IdHomeTeam);
-            PlayersAwayTeam = MatchPlayers.AwayTeamPlayers(playedMatch.IdAwayTeam);
+            PlayersHomeTeam = MatchPlayers.HomeTeamPlayers(playedMatch.HomeTeamId);
+            PlayersAwayTeam = MatchPlayers.AwayTeamPlayers(playedMatch.AwayTeamId);
             
             TimeInMatch = 0;
         }
@@ -50,16 +50,16 @@ namespace FootballLeagueLib.PlayMatch
                     if (teamShoot == 0)
                     {
                         int playerShoot = rand.Next(PlayersHomeTeam.Count);
-                        MatchScoredGoal.ScoreGoal(i, PlayedMatch.IdHomeTeam, PlayersHomeTeam[playerShoot].IdPlayer);
+                        MatchScoredGoal.ScoreGoal(i, PlayedMatch.HomeTeamId, PlayersHomeTeam[playerShoot].IdPlayer);
                     }
                     else
                     {
                         int playerShoot = rand.Next(PlayersHomeTeam.Count);
-                        MatchScoredGoal.ScoreGoal(i, PlayedMatch.IdAwayTeam, PlayersAwayTeam[playerShoot].IdPlayer);
+                        MatchScoredGoal.ScoreGoal(i, PlayedMatch.AwayTeamId, PlayersAwayTeam[playerShoot].IdPlayer);
                     }
                 }
 
-                using var db = new FootballLeague();
+                using var db = new FootballLeagueContext();
                 PlayedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch);
 
                 //Thread.Sleep(5000 / SimulationSpeedMultiplier);

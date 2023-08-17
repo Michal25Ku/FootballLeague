@@ -1,5 +1,5 @@
 ﻿using FootballLeagueLib.Interfaces;
-using FootballLeagueLib.Model;
+using FootballLeagueLib.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +13,8 @@ namespace FootballLeagueLib.PlayMatch
         public List<Player> AwayTeamPlayers(int idClub)
         {
             Random rand = new Random();
-            using var db = new FootballLeague();
-            List<Player> players = db.Players.Where(p => p.IdClub == idClub).ToList();
+            using var db = new FootballLeagueContext();
+            List<Player> players = db.Players.Where(p => p.ClubId == idClub).ToList();
 
             while (players.Count > 11)
             {
@@ -28,8 +28,8 @@ namespace FootballLeagueLib.PlayMatch
         public List<Player> HomeTeamPlayers(int idClub)
         {
             Random rand = new Random();
-            using var db = new FootballLeague();
-            List<Player> players = db.Players.Where(p => p.IdClub == idClub).ToList();
+            using var db = new FootballLeagueContext();
+            List<Player> players = db.Players.Where(p => p.ClubId == idClub).ToList();
 
             while (players.Count > 11)
             {
