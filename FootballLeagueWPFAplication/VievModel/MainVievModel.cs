@@ -2,6 +2,7 @@
 using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
 using FootballLeagueWPFAplication.Commands;
+using FootballLeagueWPFAplication.Viev;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace FootballLeagueWPFAplication.VievModel
@@ -31,6 +33,12 @@ namespace FootballLeagueWPFAplication.VievModel
             _seasonManager = new SeasonManager();
 
             PlayRoundCommand = new RelayCommand(PlayRound);
+            ShowMatchesCommand = new RelayCommand(ShowMatches);
+            ShowTableCommand = new RelayCommand(ShowTable);
+
+            TableVisibility = Visibility.Visible;
+            MatchesVisibility = Visibility.Collapsed;
+
             var clubs = db.Clubs.ToList();
 
             for (int i = 0; i < clubs.Count(); i++)
@@ -49,6 +57,30 @@ namespace FootballLeagueWPFAplication.VievModel
             db.SaveChanges();
         }
 
+        private Visibility _tableVisibility;
+
+        public Visibility TableVisibility
+        {
+            get { return _tableVisibility; }
+            set 
+            {
+                _tableVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Visibility _matchesVisibility;
+
+        public Visibility MatchesVisibility
+        {
+            get { return _matchesVisibility; }
+            set
+            {
+                _matchesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         public List<Tuple<int, Club, int>> TableStatistic
         {
             get { return _tableStatistic; }
@@ -60,12 +92,26 @@ namespace FootballLeagueWPFAplication.VievModel
         }
 
         public ICommand PlayRoundCommand { get; set; }
+        public ICommand ShowMatchesCommand { get; set; }
+        public ICommand ShowTableCommand { get; set; }
 
         private void PlayRound(object obj)
         {
             _seasonManager.PlayRound(_seasonManager.ActualRound);
 
             TableStatistic = _tableData.UpdateTable();
+        }
+
+        private void ShowMatches(object obj)
+        {
+            TableVisibility = Visibility.Collapsed;
+            MatchesVisibility = Visibility.Visible;
+        }
+
+        private void ShowTable(object obj)
+        {
+            TableVisibility = Visibility.Visible;
+            MatchesVisibility = Visibility.Collapsed;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
