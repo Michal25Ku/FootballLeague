@@ -44,6 +44,7 @@ namespace FootballLeagueLib.PlayMatch
             }
 
             db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch).IsPlayed = true;
+            db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch).Result = match.GoalsHomeTeam + " - " + match.GoalsAwayTeam;
 
             int result = db.SaveChanges();
             return result == 1;

@@ -72,7 +72,7 @@ namespace FootballLeagueLib.Entities
                 entity.Property(e => e.MatchName).HasMaxLength(60);
                 entity.Property(e => e.Result)
                     .HasMaxLength(20)
-                    .HasDefaultValue("0 - 0");
+                    .HasDefaultValue(" - ");
                 entity.Property(e => e.IsPlayed).HasDefaultValue(false);
                 entity.Property(e => e.Round).HasDefaultValue(0);
 

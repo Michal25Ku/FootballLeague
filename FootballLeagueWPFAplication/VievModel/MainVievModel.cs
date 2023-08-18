@@ -1,4 +1,5 @@
-﻿using FootballLeagueLib.Entities;
+﻿using FootballLeagueLib.DataForWPF;
+using FootballLeagueLib.Entities;
 using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
 using FootballLeagueWPFAplication.Commands;
@@ -20,17 +21,19 @@ namespace FootballLeagueWPFAplication.VievModel
     public class MainVievModel : INotifyPropertyChanged
     {
         private TableData _tableData;
-        private List<Tuple<int, Club, int>> _tableStatistic;
+        private MatchesData _matchesData;
 
         private SeasonManager _seasonManager;
 
         public MainVievModel()
         {
             using var db = new FootballLeagueContext();
+            _seasonManager = new SeasonManager();
+
             _tableData = new TableData();
             TableStatistic = _tableData.Table;
 
-            _seasonManager = new SeasonManager();
+            _matchesData = new MatchesData();
 
             PlayRoundCommand = new RelayCommand(PlayRound);
             ShowMatchesCommand = new RelayCommand(ShowMatches);
@@ -58,7 +61,6 @@ namespace FootballLeagueWPFAplication.VievModel
         }
 
         private Visibility _tableVisibility;
-
         public Visibility TableVisibility
         {
             get { return _tableVisibility; }
@@ -70,7 +72,6 @@ namespace FootballLeagueWPFAplication.VievModel
         }
 
         private Visibility _matchesVisibility;
-
         public Visibility MatchesVisibility
         {
             get { return _matchesVisibility; }
@@ -81,12 +82,24 @@ namespace FootballLeagueWPFAplication.VievModel
             }
         }
 
+        private List<Tuple<int, Club, int>> _tableStatistic;
         public List<Tuple<int, Club, int>> TableStatistic
         {
             get { return _tableStatistic; }
             set
             {
                 _tableStatistic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<Match> _matchesContent;
+        public List<Match> MatchesContent
+        {
+            get { return _matchesContent; }
+            set
+            {
+                _matchesContent = value;
                 OnPropertyChanged();
             }
         }
@@ -100,12 +113,15 @@ namespace FootballLeagueWPFAplication.VievModel
             _seasonManager.PlayRound(_seasonManager.ActualRound);
 
             TableStatistic = _tableData.UpdateTable();
+            MatchesContent = _matchesData.UpdateMatchesList();
         }
 
         private void ShowMatches(object obj)
         {
             TableVisibility = Visibility.Collapsed;
             MatchesVisibility = Visibility.Visible;
+
+            MatchesContent = _matchesData.MatchesList;
         }
 
         private void ShowTable(object obj)

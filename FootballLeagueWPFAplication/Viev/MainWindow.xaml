@@ -43,7 +43,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" Visibility="{Binding MatchesVisibility}">
+        <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding MatchesContent}" Visibility="{Binding MatchesVisibility}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Viev:MatchContent DataContext="{Binding}"/>

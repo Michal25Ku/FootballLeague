@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FootballLeagueWPFAplication.Viev"
+             xmlns:local="clr-namespace:FootballLeagueWPFAplication.Viev" 
+             xmlns:vievmodel="clr-namespace:FootballLeagueWPFAplication.VievModel" 
+             d:DataContext="{d:DesignInstance Type=vievmodel:MainVievModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="400">
+             d:DesignHeight="100" d:DesignWidth="400"
+             DataContext="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -21,7 +24,7 @@
 
             <TextBlock x:Name="homeTeam" Text="{Binding HomeTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
             <TextBlock Grid.Column="1" x:Name="result" Text="{Binding Result}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
-            <TextBlock Grid.Column="2" x:Name="awayTeam" Text="{Binding awayTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+            <TextBlock Grid.Column="2" x:Name="awayTeam" Text="{Binding AwayTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
 
         </Grid>
 
