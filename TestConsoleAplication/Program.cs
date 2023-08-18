@@ -1,4 +1,4 @@
-﻿using FootballLeagueLib.Model;
+﻿using FootballLeagueLib.Entities;
 using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
 
@@ -8,7 +8,7 @@ namespace TestConsoleAplication
     {
         static void Main(string[] args)
         {
-            using var db = new FootballLeague();
+            using var db = new FootballLeagueContext();
 
             db.Goals.RemoveRange(db.Goals.Select(m => m));
             db.Matches.RemoveRange(db.Matches.Select(m => m));
@@ -19,7 +19,7 @@ namespace TestConsoleAplication
             foreach(var r in seaon1.Rounds)
             {
                 foreach(var m in r.Value)
-                Console.WriteLine(m.ClubHost.ClubName + " - " + m.ClubGuest.ClubName);
+                Console.WriteLine(m.HomeTeam.ClubName + " - " + m.AwayTeam.ClubName);
             }
 
         }

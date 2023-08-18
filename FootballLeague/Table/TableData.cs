@@ -1,6 +1,5 @@
 ﻿using FootballLeagueLib.Entities;
 using FootballLeagueLib.Interfaces;
-using FootballLeagueLib.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace FootballLeagueLib.Table
 
         public TableData() 
         {
-            using var db = new FootballLeague();
+            using var db = new FootballLeagueContext();
 
             Table = CreateTable(db.Clubs.ToList());
         }
@@ -35,7 +34,7 @@ namespace FootballLeagueLib.Table
 
         public List<Tuple<int, Club, int>> UpdateTable()
         {
-            using var db = new FootballLeague();
+            using var db = new FootballLeagueContext();
             Table = new List<Tuple<int, Club, int>>();
             var query = db.Clubs.ToList().OrderByDescending(c => c.Points).ThenByDescending(c => c.GoalBalance).ThenByDescending(c => c.GoalsScored);
 

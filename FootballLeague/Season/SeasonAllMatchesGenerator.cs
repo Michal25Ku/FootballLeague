@@ -1,4 +1,5 @@
-﻿using FootballLeagueLib.Model;
+﻿using FootballLeagueLib.Entities;
+using FootballLeagueLib.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FootballLeagueLib.Season
 {
-    public class SeasonAllMatchesGenerator : Interfaces.IGeneratorAndSorterMatches
+    public class SeasonAllMatchesGenerator : IGeneratorAndSorterMatches
     {
         public IList<Match> GenerateMatches(IList<Club> clubList)
         {
-            using var db = new FootballLeague();
+            using var db = new FootballLeagueContext();
 
             int clubCount = db.Clubs.Count();
             int RoundCount = (clubCount - 1) * 2;
@@ -25,7 +26,17 @@ namespace FootballLeagueLib.Season
 
                     if (awayTeamId != homeTeamId)
                     {
-                        db.Matches.Add(new Model.Match(homeTeamId, awayTeamId, DateTime.Now));
+                        db.Matches.Add(new Match
+                        {
+                            HomeTeamName = db.Clubs.FirstOrDefault(c => c.IdClub == homeTeamId).ClubName,
+                            AwayTeamName = db.Clubs.FirstOrDefault(c => c.IdClub == awayTeamId).ClubName,
+                            MatchName = db.Clubs.FirstOrDefault(c => c.IdClub == homeTeamId).ClubName + " - " + db.Clubs.FirstOrDefault(c => c.IdClub == awayTeamId).ClubName,
+                            HomeTeamId = homeTeamId,
+                            HomeTeam = db.Clubs.FirstOrDefault(c => c.IdClub == homeTeamId),
+                            AwayTeamId = awayTeamId,
+                            AwayTeam = db.Clubs.FirstOrDefault(c => c.IdClub == awayTeamId),
+                        });
+                        db.SaveChanges();
                     }
                 }
             }
@@ -37,7 +48,7 @@ namespace FootballLeagueLib.Season
         // To do
         public Dictionary<int, IList<Match>> SortMatchesIntoRound(IList<Match> allMatchesList)
         {
-            using var db = new FootballLeague();
+            using var db = new FootballLeagueContext();
             int round = 1;
             Dictionary<int, IList<Match>> matchesIntoRounds = new Dictionary<int, IList<Match>>();
 
@@ -51,9 +62,9 @@ namespace FootballLeagueLib.Season
                     if (clubs.Count <= 0)
                         break;
 
-                    if (clubs.Any(c => c.IdClub == match.IdHomeTeam) && clubs.Any(c => c.IdClub == match.IdAwayTeam))
+                    if (clubs.Any(c => c.IdClub == match.HomeTeamId) && clubs.Any(c => c.IdClub == match.AwayTeamId))
                     {
-                        clubs.RemoveAll(c => c.IdClub == match.IdHomeTeam || c.IdClub == match.IdAwayTeam);
+                        clubs.RemoveAll(c => c.IdClub == match.HomeTeamId || c.IdClub == match.AwayTeamId);
 
                         var matchToUpdate = db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch);
                         matchToUpdate.Round = round;

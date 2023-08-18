@@ -1,5 +1,5 @@
 ﻿using FootballLeagueLib.Interfaces;
-using FootballLeagueLib.Model;
+using FootballLeagueLib.Entities;
 using FootballLeagueLib.PlayMatch;
 using System;
 using System.Collections.Generic;
@@ -13,14 +13,14 @@ namespace FootballLeagueLib.Season
     public class SeasonManager : IPlayMatch, IPlayRound
     {
         public int ActualRound { get; private set; }
-        public Dictionary<int, IList<Model.Match>> Rounds { get; }
+        public Dictionary<int, IList<Match>> Rounds { get; }
 
         private SeasonAllMatchesGenerator generator;
 
         public SeasonManager()
         {
             ActualRound = 1;
-            using var db = new Model.FootballLeague();
+            using var db = new FootballLeagueContext();
             generator = new SeasonAllMatchesGenerator();
             Rounds = generator.SortMatchesIntoRound(generator.GenerateMatches(db.Clubs.ToList()));
         }

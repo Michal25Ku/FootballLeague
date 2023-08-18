@@ -1,4 +1,4 @@
-﻿using FootballLeagueLib.Model;
+﻿using FootballLeagueLib.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
