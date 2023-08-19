@@ -46,14 +46,14 @@ namespace FootballLeagueLib.PlayMatch
 
             db.Goals.Add(newGoal);
             // when a player scores a goal, the match, player and club data are updated
-            UpdateMatchAfterGoal(idClub);
+            UpdateMatchAfterGoal(newGoal);
             UpdatePlayerCount(idPlayer);
             UpdateClubGoals(idClub);
 
             return SaveChange(db);
         }
 
-        bool UpdateMatchAfterGoal(int idClub)
+        bool UpdateMatchAfterGoal(Goal goal)
         {
             using var db = new FootballLeagueContext();
 
@@ -62,11 +62,11 @@ namespace FootballLeagueLib.PlayMatch
             if (matchToUpdate is null)
                 return false;
 
-            if (idClub == db.Matches.FirstOrDefault(m => m.IdMatch == _matchManage.PlayedMatch.IdMatch).HomeTeamId)
+            if (goal.ClubId == db.Matches.FirstOrDefault(m => m.IdMatch == _matchManage.PlayedMatch.IdMatch).HomeTeamId)
             {
                 matchToUpdate.GoalsHomeTeam += 1;
             }
-            else if (idClub == db.Matches.FirstOrDefault(m => m.IdMatch == _matchManage.PlayedMatch.IdMatch).AwayTeamId)
+            else if (goal.ClubId == db.Matches.FirstOrDefault(m => m.IdMatch == _matchManage.PlayedMatch.IdMatch).AwayTeamId)
             {
                 matchToUpdate.GoalsAwayTeam += 1;
             }

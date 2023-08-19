@@ -18,13 +18,13 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
-                <ColumnDefinition />
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock x:Name="homeTeam" Text="{Binding HomeTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
-            <TextBlock Grid.Column="1" x:Name="result" Text="{Binding Result}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
-            <TextBlock Grid.Column="2" x:Name="awayTeam" Text="{Binding AwayTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+            <TextBlock Text="{Binding HomeTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" TextAlignment="Left"/>
+            <TextBlock Grid.Column="1" Text="{Binding Result}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+            <TextBlock Grid.Column="2" Text="{Binding AwayTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" TextAlignment="Right"/>
 
         </Grid>
 
@@ -35,17 +35,21 @@
             </Grid.ColumnDefinitions>
 
             <Grid>
-                <ListView Name="lvEntriesHomeScorer" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0">
+                <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding HomeTeamScorerList}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            
+                            <TextBlock Text="{Binding LastName}" FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Run Text="{Binding LastName}" />
+                                <Run Text=" " />
+                                <Run Text="{Binding MinuteOfMatch}" />
+                            </TextBlock>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </Grid>
 
             <Grid Grid.Column="1">
-                <ListView Name="lvEntriesAwayScorer" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0">
+                <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0">
                     <ListView.ItemTemplate>
                         <DataTemplate>
 
