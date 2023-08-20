@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FootballLeagueWPFAplication.Viev" 
              xmlns:vievmodel="clr-namespace:FootballLeagueWPFAplication.VievModel" 
-             d:DataContext="{d:DesignInstance Type=vievmodel:MainVievModel}"
+             d:DataContext="{d:DesignInstance Type=vievmodel:MatchContentVievModel}"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="400"
              DataContext="{Binding}">
@@ -22,9 +22,9 @@
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding HomeTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" TextAlignment="Left"/>
-            <TextBlock Grid.Column="1" Text="{Binding Result}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
-            <TextBlock Grid.Column="2" Text="{Binding AwayTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" TextAlignment="Right"/>
+            <TextBlock Text="{Binding MatchData.HomeTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" TextAlignment="Left"/>
+            <TextBlock Grid.Column="1" Text="{Binding MatchData.Result}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+            <TextBlock Grid.Column="2" Text="{Binding MatchData.AwayTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" TextAlignment="Right"/>
 
         </Grid>
 
@@ -35,13 +35,13 @@
             </Grid.ColumnDefinitions>
 
             <Grid>
-                <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding HomeTeamScorerList}">
+                <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding DataContext.HomeTeamScorerList, RelativeSource={RelativeSource AncestorType=UserControl}}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding LastName}" FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Run Text="{Binding LastName}" />
+                            <TextBlock FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Run Text="{Binding Value.LastName}" />
                                 <Run Text=" " />
-                                <Run Text="{Binding MinuteOfMatch}" />
+                                <Run Text="{Binding Key}" />
                             </TextBlock>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -49,10 +49,14 @@
             </Grid>
 
             <Grid Grid.Column="1">
-                <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0">
+                <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding DataContext.AwayTeamScorerList, RelativeSource={RelativeSource AncestorType=UserControl}}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-
+                            <TextBlock FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Run Text="{Binding Value.LastName}" />
+                                <Run Text=" " />
+                                <Run Text="{Binding Key}" />
+                            </TextBlock>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

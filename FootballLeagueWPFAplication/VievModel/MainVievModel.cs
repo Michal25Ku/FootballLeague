@@ -18,7 +18,7 @@ using System.Windows.Input;
 
 namespace FootballLeagueWPFAplication.VievModel
 {
-    public class MainVievModel : INotifyPropertyChanged
+    public partial class MainVievModel : INotifyPropertyChanged
     {
         private TableData _tableData;
         private MatchesData _matchesData;
@@ -27,13 +27,19 @@ namespace FootballLeagueWPFAplication.VievModel
 
         public MainVievModel()
         {
-            using var db = new FootballLeagueContext();
+            //using var db = new FootballLeagueContext();
             _seasonManager = new SeasonManager();
 
             _tableData = new TableData();
             TableStatistic = _tableData.Table;
 
             _matchesData = new MatchesData();
+            MatchesContent = new List<MatchContentVievModel>();
+
+            foreach (var m in _matchesData.MatchesList)
+            {
+                MatchesContent.Add(new MatchContentVievModel(m));
+            }
 
             PlayRoundCommand = new RelayCommand(PlayRound);
             ShowMatchesCommand = new RelayCommand(ShowMatches);
@@ -42,59 +48,26 @@ namespace FootballLeagueWPFAplication.VievModel
             TableVisibility = Visibility.Visible;
             MatchesVisibility = Visibility.Collapsed;
 
-            var clubs = db.Clubs.ToList();
+            //var clubs = db.Clubs.ToList();
 
-            for (int i = 0; i < clubs.Count(); i++)
-            {
-                var c = db.Clubs.FirstOrDefault(c => c.IdClub == clubs[i].IdClub);
+            //for (int i = 0; i < clubs.Count(); i++)
+            //{
+            //    var c = db.Clubs.FirstOrDefault(c => c.IdClub == clubs[i].IdClub);
 
-                foreach (var p in db.Players)
-                {
-                    if (c.IdClub == p.ClubId)
-                    {
-                        c.Players.Add(p);
-                    }
-                }
-            }
+            //    foreach (var p in db.Players)
+            //    {
+            //        if (c.IdClub == p.ClubId)
+            //        {
+            //            c.Players.Add(p);
+            //        }
+            //    }
+            //}
 
-            db.SaveChanges();
+            //db.SaveChanges();
         }
 
-        private Visibility _tableVisibility;
-        public Visibility TableVisibility
-        {
-            get { return _tableVisibility; }
-            set 
-            {
-                _tableVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Visibility _matchesVisibility;
-        public Visibility MatchesVisibility
-        {
-            get { return _matchesVisibility; }
-            set
-            {
-                _matchesVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private List<Tuple<int, Club, int>> _tableStatistic;
-        public List<Tuple<int, Club, int>> TableStatistic
-        {
-            get { return _tableStatistic; }
-            set
-            {
-                _tableStatistic = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private List<Match> _matchesContent;
-        public List<Match> MatchesContent
+        private List<MatchContentVievModel> _matchesContent;
+        public List<MatchContentVievModel> MatchesContent
         {
             get { return _matchesContent; }
             set
@@ -102,32 +75,6 @@ namespace FootballLeagueWPFAplication.VievModel
                 _matchesContent = value;
                 OnPropertyChanged();
             }
-        }
-
-        public ICommand PlayRoundCommand { get; set; }
-        public ICommand ShowMatchesCommand { get; set; }
-        public ICommand ShowTableCommand { get; set; }
-
-        private void PlayRound(object obj)
-        {
-            _seasonManager.PlayRound(_seasonManager.ActualRound);
-
-            TableStatistic = _tableData.UpdateTable();
-            MatchesContent = _matchesData.UpdateMatchesList();
-        }
-
-        private void ShowMatches(object obj)
-        {
-            TableVisibility = Visibility.Collapsed;
-            MatchesVisibility = Visibility.Visible;
-
-            MatchesContent = _matchesData.MatchesList;
-        }
-
-        private void ShowTable(object obj)
-        {
-            TableVisibility = Visibility.Visible;
-            MatchesVisibility = Visibility.Collapsed;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

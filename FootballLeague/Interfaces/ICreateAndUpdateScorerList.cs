@@ -10,6 +10,6 @@ namespace FootballLeagueLib.Interfaces
 {
     public interface ICreateAndUpdateScorerList
     {
-        Dictionary<int, Player> CreateScorerList(MatchManager matchManager, int idClub);
+        Dictionary<int, Player> CreateScorerList(Match match, int idClub);
     }
 }

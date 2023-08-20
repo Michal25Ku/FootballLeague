@@ -11,19 +11,18 @@ namespace FootballLeagueLib.Table
 {
     public class ScorerListForMatch : ICreateAndUpdateScorerList
     {
-        public Dictionary<int, Player> CreateScorerList(MatchManager matchManager, int idClub)
+        public Dictionary<int, Player> CreateScorerList(Match match, int idClub)
         {
             Dictionary<int, Player> scorer = new Dictionary<int, Player>();
             using var db = new FootballLeagueContext();
-            var goals = db.Goals.Select(g => g).Where(g => g.MatchId == matchManager.PlayedMatch.IdMatch).ToList();
+            var goals = db.Goals.Select(g => g).Where(g => g.MatchId == match.IdMatch).ToList();
 
             foreach (var g in goals)
             {
-                scorer.Add
-                (
-                    g.MinuteOfTheMatch,
-                    db.Players.FirstOrDefault(p => (p.IdPlayer == g.PlayerId) && (p.ClubId == idClub))
-                );
+                if(g.ClubId == idClub)
+                {
+                    scorer.Add(g.MinuteOfTheMatch, db.Players.FirstOrDefault(p => (p.IdPlayer == g.PlayerId) && (p.ClubId == idClub)));
+                }
             }
 
             return scorer;

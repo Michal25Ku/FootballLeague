@@ -25,22 +25,11 @@ namespace FootballLeagueWPFAplication
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<ClubData> ClubList { get; set; }
-        public List<Tuple<string, string, string>> MatchList { get; set; }
-        public string MatchRoundBtnContent { get; set; }
-        public int MatchRound { get; set; }
-
         public MainWindow()
         {
             InitializeComponent();
             ResetDatabase(); 
             DataContext = new MainVievModel();
-
-            //UpdateClubStatistic();
-
-            MatchRound = 1;
-            MatchRoundBtnContent = $"Play {MatchRound} round";
-            //season = new SeasonPlayRound();
         }
 
         void ResetDatabase()
@@ -70,71 +59,6 @@ namespace FootballLeagueWPFAplication
             }
 
             db.SaveChanges();
-        }
-
-        private void Table_Click(object sender, RoutedEventArgs e)
-        {
-            //if (clubHeader.Visibility == Visibility.Collapsed && lvEntriesTable.Visibility == Visibility.Collapsed)
-            //{
-            //    clubHeader.Visibility = Visibility.Visible;
-            //    lvEntriesTable.Visibility = Visibility.Visible;
-
-            //    lvEntriesMatches.Visibility = Visibility.Collapsed;
-            //}
-        }
-
-        //private void UpdateClubStatistic()
-        //{
-        //    using var db = new FootballLeague();
-
-        //    ClubList = db.Clubs.Select(c => new ClubData
-        //    {
-        //        ClubName = c.ClubName,
-        //        MatchCount = db.Matches.Count(m => m.IdHomeTeam == c.IdClub || m.IdAwayTeam == c.IdClub) / 2,
-        //        Wins = c.Wins,
-        //        Draws = c.Draws,
-        //        Failures = c.Failures,
-        //        GoalScored = c.GoalsScored,
-        //        GoalsConceded = c.GoalsConceded,
-        //        GoalsBalance = c.GoalBalance,
-        //        Point = c.Points
-        //    }).ToList();
-
-        //    lvEntriesTable.ItemsSource = ClubList;
-
-        //    ICollectionView view = CollectionViewSource.GetDefaultView(lvEntriesTable.ItemsSource);
-        //    view.Refresh();
-        //}
-
-        //private void UpdateMatches()
-        //{
-        //    using var db = new FootballLeague();
-
-        //    MatchList = db.Matches.Select(m => new Tuple<string,string,string>(m.HomeTeam, m.Result, m.AwayTeam)).ToList();
-
-        //    lvEntriesMatches.ItemsSource = MatchList;
-
-        //    ICollectionView view = CollectionViewSource.GetDefaultView(lvEntriesMatches.ItemsSource);
-        //    view.Refresh();
-        //}
-
-        private void PlayMatchBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //season.StartMatch();
-            //UpdateMatches();
-            //UpdateClubStatistic();
-        }
-
-        private void MatchesBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //if (clubHeader.Visibility == Visibility.Visible && lvEntriesTable.Visibility == Visibility.Visible)
-            //{
-            //    clubHeader.Visibility = Visibility.Collapsed;
-            //    lvEntriesTable.Visibility = Visibility.Collapsed;
-
-            //    lvEntriesMatches.Visibility = Visibility.Visible;
-            //    UpdateMatches();
-            //}
         }
     }
 }

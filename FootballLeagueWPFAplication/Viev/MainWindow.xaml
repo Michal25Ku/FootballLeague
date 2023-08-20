@@ -38,7 +38,7 @@
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding TableStatistic}" Visibility="{Binding TableVisibility}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Viev:ClubStatistic DataContext="{Binding}"/>
+                    <Viev:ClubStatistic />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -46,7 +46,7 @@
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding MatchesContent}" Visibility="{Binding MatchesVisibility}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Viev:MatchContent DataContext="{Binding}"/>
+                    <Viev:MatchContent />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

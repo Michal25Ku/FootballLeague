@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FootballLeagueWPFAplication.VievModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace FootballLeagueWPFAplication.Viev
         public MatchContent()
         {
             InitializeComponent();
+            //DataContext = new MatchContentVievModel();
         }
     }
 }
