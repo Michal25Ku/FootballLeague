@@ -35,31 +35,12 @@
             </Grid.ColumnDefinitions>
 
             <Grid>
-                <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding DataContext.HomeTeamScorerList, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Run Text="{Binding Value.LastName}" />
-                                <Run Text=" " />
-                                <Run Text="{Binding Key}" />
-                            </TextBlock>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <TextBlock Text="{Binding HomeTeamScorerList}" FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Grid>
 
+
             <Grid Grid.Column="1">
-                <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding DataContext.AwayTeamScorerList, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Run Text="{Binding Value.LastName}" />
-                                <Run Text=" " />
-                                <Run Text="{Binding Key}" />
-                            </TextBlock>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <TextBlock Text="{Binding AwayTeamScorerList}" FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Grid>
         </Grid>
     </Grid>

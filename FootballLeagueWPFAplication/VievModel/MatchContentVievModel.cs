@@ -28,12 +28,14 @@ namespace FootballLeagueWPFAplication.VievModel
             set
             {
                 _matchData = value;
+                HomeTeamScorerList = string.Join("\n", _scoredListForMatch.CreateScorerList(value, value.HomeTeamId).Select(s => $"{s.Item2.LastName} '{s.Item1}"));
+                AwayTeamScorerList = string.Join("\n", _scoredListForMatch.CreateScorerList(value, value.AwayTeamId).Select(s => $"{s.Item2.LastName} '{s.Item1}"));
                 OnPropertyChanged();
             }
         }
 
-        private Dictionary<int, Player> _homeTeamScorerList;
-        public Dictionary<int, Player> HomeTeamScorerList
+        private string _homeTeamScorerList;
+        public string HomeTeamScorerList
         {
             get { return _homeTeamScorerList; }
             set
@@ -43,8 +45,8 @@ namespace FootballLeagueWPFAplication.VievModel
             }
         }
 
-        private Dictionary<int, Player> _awayTeamScorerList;
-        public Dictionary<int, Player> AwayTeamScorerList
+        private string _awayTeamScorerList;
+        public string AwayTeamScorerList
         {
             get { return _awayTeamScorerList; }
             set
