@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace FootballLeagueLib.Season
 {
-    public class SeasonManager : IPlayMatch, IPlayRound
+    public class SeasonManager : IPlayRound
     {
-        public int ActualRound { get; private set; }
+        public static int ActualRound { get; private set; }
         public Dictionary<int, IList<Match>> Rounds { get; }
 
         private SeasonAllMatchesGenerator generator;
@@ -25,17 +25,28 @@ namespace FootballLeagueLib.Season
             Rounds = generator.SortMatchesIntoRound(generator.GenerateMatches(db.Clubs.ToList()));
         }
 
-        public void PlayMatch(Match match)
+        public void PlayRound()
         {
-            if (!match.IsPlayed)
-            {
-                MatchManager matchManager = new MatchManager(match);
-                matchManager.StartMatch();
-            }
-        }
+            using var db = new FootballLeagueContext();
+            int round = 1, i = 0;
+            var matches = db.Matches.OrderBy(m => m.Round).ToList();
 
-        public void PlayRound(int round)
-        {
+            while(matches[i].IsPlayed)
+            {
+                round = (int)matches[i].Round;
+                i++;
+            }
+
+            Rounds[round] = db.Matches.Select(m => m).Where(m => m.Round == round).ToList();
+
+            while(Rounds[round].All(m => m.IsPlayed))
+            {
+                ActualRound++;
+                round++;
+            }
+
+            Rounds[round] = db.Matches.Select(m => m).Where(m => m.Round == round).ToList();
+
             foreach (var m in Rounds[round])
             {
                 if (!m.IsPlayed)

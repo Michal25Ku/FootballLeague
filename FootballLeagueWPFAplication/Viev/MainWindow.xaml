@@ -14,7 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Rectangle Fill="#039331"/>
@@ -43,7 +43,8 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding MatchesContent}" Visibility="{Binding MatchesVisibility}">
+        <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding MatchesContent}" Visibility="{Binding MatchesVisibility}"
+                  MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Viev:MatchContent />

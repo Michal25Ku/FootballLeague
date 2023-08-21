@@ -27,7 +27,6 @@ namespace FootballLeagueWPFAplication.VievModel
 
         public MainVievModel()
         {
-            //using var db = new FootballLeagueContext();
             _seasonManager = new SeasonManager();
 
             _tableData = new TableData();
@@ -47,23 +46,6 @@ namespace FootballLeagueWPFAplication.VievModel
 
             TableVisibility = Visibility.Visible;
             MatchesVisibility = Visibility.Collapsed;
-
-            //var clubs = db.Clubs.ToList();
-
-            //for (int i = 0; i < clubs.Count(); i++)
-            //{
-            //    var c = db.Clubs.FirstOrDefault(c => c.IdClub == clubs[i].IdClub);
-
-            //    foreach (var p in db.Players)
-            //    {
-            //        if (c.IdClub == p.ClubId)
-            //        {
-            //            c.Players.Add(p);
-            //        }
-            //    }
-            //}
-
-            //db.SaveChanges();
         }
 
         private List<MatchContentVievModel> _matchesContent;

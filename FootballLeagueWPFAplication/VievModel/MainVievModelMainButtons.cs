@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FootballLeagueLib.Season;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace FootballLeagueWPFAplication.VievModel
 
         private void PlayRound(object obj)
         {
-            _seasonManager.PlayRound(_seasonManager.ActualRound);
+            _seasonManager.PlayRound();
 
             TableStatistic = _tableData.UpdateTable();
 
@@ -41,6 +42,8 @@ namespace FootballLeagueWPFAplication.VievModel
         {
             TableVisibility = Visibility.Visible;
             MatchesVisibility = Visibility.Collapsed;
+
+            TableStatistic = _tableData.UpdateTable();
         }
     }
 }

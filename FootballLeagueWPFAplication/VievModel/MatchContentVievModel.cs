@@ -1,6 +1,8 @@
 ﻿using FootballLeagueLib.DataForWPF;
 using FootballLeagueLib.Entities;
+using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
+using FootballLeagueWPFAplication.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,17 +10,22 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace FootballLeagueWPFAplication.VievModel
 {
     public class MatchContentVievModel : INotifyPropertyChanged
     {
         private ScorerListForMatch _scoredListForMatch;
+        private SeasonPlayMatch _seasonPlayMatch;
 
         public MatchContentVievModel(Match match)
         {
             _scoredListForMatch = new ScorerListForMatch();
+            _seasonPlayMatch = new SeasonPlayMatch();
             MatchData = match;
+
+            PlayMatchCommand = new RelayCommand(PlayMatch);
         }
 
         private Match _matchData;
@@ -54,6 +61,14 @@ namespace FootballLeagueWPFAplication.VievModel
                 _awayTeamScorerList = value;
                 OnPropertyChanged();
             }
+        }
+
+        public ICommand PlayMatchCommand { get; set; }
+        private void PlayMatch(object obj)
+        {
+            using var db = new FootballLeagueContext();
+            _seasonPlayMatch.PlayMatch(MatchData);
+            MatchData = db.Matches.FirstOrDefault(m => m.IdMatch == MatchData.IdMatch);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

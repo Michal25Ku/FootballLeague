@@ -8,6 +8,6 @@ namespace FootballLeagueLib.Interfaces
 {
     public interface IPlayRound
     {
-        void PlayRound(int round);
+        void PlayRound();
     }
 }

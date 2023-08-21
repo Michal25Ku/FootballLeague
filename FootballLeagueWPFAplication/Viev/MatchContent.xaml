@@ -13,7 +13,13 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -35,13 +41,13 @@
             </Grid.ColumnDefinitions>
 
             <Grid>
-                <TextBlock Text="{Binding HomeTeamScorerList}" FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding HomeTeamScorerList}" Margin="0,15,0,0" FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Left"/>
             </Grid>
-
-
             <Grid Grid.Column="1">
-                <TextBlock Text="{Binding AwayTeamScorerList}" FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding AwayTeamScorerList}" Margin="0,15,0,0" FontSize="15" Foreground="DarkGray" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Right"/>
             </Grid>
         </Grid>
+        <Separator Grid.Row="2" Background="Blue" Grid.ColumnSpan="2"/>
+        <Button Grid.Column="1" Grid.RowSpan="2" Width="auto" Content="Play" VerticalAlignment="Center" Command="{Binding PlayMatchCommand}"/>
     </Grid>
 </UserControl>
