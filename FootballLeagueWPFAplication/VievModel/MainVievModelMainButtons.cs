@@ -14,6 +14,7 @@ namespace FootballLeagueWPFAplication.VievModel
         public ICommand PlayRoundCommand { get; set; }
         public ICommand ShowMatchesCommand { get; set; }
         public ICommand ShowTableCommand { get; set; }
+        public ICommand ShowStatisticCommand { get; set; }
 
         private void PlayRound(object obj)
         {
@@ -31,6 +32,7 @@ namespace FootballLeagueWPFAplication.VievModel
         {
             TableVisibility = Visibility.Collapsed;
             MatchesVisibility = Visibility.Visible;
+            StatisticVisibility = Visibility.Collapsed;
 
             foreach (var m in _matchesData.UpdateMatchesList())
             {
@@ -42,8 +44,18 @@ namespace FootballLeagueWPFAplication.VievModel
         {
             TableVisibility = Visibility.Visible;
             MatchesVisibility = Visibility.Collapsed;
+            StatisticVisibility = Visibility.Collapsed;
 
             TableStatistic = _tableData.UpdateTable();
+        }
+
+        private void ShowStatistic(object obj)
+        {
+            TableVisibility = Visibility.Collapsed;
+            MatchesVisibility = Visibility.Collapsed;
+            StatisticVisibility = Visibility.Visible;
+
+            TopScorerList = _topScorer.TopScorers();
         }
     }
 }

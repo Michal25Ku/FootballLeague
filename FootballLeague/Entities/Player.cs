@@ -12,7 +12,7 @@ namespace FootballLeagueLib.Entities
         public string Pesel { get; set; }
         public int ShirtNumber { get; set; }
         public string Position { get; set; }
-        public int? GoalsScored { get; set; }
+        public int GoalsScored { get; set; }
 
         public int ClubId { get; set; }
         public Club Club { get; set; }

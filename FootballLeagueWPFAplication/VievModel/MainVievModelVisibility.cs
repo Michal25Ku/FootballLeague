@@ -30,5 +30,16 @@ namespace FootballLeagueWPFAplication.VievModel
                 OnPropertyChanged();
             }
         }
+
+        private Visibility _statisticVisibility;
+        public Visibility StatisticVisibility
+        {
+            get { return _statisticVisibility; }
+            set
+            {
+                _statisticVisibility = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

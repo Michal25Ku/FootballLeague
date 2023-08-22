@@ -24,6 +24,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Button x:Name="Table" Content="Table" Command="{Binding ShowTableCommand}"/>
@@ -31,10 +32,11 @@
             <Button Grid.Column="1" Content="Play Round" Command="{Binding PlayRoundCommand}"/>
 
             <Button Grid.Column="2" Content="Matches" Command="{Binding ShowMatchesCommand}"/>
+            
+            <Button Grid.Column="3" Content="Statistic" Command="{Binding ShowStatisticCommand}"/>
         </Grid>
 
         <Viev:ClubStaticticHeader Grid.Row="1" HorizontalAlignment="Center" Margin="0,10,0,0" Visibility="{Binding TableVisibility}"/>
-
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding TableStatistic}" Visibility="{Binding TableVisibility}">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -51,5 +53,16 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <Viev:TopScorerStatisticHeader Grid.Row="1" HorizontalAlignment="Center" Margin="0,10,0,0" Visibility="{Binding StatisticVisibility}"/>
+        <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding TopScorerList}" Visibility="{Binding StatisticVisibility}"
+                  MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Viev:PlayerScorerForTopList />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </Grid>
 </Window>

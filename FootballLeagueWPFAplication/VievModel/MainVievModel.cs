@@ -22,6 +22,7 @@ namespace FootballLeagueWPFAplication.VievModel
     {
         private TableData _tableData;
         private MatchesData _matchesData;
+        private TopScorer _topScorer;
 
         private SeasonManager _seasonManager;
 
@@ -35,6 +36,8 @@ namespace FootballLeagueWPFAplication.VievModel
             _matchesData = new MatchesData();
             MatchesContent = new List<MatchContentVievModel>();
 
+            _topScorer = new TopScorer();
+
             foreach (var m in _matchesData.MatchesList)
             {
                 MatchesContent.Add(new MatchContentVievModel(m));
@@ -43,9 +46,11 @@ namespace FootballLeagueWPFAplication.VievModel
             PlayRoundCommand = new RelayCommand(PlayRound);
             ShowMatchesCommand = new RelayCommand(ShowMatches);
             ShowTableCommand = new RelayCommand(ShowTable);
+            ShowStatisticCommand = new RelayCommand(ShowStatistic);
 
             TableVisibility = Visibility.Visible;
             MatchesVisibility = Visibility.Collapsed;
+            StatisticVisibility = Visibility.Collapsed;
         }
 
         private List<MatchContentVievModel> _matchesContent;
