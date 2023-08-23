@@ -24,26 +24,32 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
-                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Button x:Name="Table" Content="Table" Command="{Binding ShowTableCommand}"/>
 
-            <Button Grid.Column="1" Content="Play Round" Command="{Binding PlayRoundCommand}"/>
-
-            <Button Grid.Column="2" Content="Matches" Command="{Binding ShowMatchesCommand}"/>
+            <Button Grid.Column="1" Content="Matches" Command="{Binding ShowMatchesCommand}"/>
             
-            <Button Grid.Column="3" Content="Statistic" Command="{Binding ShowStatisticCommand}"/>
+            <Button Grid.Column="2" Content="Statistic" Command="{Binding ShowStatisticCommand}"/>
         </Grid>
 
         <Viev:ClubStaticticHeader Grid.Row="1" HorizontalAlignment="Center" Margin="0,10,0,0" Visibility="{Binding TableVisibility}"/>
-        <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding TableStatistic}" Visibility="{Binding TableVisibility}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Viev:ClubStatistic />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Grid Grid.Row="2"  Visibility="{Binding TableVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding TableStatistic}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Viev:ClubStatistic />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Grid.Row="1" Content="Play Round" Command="{Binding PlayRoundCommand}" VerticalAlignment="Top"/>
+        </Grid>
 
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding MatchesContent}" Visibility="{Binding MatchesVisibility}"
                   MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">

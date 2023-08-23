@@ -42,7 +42,8 @@ namespace FootballLeagueLib.Table
 
             foreach(var c in query)
             {
-                Table.Add(new Tuple<int, Club, int>(rank, c, 0));
+                int matchCount = db.Matches.Select(m => m).Where(m => m.IsPlayed).Where(club => club.HomeTeamId == c.IdClub || club.AwayTeamId == c.IdClub).Count();
+                Table.Add(new Tuple<int, Club, int>(rank, c, matchCount));
                 rank++;
             }
 
