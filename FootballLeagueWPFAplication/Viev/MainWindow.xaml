@@ -33,26 +33,114 @@
             <Button Grid.Column="2" Content="Statistic" Command="{Binding ShowStatisticCommand}"/>
         </Grid>
 
-        <Viev:ClubStaticticHeader Grid.Row="1" HorizontalAlignment="Center" Margin="0,10,0,0" Visibility="{Binding TableVisibility}"/>
         <Grid Grid.Row="2"  Visibility="{Binding TableVisibility}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <ListView BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding TableStatistic}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Viev:ClubStatistic />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+            <ListView BorderThickness="0" 
+                      HorizontalAlignment="Center" 
+                      Margin="0,0,0,0" 
+                      ItemsSource="{Binding TableStatistic}" 
+                      Visibility="{Binding TableVisibility}" 
+                      SelectionMode="Single"
+                      MinWidth="600">
+                <!--<ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Handler="{Binding ShowClubMatchesCommand}" />
+                    </Style>
+                </ListView.ItemContainerStyle>-->
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn HeaderContainerStyle="{StaticResource ClubStatisticHeaderRanking}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item1}" Style="{StaticResource ClubDataForTable}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        
+                        <GridViewColumn Header="Club name" HeaderContainerStyle="{StaticResource ClubStatisticHeaderClubName}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item2.ClubName}" Style="{StaticResource ClubDataForTableClubName}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="PM" HeaderContainerStyle="{StaticResource ClubStatisticHeader}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item3}" Style="{StaticResource ClubDataForTable}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="W" HeaderContainerStyle="{StaticResource ClubStatisticHeader}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item2.Wins}" Style="{StaticResource ClubDataForTable}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="D" HeaderContainerStyle="{StaticResource ClubStatisticHeader}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item2.Draws}" Style="{StaticResource ClubDataForTable}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="F" HeaderContainerStyle="{StaticResource ClubStatisticHeader}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item2.Failures}" Style="{StaticResource ClubDataForTable}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Pt" HeaderContainerStyle="{StaticResource ClubStatisticHeaderBold}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item2.Points}" Style="{StaticResource ClubDataForTableBold}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="GS" HeaderContainerStyle="{StaticResource ClubStatisticHeader}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item2.GoalsScored}" Style="{StaticResource ClubDataForTable}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="GC" HeaderContainerStyle="{StaticResource ClubStatisticHeader}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item2.GoalsConceded}" Style="{StaticResource ClubDataForTable}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="GB" HeaderContainerStyle="{StaticResource ClubStatisticHeaderBold}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item2.GoalBalance}" Style="{StaticResource ClubDataForTableBold}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
             </ListView>
 
             <Button Grid.Row="1" Content="Play Round" Command="{Binding PlayRoundCommand}" VerticalAlignment="Top"/>
         </Grid>
 
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding MatchesContent}" Visibility="{Binding MatchesVisibility}"
-                  MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                  MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Viev:MatchContent />
@@ -62,7 +150,7 @@
 
         <Viev:TopScorerStatisticHeader Grid.Row="1" HorizontalAlignment="Center" Margin="0,10,0,0" Visibility="{Binding StatisticVisibility}"/>
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding TopScorerList}" Visibility="{Binding StatisticVisibility}"
-                  MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                  MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Viev:PlayerScorerForTopList />

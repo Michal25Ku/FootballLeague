@@ -17,7 +17,7 @@ namespace FootballLeagueLib.DataForWPF
         {
             using var db = new FootballLeagueContext();
 
-            MatchesList = CreateMatchesList(db.Matches.ToList()); ;
+            MatchesList = CreateMatchesList(db.Matches.ToList());
         }
 
         public List<Match> CreateMatchesList(List<Match> matches)

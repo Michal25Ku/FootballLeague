@@ -47,6 +47,7 @@ namespace FootballLeagueWPFAplication.VievModel
             ShowMatchesCommand = new RelayCommand(ShowMatches);
             ShowTableCommand = new RelayCommand(ShowTable);
             ShowStatisticCommand = new RelayCommand(ShowStatistic);
+            ShowClubMatchesCommand = new RelayCommand(ShowClubMatches);
 
             TableVisibility = Visibility.Visible;
             MatchesVisibility = Visibility.Collapsed;
