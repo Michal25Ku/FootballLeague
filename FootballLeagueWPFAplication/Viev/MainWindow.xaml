@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FootballLeagueWPFAplication"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Viev="clr-namespace:FootballLeagueWPFAplication.Viev" 
         xmlns:vievmodel="clr-namespace:FootballLeagueWPFAplication.VievModel" 
         d:DataContext="{d:DesignInstance Type=vievmodel:MainVievModel}"
@@ -26,7 +27,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Table" Content="Table" Command="{Binding ShowTableCommand}"/>
+            <Button Content="Table" Command="{Binding ShowTableCommand}"/>
 
             <Button Grid.Column="1" Content="Matches" Command="{Binding ShowMatchesCommand}"/>
             
@@ -45,12 +46,9 @@
                       ItemsSource="{Binding TableStatistic}" 
                       Visibility="{Binding TableVisibility}" 
                       SelectionMode="Single"
-                      MinWidth="600">
-                <!--<ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <EventSetter Handler="{Binding ShowClubMatchesCommand}" />
-                    </Style>
-                </ListView.ItemContainerStyle>-->
+                      MinWidth="600"
+                      SelectedItem="{Binding SelectedClubStatistic}"
+                      SelectionChanged="ClubStatisticListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn HeaderContainerStyle="{StaticResource ClubStatisticHeaderRanking}">
@@ -60,7 +58,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        
+
                         <GridViewColumn Header="Club name" HeaderContainerStyle="{StaticResource ClubStatisticHeaderClubName}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

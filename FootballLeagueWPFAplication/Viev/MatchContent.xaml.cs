@@ -24,7 +24,6 @@ namespace FootballLeagueWPFAplication.Viev
         public MatchContent()
         {
             InitializeComponent();
-            //DataContext = new MatchContentVievModel();
         }
     }
 }

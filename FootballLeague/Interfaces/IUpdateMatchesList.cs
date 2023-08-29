@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace FootballLeagueLib.Interfaces
 {
-    public interface ICreateListMatchesForOneTeam
+    public interface IUpdateMatchesList
     {
-        List<Match> CreateMatchesList(List<Match> matches, int clubId);
+        List<Match> UpdateMatchesList();
     }
 }

@@ -16,10 +16,14 @@ namespace TestConsoleAplication
 
             SeasonManager seaon1 = new SeasonManager();
 
-            foreach(var r in seaon1.Rounds)
+            Club club = db.Clubs.FirstOrDefault(c => c.IdClub == 1);
+            List<Match> MatchList = new List<Match>();
+            MatchList = db.Matches.Select(m => m).Where(m => m.HomeTeamId == club.IdClub).OrderBy(m => m.Round).ToList();
+
+
+            foreach (var m in MatchList)
             {
-                foreach(var m in r.Value)
-                Console.WriteLine(m.HomeTeam.ClubName + " - " + m.AwayTeam.ClubName);
+                Console.WriteLine(m.MatchName);
             }
 
         }

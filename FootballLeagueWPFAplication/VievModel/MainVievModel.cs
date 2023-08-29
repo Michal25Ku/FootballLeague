@@ -34,14 +34,8 @@ namespace FootballLeagueWPFAplication.VievModel
             TableStatistic = _tableData.Table;
 
             _matchesData = new MatchesData();
-            MatchesContent = new List<MatchContentVievModel>();
 
             _topScorer = new TopScorer();
-
-            foreach (var m in _matchesData.MatchesList)
-            {
-                MatchesContent.Add(new MatchContentVievModel(m));
-            }
 
             PlayRoundCommand = new RelayCommand(PlayRound);
             ShowMatchesCommand = new RelayCommand(ShowMatches);
@@ -61,6 +55,28 @@ namespace FootballLeagueWPFAplication.VievModel
             set
             {
                 _matchesContent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Tuple<int, Club, int> _selectedClubStatistic;
+        public Tuple<int, Club, int> SelectedClubStatistic
+        {
+            get { return _selectedClubStatistic; }
+            set
+            {
+                _selectedClubStatistic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<Tuple<int, Club, int>> _tableStatistic;
+        public List<Tuple<int, Club, int>> TableStatistic
+        {
+            get { return _tableStatistic; }
+            set
+            {
+                _tableStatistic = value;
                 OnPropertyChanged();
             }
         }

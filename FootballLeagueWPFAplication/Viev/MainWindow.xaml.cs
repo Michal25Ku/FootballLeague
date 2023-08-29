@@ -60,5 +60,13 @@ namespace FootballLeagueWPFAplication
 
             db.SaveChanges();
         }
+
+        private void ClubStatisticListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is MainVievModel viewModel)
+            {
+                viewModel.ShowClubMatchesCommand.Execute(null);
+            }
+        }
     }
 }

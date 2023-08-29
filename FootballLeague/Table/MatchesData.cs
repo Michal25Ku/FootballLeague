@@ -9,7 +9,7 @@ using FootballLeagueLib.PlayMatch;
 
 namespace FootballLeagueLib.DataForWPF
 {
-    public class MatchesData : ICreateAndUpdateDataMatch
+    public class MatchesData : IUpdateMatchesList, IUpdateListMatchesForOneTeam
     {
         public List<Match> MatchesList { get; private set; }
 
@@ -17,20 +17,21 @@ namespace FootballLeagueLib.DataForWPF
         {
             using var db = new FootballLeagueContext();
 
-            MatchesList = CreateMatchesList(db.Matches.ToList());
-        }
-
-        public List<Match> CreateMatchesList(List<Match> matches)
-        {
-            MatchesList = matches.OrderBy(m => m.Round).ToList();
-
-            return MatchesList;
+            MatchesList = UpdateMatchesList();
         }
 
         public List<Match> UpdateMatchesList()
         {
             using var db = new FootballLeagueContext();
             MatchesList = db.Matches.OrderBy(m => m.Round).ToList();
+
+            return MatchesList;
+        }
+
+        public List<Match> UpdateMatchesForOneClub(Club club)
+        {
+            using var db = new FootballLeagueContext();
+            MatchesList = db.Matches.Select(m => m).Where(m => m.HomeTeamId == club.IdClub || m.AwayTeamId == club.IdClub).OrderBy(m => m.Round).ToList();
 
             return MatchesList;
         }
