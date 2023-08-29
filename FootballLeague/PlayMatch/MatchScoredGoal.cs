@@ -9,7 +9,7 @@ namespace FootballLeagueLib.PlayMatch
 {
     public class MatchScoredGoal
     {
-        private MatchManager _matchManage;
+        private readonly MatchManager _matchManage;
 
         public MatchScoredGoal(MatchManager matchManager)
         {
@@ -45,7 +45,8 @@ namespace FootballLeagueLib.PlayMatch
             };
 
             db.Goals.Add(newGoal);
-            // when a player scores a goal, the match, player and club data are updated
+
+            // when a player scores a goal, the match, player, and club data are updated
             UpdateMatchAfterGoal(newGoal);
             UpdatePlayerCount(idPlayer);
             UpdateClubGoals(idClub);
@@ -86,7 +87,6 @@ namespace FootballLeagueLib.PlayMatch
                 return false;
 
             playerToUpdate.GoalsScored += 1;
-            //playerToUpdate.Goals.Add(goal);
 
             return SaveChange(db);
         }

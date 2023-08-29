@@ -12,30 +12,31 @@ namespace FootballLeagueLib.PlayMatch
     public class MatchManager
     {
         public const int MATCH_TIME = 90;
-
-        public int TimeInMatch { get; private set; }
-
         public Match PlayedMatch { get; private set; }
 
-        private readonly IGetPlayers MatchPlayers;
-        private readonly MatchScoredGoal MatchScoredGoal;
-        private readonly IEndMatch<Match> EndMatch;
+        // TODO 
+        // need to create separate maybe a progress bar in the menu. we could change this value if we want the match to be played faster or slower
+        public int SimulationTime { get; }
 
-        public List<Player> PlayersHomeTeam { get; private set; }
-        public List<Player> PlayersAwayTeam { get; private set; }
+        private readonly IGetPlayers PlayersInMatch;
+        private readonly MatchScoredGoal ScoredGoalManager;
+        private readonly IEndMatch<Match> EndingMatch;
+
+        public List<Player> HomeTeamPlayers { get; private set; }
+        public List<Player> AwayTeamPlayers { get; private set; }
 
         public MatchManager(Match playedMatch)
         {
-            MatchPlayers = new MatchPlayers();
-            MatchScoredGoal = new MatchScoredGoal(this);
-            EndMatch = new MatchEnd();
+            PlayersInMatch = new MatchPlayers();
+            ScoredGoalManager = new MatchScoredGoal(this);
+            EndingMatch = new MatchEnd();
 
             PlayedMatch = playedMatch;
 
-            PlayersHomeTeam = MatchPlayers.HomeTeamPlayers(playedMatch.HomeTeamId);
-            PlayersAwayTeam = MatchPlayers.AwayTeamPlayers(playedMatch.AwayTeamId);
-            
-            TimeInMatch = 0;
+            HomeTeamPlayers = PlayersInMatch.HomeTeamPlayers(playedMatch.HomeTeamId);
+            AwayTeamPlayers = PlayersInMatch.AwayTeamPlayers(playedMatch.AwayTeamId);
+
+            SimulationTime = 0;
         }
 
         public void StartMatch()
@@ -49,23 +50,24 @@ namespace FootballLeagueLib.PlayMatch
                     int teamShoot = rand.Next(2);
                     if (teamShoot == 0)
                     {
-                        int playerShoot = rand.Next(PlayersHomeTeam.Count);
-                        MatchScoredGoal.ScoreGoal(i, PlayedMatch.HomeTeamId, PlayersHomeTeam[playerShoot].IdPlayer);
+                        int playerShoot = rand.Next(HomeTeamPlayers.Count);
+                        ScoredGoalManager.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer);
                     }
                     else
                     {
-                        int playerShoot = rand.Next(PlayersHomeTeam.Count);
-                        MatchScoredGoal.ScoreGoal(i, PlayedMatch.AwayTeamId, PlayersAwayTeam[playerShoot].IdPlayer);
+                        int playerShoot = rand.Next(AwayTeamPlayers.Count);
+                        ScoredGoalManager.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer);
                     }
                 }
 
                 using var db = new FootballLeagueContext();
                 PlayedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch);
 
-                //Thread.Sleep(5000 / SimulationSpeedMultiplier);
+                // 10 seconds
+                // Thread.Sleep(5000 / 100); 
             }
 
-            EndMatch.UpdateAfterMatchIsOver(PlayedMatch);
+            EndingMatch.UpdateAfterMatchIsOver(PlayedMatch);
         }
     }
 }

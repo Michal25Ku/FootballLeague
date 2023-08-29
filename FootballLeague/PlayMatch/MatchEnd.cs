@@ -17,6 +17,7 @@ namespace FootballLeagueLib.PlayMatch
             if (match.GoalsHomeTeam > match.GoalsAwayTeam)
             {
                 var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.HomeTeamId);
+
                 clubToUpdate.Wins += 1;
                 clubToUpdate.Points += 3;
 
@@ -26,6 +27,7 @@ namespace FootballLeagueLib.PlayMatch
             else if (match.GoalsHomeTeam == match.GoalsAwayTeam) // draw
             {
                 var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.HomeTeamId);
+
                 clubToUpdate.Draws += 1;
                 clubToUpdate.Points += 1;
 
@@ -36,6 +38,7 @@ namespace FootballLeagueLib.PlayMatch
             else if (match.GoalsHomeTeam < match.GoalsAwayTeam)
             {
                 var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.HomeTeamId);
+
                 clubToUpdate.Failures += 1;
 
                 clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.AwayTeamId);
