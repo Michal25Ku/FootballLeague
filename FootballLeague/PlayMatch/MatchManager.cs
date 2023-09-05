@@ -12,6 +12,7 @@ namespace FootballLeagueLib.PlayMatch
     public class MatchManager
     {
         public const int MATCH_TIME = 90;
+        public int TimeInMatch { get; private set; }
         public Match PlayedMatch { get; private set; }
 
         // TODO 
@@ -20,7 +21,7 @@ namespace FootballLeagueLib.PlayMatch
 
         private readonly IGetPlayers PlayersInMatch;
         private readonly MatchScoredGoal ScoredGoalManager;
-        private readonly IEndMatch<Match> EndingMatch;
+        private readonly MatchEnd EndingMatch;
 
         public List<Player> HomeTeamPlayers { get; private set; }
         public List<Player> AwayTeamPlayers { get; private set; }
@@ -37,9 +38,10 @@ namespace FootballLeagueLib.PlayMatch
             AwayTeamPlayers = PlayersInMatch.AwayTeamPlayers(playedMatch.AwayTeamId);
 
             SimulationTime = 0;
+            TimeInMatch = 0;
         }
 
-        public void StartMatch()
+        public async Task StartMatch()
         {
             var rand = new Random();
 
@@ -51,23 +53,23 @@ namespace FootballLeagueLib.PlayMatch
                     if (teamShoot == 0)
                     {
                         int playerShoot = rand.Next(HomeTeamPlayers.Count);
-                        ScoredGoalManager.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer);
+                        await ScoredGoalManager.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer);
                     }
                     else
                     {
                         int playerShoot = rand.Next(AwayTeamPlayers.Count);
-                        ScoredGoalManager.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer);
+                        await ScoredGoalManager.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer);
                     }
                 }
 
                 using var db = new FootballLeagueContext();
                 PlayedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch);
-
+                TimeInMatch = i;
                 // 10 seconds
-                // Thread.Sleep(5000 / 100); 
+                await Task.Run(() => Thread.Sleep(5000 / 100)); 
             }
 
-            EndingMatch.UpdateAfterMatchIsOver(PlayedMatch);
+            await Task.Run(() => EndingMatch.UpdateAfterMatchIsOver(PlayedMatch));
         }
     }
 }

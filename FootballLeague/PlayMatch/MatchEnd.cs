@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FootballLeagueLib.PlayMatch
 {
-    public class MatchEnd : IEndMatch<Match>
+    public class MatchEnd //: IEndMatch<Match>
     {
         public bool UpdateAfterMatchIsOver(Match match)
         {

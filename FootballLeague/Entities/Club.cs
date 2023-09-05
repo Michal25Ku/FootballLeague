@@ -17,9 +17,9 @@ namespace FootballLeagueLib.Entities
         public int? Failures { get; set; }
         public int? Points { get; set; }
 
-        public virtual ICollection<Match> MatchesHomeTeam { get; set; } = new List<Match>();
-        public virtual ICollection<Match> MatchesAwayTeam { get; set; } = new List<Match>();
+        public ICollection<Match> MatchesHomeTeam { get; set; } = new List<Match>();
+        public ICollection<Match> MatchesAwayTeam { get; set; } = new List<Match>();
 
-        public virtual ICollection<Player> Players { get; set; } = new List<Player>();
+        public ICollection<Player> Players { get; set; } = new List<Player>();
     }
 }

@@ -16,7 +16,7 @@ namespace FootballLeagueLib.PlayMatch
             _matchManage = matchManager;
         }
 
-        public bool ScoreGoal(int minuteOfMatch, int idClub, int idPlayer)
+        public async Task<bool> ScoreGoal(int minuteOfMatch, int idClub, int idPlayer)
         {
             // Goal can be scored between 1 and 90 minutes
             if (minuteOfMatch < 1 || minuteOfMatch > 90)
@@ -47,9 +47,9 @@ namespace FootballLeagueLib.PlayMatch
             db.Goals.Add(newGoal);
 
             // when a player scores a goal, the match, player, and club data are updated
-            UpdateMatchAfterGoal(newGoal);
-            UpdatePlayerCount(idPlayer);
-            UpdateClubGoals(idClub);
+            await Task.Run(() => UpdateMatchAfterGoal(newGoal));
+            await Task.Run(() => UpdatePlayerCount(idPlayer));
+            await Task.Run(() => UpdateClubGoals(idClub));
 
             return SaveChange(db);
         }

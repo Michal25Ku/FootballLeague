@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using FootballLeagueLib.DataForWPF;
 using FootballLeagueLib.Entities;
 using FootballLeagueLib.Season;
 using FootballLeagueWPFAplication.VievModel;
@@ -29,10 +29,11 @@ namespace FootballLeagueWPFAplication
         {
             InitializeComponent();
             ResetDatabase(); 
+            AddConnectionsInDatabase(); 
             DataContext = new MainVievModel();
         }
 
-        void ResetDatabase()
+        bool ResetDatabase()
         {
             using var db = new FootballLeagueContext();
             db.Goals.RemoveRange(db.Goals.Select(g => g));
@@ -58,7 +59,24 @@ namespace FootballLeagueWPFAplication
                 player.Goals.Clear();
             }
 
-            db.SaveChanges();
+            int result = db.SaveChanges();
+            return result == 1;
+        }
+
+        bool AddConnectionsInDatabase()
+        {
+            using var db = new FootballLeagueContext();
+
+            var clubsWithPlayers = db.Clubs.Include(c => c.Players).ToList();
+
+            foreach (var player in db.Players)
+            {
+                var club = clubsWithPlayers.FirstOrDefault(c => c.IdClub == player.ClubId);
+                club?.Players.Add(player);
+            }
+
+            int result = db.SaveChanges();
+            return result == 1;
         }
 
         private void ClubStatisticListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -7,13 +7,13 @@ using FootballLeagueLib.Interfaces;
 using FootballLeagueLib.Entities;
 using FootballLeagueLib.PlayMatch;
 
-namespace FootballLeagueLib.DataForWPF
+namespace FootballLeagueLib.Table
 {
     public class MatchesData : IUpdateMatchesList, IUpdateListMatchesForOneTeam
     {
         public List<Match> MatchesList { get; private set; }
 
-        public MatchesData() 
+        public MatchesData()
         {
             using var db = new FootballLeagueContext();
 

@@ -1,5 +1,4 @@
-﻿using FootballLeagueLib.DataForWPF;
-using FootballLeagueLib.Entities;
+﻿using FootballLeagueLib.Entities;
 using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
 using FootballLeagueWPFAplication.Commands;

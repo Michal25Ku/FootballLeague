@@ -1,5 +1,4 @@
-﻿using FootballLeagueLib.DataForWPF;
-using FootballLeagueLib.Entities;
+﻿using FootballLeagueLib.Entities;
 using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
 using FootballLeagueWPFAplication.Commands;
@@ -59,6 +58,18 @@ namespace FootballLeagueWPFAplication.VievModel
             set
             {
                 _awayTeamScorerList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _timeInMatchBar;
+        public int TimeInMatchBar
+        {
+            get { return _timeInMatchBar; }
+            set
+            {
+                value = _seasonPlayMatch.MatchManager.TimeInMatch;
+                _timeInMatchBar = value;
                 OnPropertyChanged();
             }
         }
