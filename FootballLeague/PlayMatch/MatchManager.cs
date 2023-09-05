@@ -6,11 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FootballLeagueLib.Interfaces;
+using System.Text.RegularExpressions;
+using Match = FootballLeagueLib.Entities.Match;
+using FootballLeagueLib.Table;
+using FootballLeagueLib.Season;
 
 namespace FootballLeagueLib.PlayMatch
 {
+    public delegate void GoalIsScoredHandler();
     public class MatchManager
     {
+        public GoalIsScoredHandler OnMatchesChange = null;
+
         public const int MATCH_TIME = 90;
         public int TimeInMatch { get; private set; }
         public Match PlayedMatch { get; private set; }
@@ -44,6 +51,10 @@ namespace FootballLeagueLib.PlayMatch
         public async Task StartMatch()
         {
             var rand = new Random();
+            using var db = new FootballLeagueContext();
+
+            db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch).IsPlayed = true;
+            db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch).Result = PlayedMatch.GoalsHomeTeam + " - " + PlayedMatch.GoalsAwayTeam;
 
             for (int i = 1; i <= MATCH_TIME; i++)
             {
@@ -54,22 +65,25 @@ namespace FootballLeagueLib.PlayMatch
                     {
                         int playerShoot = rand.Next(HomeTeamPlayers.Count);
                         await ScoredGoalManager.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer);
+                        //OnMatchesChange?.Invoke();
                     }
                     else
                     {
                         int playerShoot = rand.Next(AwayTeamPlayers.Count);
                         await ScoredGoalManager.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer);
+                        //OnMatchesChange?.Invoke();
                     }
                 }
 
-                using var db = new FootballLeagueContext();
-                PlayedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch);
                 TimeInMatch = i;
+                db.SaveChanges();
+                PlayedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch);
+
                 // 10 seconds
-                await Task.Run(() => Thread.Sleep(5000 / 100)); 
+                await Task.Run(() => Thread.Sleep(5000 / 100));
             }
 
-            await Task.Run(() => EndingMatch.UpdateAfterMatchIsOver(PlayedMatch));
+            EndingMatch.UpdateAfterMatchIsOver(PlayedMatch);
         }
     }
 }

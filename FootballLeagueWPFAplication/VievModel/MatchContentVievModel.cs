@@ -1,4 +1,5 @@
 ﻿using FootballLeagueLib.Entities;
+using FootballLeagueLib.PlayMatch;
 using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
 using FootballLeagueWPFAplication.Commands;
@@ -15,18 +16,37 @@ namespace FootballLeagueWPFAplication.VievModel
 {
     public class MatchContentVievModel : INotifyPropertyChanged
     {
+        public event GoalIsScoredHandler MatchesChanged = null;
+
         private ScorerListForMatch _scoredListForMatch;
-        private SeasonPlayMatch _seasonPlayMatch;
 
         public MatchContentVievModel(Match match)
         {
             _scoredListForMatch = new ScorerListForMatch();
             _seasonPlayMatch = new SeasonPlayMatch();
             MatchData = match;
+            //this.MatchesChanged += _seasonPlayMatch.MatchManager.OnMatchesChange;
 
             PlayMatchCommand = new RelayCommand(PlayMatch);
         }
 
+        public void OnMatchesChange()
+        {
+            using var db = new FootballLeagueContext();
+            MatchData = db.Matches.FirstOrDefault(m => m.IdMatch == MatchData.IdMatch);
+        }
+
+        private SeasonPlayMatch _seasonPlayMatch;
+        public SeasonPlayMatch SeasonPlayMatch
+        {
+            get { return _seasonPlayMatch; }
+            set 
+            {
+                TimeInMatchBar = _seasonPlayMatch.MatchManager.TimeInMatch;
+                _seasonPlayMatch = value;
+                OnPropertyChanged();
+            }
+        }
         private Match _matchData;
         public Match MatchData
         {
@@ -68,7 +88,6 @@ namespace FootballLeagueWPFAplication.VievModel
             get { return _timeInMatchBar; }
             set
             {
-                value = _seasonPlayMatch.MatchManager.TimeInMatch;
                 _timeInMatchBar = value;
                 OnPropertyChanged();
             }

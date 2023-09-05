@@ -1,4 +1,5 @@
 ﻿using FootballLeagueLib.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,14 +52,14 @@ namespace FootballLeagueLib.PlayMatch
             await Task.Run(() => UpdatePlayerCount(idPlayer));
             await Task.Run(() => UpdateClubGoals(idClub));
 
-            return SaveChange(db);
+            return await Task.Run(() => SaveChange(db));
         }
 
-        bool UpdateMatchAfterGoal(Goal goal)
+        async Task<bool> UpdateMatchAfterGoal(Goal goal)
         {
             using var db = new FootballLeagueContext();
 
-            var matchToUpdate = db.Matches.FirstOrDefault(m => m.IdMatch == _matchManage.PlayedMatch.IdMatch);
+            var matchToUpdate = await db.Matches.FirstOrDefaultAsync(m => m.IdMatch == _matchManage.PlayedMatch.IdMatch);
 
             if (matchToUpdate is null)
                 return false;
@@ -74,30 +75,30 @@ namespace FootballLeagueLib.PlayMatch
 
             matchToUpdate.Result = matchToUpdate.GoalsHomeTeam + " - " + matchToUpdate.GoalsAwayTeam;
 
-            return SaveChange(db);
+            return await SaveChange(db);
         }
 
-        bool UpdatePlayerCount(int idPlayer)
+        async Task<bool> UpdatePlayerCount(int idPlayer)
         {
             using var db = new FootballLeagueContext();
 
-            var playerToUpdate = db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer);
+            var playerToUpdate = await db.Players.FirstOrDefaultAsync(p => p.IdPlayer == idPlayer);
 
             if (playerToUpdate is null)
                 return false;
 
             playerToUpdate.GoalsScored += 1;
 
-            return SaveChange(db);
+            return await SaveChange(db);
         }
 
-        bool UpdateClubGoals(int idClub)
+        async Task<bool> UpdateClubGoals(int idClub)
         {
             using var db = new FootballLeagueContext();
 
             if (idClub == _matchManage.PlayedMatch.HomeTeamId)
             {
-                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == _matchManage.PlayedMatch.HomeTeamId);
+                var clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == _matchManage.PlayedMatch.HomeTeamId);
                 clubToUpdate.GoalsScored += 1;
                 clubToUpdate.GoalBalance += 1;
 
@@ -107,7 +108,7 @@ namespace FootballLeagueLib.PlayMatch
             }
             else if (idClub == _matchManage.PlayedMatch.AwayTeamId)
             {
-                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == _matchManage.PlayedMatch.AwayTeamId);
+                var clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == _matchManage.PlayedMatch.AwayTeamId);
                 clubToUpdate.GoalsScored += 1;
                 clubToUpdate.GoalBalance += 1;
 
@@ -116,12 +117,12 @@ namespace FootballLeagueLib.PlayMatch
                 clubToUpdate.GoalBalance -= 1;
             }
 
-            return SaveChange(db);
+            return await SaveChange(db);
         }
 
-        static bool SaveChange(FootballLeagueContext db)
+        async Task<bool> SaveChange(FootballLeagueContext db)
         {
-            int result = db.SaveChanges();
+            int result = await db.SaveChangesAsync();
             return result == 1;
         }
     }

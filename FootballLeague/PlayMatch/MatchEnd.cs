@@ -13,41 +13,42 @@ namespace FootballLeagueLib.PlayMatch
         public bool UpdateAfterMatchIsOver(Match match)
         {
             using var db = new FootballLeagueContext();
+            Match playedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch);
 
-            if (match.GoalsHomeTeam > match.GoalsAwayTeam)
+            if (playedMatch.GoalsHomeTeam > playedMatch.GoalsAwayTeam)
             {
-                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.HomeTeamId);
+                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.HomeTeamId);
 
                 clubToUpdate.Wins += 1;
                 clubToUpdate.Points += 3;
 
-                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.AwayTeamId);
+                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.AwayTeamId);
                 clubToUpdate.Failures += 1;
             }
-            else if (match.GoalsHomeTeam == match.GoalsAwayTeam) // draw
+            else if (playedMatch.GoalsHomeTeam == playedMatch.GoalsAwayTeam) // draw
             {
-                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.HomeTeamId);
+                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.HomeTeamId);
 
                 clubToUpdate.Draws += 1;
                 clubToUpdate.Points += 1;
 
-                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.AwayTeamId);
+                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.AwayTeamId);
                 clubToUpdate.Draws += 1;
                 clubToUpdate.Points += 1;
             }
-            else if (match.GoalsHomeTeam < match.GoalsAwayTeam)
+            else if (playedMatch.GoalsHomeTeam < playedMatch.GoalsAwayTeam)
             {
-                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.HomeTeamId);
+                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.HomeTeamId);
 
                 clubToUpdate.Failures += 1;
 
-                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == match.AwayTeamId);
+                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.AwayTeamId);
                 clubToUpdate.Wins += 1;
                 clubToUpdate.Points += 3;
             }
 
-            db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch).IsPlayed = true;
-            db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch).Result = match.GoalsHomeTeam + " - " + match.GoalsAwayTeam;
+            db.Matches.FirstOrDefault(m => m.IdMatch == playedMatch.IdMatch).IsPlayed = true;
+            //db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch).Result = match.GoalsHomeTeam + " - " + match.GoalsAwayTeam;
 
             int result = db.SaveChanges();
             return result == 1;
