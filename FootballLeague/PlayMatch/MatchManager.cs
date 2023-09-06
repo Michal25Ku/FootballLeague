@@ -13,10 +13,10 @@ using FootballLeagueLib.Season;
 
 namespace FootballLeagueLib.PlayMatch
 {
-    public delegate void GoalIsScoredHandler();
+    public delegate void MatchChangedHandler();
     public class MatchManager
     {
-        public GoalIsScoredHandler OnMatchesChange = null;
+        public event MatchChangedHandler MatchChanged;
 
         public const int MATCH_TIME = 90;
         public int TimeInMatch { get; private set; }
@@ -65,13 +65,13 @@ namespace FootballLeagueLib.PlayMatch
                     {
                         int playerShoot = rand.Next(HomeTeamPlayers.Count);
                         await ScoredGoalManager.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer);
-                        //OnMatchesChange?.Invoke();
+                        MatchChanged?.Invoke();
                     }
                     else
                     {
                         int playerShoot = rand.Next(AwayTeamPlayers.Count);
                         await ScoredGoalManager.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer);
-                        //OnMatchesChange?.Invoke();
+                        MatchChanged?.Invoke();
                     }
                 }
 
