@@ -21,9 +21,12 @@ namespace FootballLeagueWPFAplication.VievModel
 
         private void PlayRound(object obj)
         {
-            _seasonManager.PlayRound();
+            if(!MatchContentVievModel.IsPlayNow)
+            {
+                _seasonManager.PlayRound();
 
-            TableStatistic = _tableData.UpdateTable();
+                TableStatistic = _tableData.UpdateTable();
+            }
         }
 
         private void ShowMatches(object obj)

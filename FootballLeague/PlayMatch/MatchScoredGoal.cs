@@ -12,21 +12,21 @@ namespace FootballLeagueLib.PlayMatch
     {
         public static async Task<bool> ScoreGoal(int minuteOfMatch, int idClub, int idPlayer, MatchManager matchManager)
         {
+            using var db = new FootballLeagueContext();
+            #region Is the goal scored correctly and all conditions are fulfilled
             // Goal can be scored between 1 and 90 minutes
             if (minuteOfMatch < 1 || minuteOfMatch > 90)
                 return false;
             if (idClub != matchManager.PlayedMatch.HomeTeamId && idClub != matchManager.PlayedMatch.AwayTeamId)
                 return false;
 
-            using var db = new FootballLeagueContext();
-
             // Is player playing in this match
             if (db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).ClubId != matchManager.PlayedMatch.HomeTeamId && db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).ClubId != matchManager.PlayedMatch.AwayTeamId)
                 return false;
-
             // Is player playing for the team that scored the goal
             if (db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).ClubId != idClub)
                 return false;
+            #endregion
 
             var newGoal = new Goal
             {
@@ -95,7 +95,7 @@ namespace FootballLeagueLib.PlayMatch
                 clubToUpdate.GoalsScored += 1;
                 clubToUpdate.GoalBalance += 1;
 
-                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == matchManager.PlayedMatch.AwayTeamId);
+                clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == matchManager.PlayedMatch.AwayTeamId);
                 clubToUpdate.GoalsConceded += 1;
                 clubToUpdate.GoalBalance -= 1;
             }
@@ -105,7 +105,7 @@ namespace FootballLeagueLib.PlayMatch
                 clubToUpdate.GoalsScored += 1;
                 clubToUpdate.GoalBalance += 1;
 
-                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == matchManager.PlayedMatch.HomeTeamId);
+                clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == matchManager.PlayedMatch.HomeTeamId);
                 clubToUpdate.GoalsConceded += 1;
                 clubToUpdate.GoalBalance -= 1;
             }

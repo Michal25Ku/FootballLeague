@@ -1,5 +1,6 @@
 ﻿using FootballLeagueLib.Entities;
 using FootballLeagueLib.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,36 +16,36 @@ namespace FootballLeagueLib.PlayMatch
             using var db = new FootballLeagueContext();
             var match = matchManager.PlayedMatch;
 
-            Match playedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch);
+            Match playedMatch = await db.Matches.FirstOrDefaultAsync(m => m.IdMatch == match.IdMatch);
 
             if (playedMatch.GoalsHomeTeam > playedMatch.GoalsAwayTeam)
             {
-                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.HomeTeamId);
+                var clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == playedMatch.HomeTeamId);
 
                 clubToUpdate.Wins += 1;
                 clubToUpdate.Points += 3;
 
-                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.AwayTeamId);
+                clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == playedMatch.AwayTeamId);
                 clubToUpdate.Failures += 1;
             }
             else if (playedMatch.GoalsHomeTeam == playedMatch.GoalsAwayTeam) // draw
             {
-                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.HomeTeamId);
+                var clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == playedMatch.HomeTeamId);
 
                 clubToUpdate.Draws += 1;
                 clubToUpdate.Points += 1;
 
-                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.AwayTeamId);
+                clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == playedMatch.AwayTeamId);
                 clubToUpdate.Draws += 1;
                 clubToUpdate.Points += 1;
             }
             else if (playedMatch.GoalsHomeTeam < playedMatch.GoalsAwayTeam)
             {
-                var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.HomeTeamId);
+                var clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == playedMatch.HomeTeamId);
 
                 clubToUpdate.Failures += 1;
 
-                clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == playedMatch.AwayTeamId);
+                clubToUpdate = await db.Clubs.FirstOrDefaultAsync(c => c.IdClub == playedMatch.AwayTeamId);
                 clubToUpdate.Wins += 1;
                 clubToUpdate.Points += 3;
             }

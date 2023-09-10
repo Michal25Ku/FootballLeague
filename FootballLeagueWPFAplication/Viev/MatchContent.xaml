@@ -51,6 +51,6 @@
         <ProgressBar Grid.Row="2" Visibility="{Binding TimeVisibility}" Name="TimeInMatchBar" Value="{Binding TimeInMatchBar}" Minimum="0" Maximum="90" Height="8" Margin="0,1,0,1" VerticalAlignment="Center"/>
         <TextBlock FontSize="15" Visibility="{Binding TimeVisibility}" Text="{Binding ElementName=TimeInMatchBar, Path=Value, StringFormat={}{0:0}\'}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="2" />
         <Separator Grid.Row="3" Background="Blue" Grid.ColumnSpan="2"/>
-        <Button Grid.Column="1" Grid.RowSpan="3" Width="auto" Content="Play" VerticalAlignment="Center" Command="{Binding PlayMatchCommand}"/>
+        <Button Grid.Column="1" Grid.RowSpan="3" Width="auto" Content="Play" VerticalAlignment="Center" Command="{Binding PlayMatchCommand}" Visibility="{Binding PlayButtonVisibility}"/>
     </Grid>
 </UserControl>

@@ -17,6 +17,7 @@ namespace FootballLeagueWPFAplication.VievModel
 {
     public class MatchContentVievModel : INotifyPropertyChanged
     {
+        public static bool IsPlayNow { get; private set; } = false;
         private ScorerListForMatch _scoredListForMatch;
 
         public MatchContentVievModel(Match match)
@@ -25,6 +26,7 @@ namespace FootballLeagueWPFAplication.VievModel
             MatchManager = SeasonManager.AllMatchesManager.FirstOrDefault(m => m.PlayedMatch.IdMatch == match.IdMatch);
             MatchData = match;
             TimeVisibility = Visibility.Collapsed;
+            PlayButtonVisibility = Visibility.Visible;
 
             MatchManager.MatchResultChanged += OnMatchChanged;
             MatchManager.MatchTimeChanged += OnTimeChanged;
@@ -48,11 +50,14 @@ namespace FootballLeagueWPFAplication.VievModel
         public void OnEndChanged()
         {
             TimeVisibility = Visibility.Collapsed;
+            IsPlayNow = false;
         }
 
         public void OnStartChanged()
         {
             TimeVisibility = Visibility.Visible;
+            PlayButtonVisibility = Visibility.Collapsed;
+            IsPlayNow = true;
         }
 
         private Visibility _timeVisibility;
@@ -62,6 +67,17 @@ namespace FootballLeagueWPFAplication.VievModel
             set
             {
                 _timeVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Visibility _playButtonVisibility;
+        public Visibility PlayButtonVisibility
+        {
+            get { return _playButtonVisibility; }
+            set
+            {
+                _playButtonVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -127,7 +143,7 @@ namespace FootballLeagueWPFAplication.VievModel
         public ICommand PlayMatchCommand { get; set; }
         private void PlayMatch(object obj)
         {
-            if(!MatchManager.PlayedMatch.IsPlayed)
+            if(!MatchManager.PlayedMatch.IsPlayed && IsPlayNow == false)
             {
                 using var db = new FootballLeagueContext();
                 MatchManager.StartMatch();
