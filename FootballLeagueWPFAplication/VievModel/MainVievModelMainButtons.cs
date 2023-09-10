@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Match = FootballLeagueLib.Entities.Match;
 
 namespace FootballLeagueWPFAplication.VievModel
 {
@@ -31,6 +33,7 @@ namespace FootballLeagueWPFAplication.VievModel
 
         private void ShowMatches(object obj)
         {
+            MatchesContent.ForEach(m => m.ShowMatch());
             List<Match> updateList = _matchesData.UpdateMatchesList();
             for (int i = 0; i < MatchesContent.Count; i++)
             {
@@ -64,10 +67,9 @@ namespace FootballLeagueWPFAplication.VievModel
         {
             if (SelectedClubStatistic != null)
             {
-                MatchesContent = new List<MatchContentVievModel>();
-                foreach (var m in _matchesData.UpdateMatchesForOneClub(SelectedClubStatistic.Item2))
+                foreach (var match in _matchesData.UpdateMatchesForOneClub(SelectedClubStatistic.Item2))
                 {
-                    MatchesContent.Add(new MatchContentVievModel(m));
+                    MatchesContent.FirstOrDefault(m => m.MatchData.IdMatch == match.IdMatch).HideMatch();
                 }
             }
 

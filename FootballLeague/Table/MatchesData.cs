@@ -31,7 +31,7 @@ namespace FootballLeagueLib.Table
         public List<Match> UpdateMatchesForOneClub(Club club)
         {
             using var db = new FootballLeagueContext();
-            MatchesList = db.Matches.Select(m => m).Where(m => m.HomeTeamId == club.IdClub || m.AwayTeamId == club.IdClub).OrderBy(m => m.Round).ToList();
+            MatchesList = db.Matches.Select(m => m).Where(m => m.HomeTeamId != club.IdClub && m.AwayTeamId != club.IdClub).OrderBy(m => m.Round).ToList();
 
             return MatchesList;
         }

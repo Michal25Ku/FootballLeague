@@ -25,8 +25,10 @@ namespace FootballLeagueWPFAplication.VievModel
             _scoredListForMatch = new ScorerListForMatch();
             MatchManager = SeasonManager.AllMatchesManager.FirstOrDefault(m => m.PlayedMatch.IdMatch == match.IdMatch);
             MatchData = match;
+
             TimeVisibility = Visibility.Collapsed;
             PlayButtonVisibility = Visibility.Visible;
+            MatchVisibility = Visibility.Visible;
 
             MatchManager.MatchResultChanged += OnMatchChanged;
             MatchManager.MatchTimeChanged += OnTimeChanged;
@@ -60,6 +62,9 @@ namespace FootballLeagueWPFAplication.VievModel
             IsPlayNow = true;
         }
 
+        public void HideMatch() => MatchVisibility = Visibility.Collapsed;
+        public void ShowMatch() => MatchVisibility = Visibility.Visible;
+
         private Visibility _timeVisibility;
         public Visibility TimeVisibility
         {
@@ -78,6 +83,17 @@ namespace FootballLeagueWPFAplication.VievModel
             set
             {
                 _playButtonVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Visibility _matchVisibility;
+        public Visibility MatchVisibility
+        {
+            get { return _matchVisibility; }
+            set
+            {
+                _matchVisibility = value;
                 OnPropertyChanged();
             }
         }

@@ -8,7 +8,8 @@
              d:DataContext="{d:DesignInstance Type=vievmodel:MatchContentVievModel}"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="400"
-             DataContext="{Binding}">
+             DataContext="{Binding}"
+             Visibility="{Binding MatchVisibility}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
