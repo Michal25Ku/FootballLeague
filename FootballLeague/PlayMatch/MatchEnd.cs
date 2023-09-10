@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace FootballLeagueLib.PlayMatch
 {
-    public class MatchEnd //: IEndMatch<Match>
+    public static class MatchEnd
     {
-        public bool UpdateAfterMatchIsOver(Match match)
+        public static async Task<bool> UpdateAfterMatchIsOver(MatchManager matchManager)
         {
             using var db = new FootballLeagueContext();
+            var match = matchManager.PlayedMatch;
+
             Match playedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch);
 
             if (playedMatch.GoalsHomeTeam > playedMatch.GoalsAwayTeam)
@@ -48,9 +50,8 @@ namespace FootballLeagueLib.PlayMatch
             }
 
             db.Matches.FirstOrDefault(m => m.IdMatch == playedMatch.IdMatch).IsPlayed = true;
-            //db.Matches.FirstOrDefault(m => m.IdMatch == match.IdMatch).Result = match.GoalsHomeTeam + " - " + match.GoalsAwayTeam;
 
-            int result = db.SaveChanges();
+            int result = await Task.Run(() => db.SaveChanges());
             return result == 1;
         }
     }

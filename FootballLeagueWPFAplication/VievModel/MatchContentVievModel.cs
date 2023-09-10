@@ -42,7 +42,7 @@ namespace FootballLeagueWPFAplication.VievModel
 
         public void OnTimeChanged()
         {
-            TimeInMatchBar = MatchManager.TimeInMatch;
+            TimeInMatchBar = MatchManager.MinuteInMatch;
         }
 
         public void OnEndChanged()

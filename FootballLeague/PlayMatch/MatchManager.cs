@@ -30,26 +30,22 @@ namespace FootballLeagueLib.PlayMatch
         // TODO 
         // need to create separate maybe a progress bar in the menu. we could change this value if we want the match to be played faster or slower
         public int SimulationTime { get; }
-        public int TimeInMatch { get; private set; }
+        public int MinuteInMatch { get; private set; }
 
         public Match PlayedMatch { get; private set; }
-
-        private readonly MatchEnd EndingMatch;
 
         public List<Player> HomeTeamPlayers { get; private set; }
         public List<Player> AwayTeamPlayers { get; private set; }
 
         public MatchManager(Match playedMatch)
         {
-            EndingMatch = new MatchEnd();
-
             PlayedMatch = playedMatch;
 
             HomeTeamPlayers = MatchPlayers.GetPlayersFromTeam(playedMatch.HomeTeamId);
             AwayTeamPlayers = MatchPlayers.GetPlayersFromTeam(playedMatch.AwayTeamId);
 
             SimulationTime = 0;
-            TimeInMatch = 0;
+            MinuteInMatch = 0;
         }
 
         public async Task StartMatch()
@@ -81,7 +77,7 @@ namespace FootballLeagueLib.PlayMatch
                     }
                 }
 
-                TimeInMatch = i;
+                MinuteInMatch = i;
                 db.SaveChanges();
                 PlayedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch);
 
@@ -89,7 +85,7 @@ namespace FootballLeagueLib.PlayMatch
                 await Task.Run(() => Thread.Sleep(5000 / 100));
             }
 
-            EndingMatch.UpdateAfterMatchIsOver(PlayedMatch);
+            await MatchEnd.UpdateAfterMatchIsOver(this);
             MatchEndChanged?.Invoke();
         }
     }
