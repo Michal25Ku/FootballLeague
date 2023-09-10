@@ -19,10 +19,12 @@ namespace FootballLeagueLib.PlayMatch
     public delegate void MatchStartChangedHandler();
     public class MatchManager
     {
+        #region events
         public event MatchResultChangedHandler MatchResultChanged;
         public event MatchTimeChangedHandler MatchTimeChanged;
         public event MatchEndChangedHandler MatchEndChanged;
         public event MatchStartChangedHandler MatchStartChanged;
+        #endregion
 
         public const int MATCH_TIME = 90;
         public int TimeInMatch { get; private set; }
@@ -32,7 +34,6 @@ namespace FootballLeagueLib.PlayMatch
         // need to create separate maybe a progress bar in the menu. we could change this value if we want the match to be played faster or slower
         public int SimulationTime { get; }
 
-        private readonly IGetPlayers PlayersInMatch;
         private readonly MatchScoredGoal ScoredGoalManager;
         private readonly MatchEnd EndingMatch;
 
@@ -41,14 +42,13 @@ namespace FootballLeagueLib.PlayMatch
 
         public MatchManager(Match playedMatch)
         {
-            PlayersInMatch = new MatchPlayers();
             ScoredGoalManager = new MatchScoredGoal(this);
             EndingMatch = new MatchEnd();
 
             PlayedMatch = playedMatch;
 
-            HomeTeamPlayers = PlayersInMatch.HomeTeamPlayers(playedMatch.HomeTeamId);
-            AwayTeamPlayers = PlayersInMatch.AwayTeamPlayers(playedMatch.AwayTeamId);
+            HomeTeamPlayers = MatchPlayers.GetPlayersFromTeam(playedMatch.HomeTeamId);
+            AwayTeamPlayers = MatchPlayers.GetPlayersFromTeam(playedMatch.AwayTeamId);
 
             SimulationTime = 0;
             TimeInMatch = 0;
