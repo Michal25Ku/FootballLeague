@@ -16,11 +16,13 @@ namespace FootballLeagueLib.PlayMatch
     public delegate void MatchResultChangedHandler();
     public delegate void MatchTimeChangedHandler();
     public delegate void MatchEndChangedHandler();
+    public delegate void MatchStartChangedHandler();
     public class MatchManager
     {
         public event MatchResultChangedHandler MatchResultChanged;
         public event MatchTimeChangedHandler MatchTimeChanged;
         public event MatchEndChangedHandler MatchEndChanged;
+        public event MatchStartChangedHandler MatchStartChanged;
 
         public const int MATCH_TIME = 90;
         public int TimeInMatch { get; private set; }
@@ -54,6 +56,7 @@ namespace FootballLeagueLib.PlayMatch
 
         public async Task StartMatch()
         {
+            MatchStartChanged?.Invoke();
             var rand = new Random();
             using var db = new FootballLeagueContext();
 

@@ -22,13 +22,14 @@ namespace FootballLeagueWPFAplication.VievModel
         public MatchContentVievModel(Match match)
         {
             _scoredListForMatch = new ScorerListForMatch();
-            SeasonPlayMatch = new SeasonPlayMatch(match);
+            MatchManager = SeasonManager.AllMatchesManager.FirstOrDefault(m => m.PlayedMatch.IdMatch == match.IdMatch);
             MatchData = match;
             TimeVisibility = Visibility.Collapsed;
 
-            SeasonPlayMatch.MatchManager.MatchResultChanged += OnMatchChanged;
-            SeasonPlayMatch.MatchManager.MatchTimeChanged += OnTimeChanged;
-            SeasonPlayMatch.MatchManager.MatchEndChanged += OnEndChanged;
+            MatchManager.MatchResultChanged += OnMatchChanged;
+            MatchManager.MatchTimeChanged += OnTimeChanged;
+            MatchManager.MatchEndChanged += OnEndChanged;
+            MatchManager.MatchStartChanged += OnStartChanged;
 
             PlayMatchCommand = new RelayCommand(PlayMatch);
         }
@@ -41,13 +42,17 @@ namespace FootballLeagueWPFAplication.VievModel
 
         public void OnTimeChanged()
         {
-            TimeInMatchBar = SeasonPlayMatch.MatchManager.TimeInMatch;
+            TimeInMatchBar = MatchManager.TimeInMatch;
         }
 
         public void OnEndChanged()
         {
-            TimeInMatchBar = SeasonPlayMatch.MatchManager.TimeInMatch;
             TimeVisibility = Visibility.Collapsed;
+        }
+
+        public void OnStartChanged()
+        {
+            TimeVisibility = Visibility.Visible;
         }
 
         private Visibility _timeVisibility;
@@ -61,13 +66,13 @@ namespace FootballLeagueWPFAplication.VievModel
             }
         }
 
-        private SeasonPlayMatch _seasonPlayMatch;
-        public SeasonPlayMatch SeasonPlayMatch
+        private MatchManager _matchManager;
+        public MatchManager MatchManager
         {
-            get { return _seasonPlayMatch; }
+            get { return _matchManager; }
             set 
             {
-                _seasonPlayMatch = value;
+                _matchManager = value;
                 OnPropertyChanged();
             }
         }
@@ -122,11 +127,12 @@ namespace FootballLeagueWPFAplication.VievModel
         public ICommand PlayMatchCommand { get; set; }
         private void PlayMatch(object obj)
         {
-            TimeVisibility = Visibility.Visible;
-            using var db = new FootballLeagueContext();
-            _seasonPlayMatch.PlayMatch();
-
-            MatchData = db.Matches.FirstOrDefault(m => m.IdMatch == MatchData.IdMatch);
+            if(!MatchManager.PlayedMatch.IsPlayed)
+            {
+                using var db = new FootballLeagueContext();
+                MatchManager.StartMatch();
+                MatchData = db.Matches.FirstOrDefault(m => m.IdMatch == MatchData.IdMatch);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -16,6 +16,7 @@ namespace FootballLeagueLib.Season
         public Dictionary<int, IList<Match>> Rounds { get; }
 
         private SeasonAllMatchesGenerator generator;
+        static public List<MatchManager> AllMatchesManager { get; private set; } = new List<MatchManager>();
 
         public SeasonManager()
         {
@@ -23,6 +24,10 @@ namespace FootballLeagueLib.Season
             using var db = new FootballLeagueContext();
             generator = new SeasonAllMatchesGenerator();
             Rounds = generator.SortMatchesIntoRound(generator.GenerateMatches(db.Clubs.ToList()));
+            foreach(var m in db.Matches)
+            {
+                AllMatchesManager.Add(new MatchManager(m));
+            }
         }
 
         public void PlayRound()
@@ -49,10 +54,10 @@ namespace FootballLeagueLib.Season
 
             foreach(var m in Rounds[round])
             {
-                if (!m.IsPlayed)
+                var matchManager = AllMatchesManager.FirstOrDefault(mm => mm.PlayedMatch.IdMatch == m.IdMatch);
+                if (!matchManager.PlayedMatch.IsPlayed)
                 {
-                    SeasonPlayMatch _seasonPlayMatch = new SeasonPlayMatch(m);
-                    _seasonPlayMatch.PlayMatch();
+                    matchManager.StartMatch();
                 }
             }
 
