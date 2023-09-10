@@ -27,14 +27,13 @@ namespace FootballLeagueLib.PlayMatch
         #endregion
 
         public const int MATCH_TIME = 90;
-        public int TimeInMatch { get; private set; }
-        public Match PlayedMatch { get; private set; }
-
         // TODO 
         // need to create separate maybe a progress bar in the menu. we could change this value if we want the match to be played faster or slower
         public int SimulationTime { get; }
+        public int TimeInMatch { get; private set; }
 
-        private readonly MatchScoredGoal ScoredGoalManager;
+        public Match PlayedMatch { get; private set; }
+
         private readonly MatchEnd EndingMatch;
 
         public List<Player> HomeTeamPlayers { get; private set; }
@@ -42,7 +41,6 @@ namespace FootballLeagueLib.PlayMatch
 
         public MatchManager(Match playedMatch)
         {
-            ScoredGoalManager = new MatchScoredGoal(this);
             EndingMatch = new MatchEnd();
 
             PlayedMatch = playedMatch;
@@ -72,13 +70,13 @@ namespace FootballLeagueLib.PlayMatch
                     if (teamShoot == 0)
                     {
                         int playerShoot = rand.Next(HomeTeamPlayers.Count);
-                        await ScoredGoalManager.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer);
+                        await MatchScoredGoal.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer, this);
                         MatchResultChanged?.Invoke();
                     }
                     else
                     {
                         int playerShoot = rand.Next(AwayTeamPlayers.Count);
-                        await ScoredGoalManager.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer);
+                        await MatchScoredGoal.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer, this);
                         MatchResultChanged?.Invoke();
                     }
                 }
