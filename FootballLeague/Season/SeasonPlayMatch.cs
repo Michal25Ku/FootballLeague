@@ -12,11 +12,16 @@ namespace FootballLeagueLib.Season
     public class SeasonPlayMatch : IPlayMatch
     {
         public MatchManager MatchManager { get; private set; }
-        public void PlayMatch(Match match)
+
+        public SeasonPlayMatch(Match match)
+        {
+            MatchManager = new MatchManager(match);
+        }
+
+        public void PlayMatch()
         { 
-            if (!match.IsPlayed)
+            if (!MatchManager.PlayedMatch.IsPlayed)
             {
-                MatchManager = new MatchManager(match);
                 MatchManager.StartMatch();
             }
         }

@@ -1,4 +1,5 @@
-﻿using FootballLeagueLib.Season;
+﻿using FootballLeagueLib.Entities;
+using FootballLeagueLib.Season;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,10 +28,10 @@ namespace FootballLeagueWPFAplication.VievModel
 
         private void ShowMatches(object obj)
         {
-            MatchesContent = new List<MatchContentVievModel>();
-            foreach (var m in _matchesData.UpdateMatchesList())
+            List<Match> updateList = _matchesData.UpdateMatchesList();
+            for (int i = 0; i < MatchesContent.Count; i++)
             {
-                MatchesContent.Add(new MatchContentVievModel(m));
+                MatchesContent[i].MatchData = updateList[i];
             }
 
             TableVisibility = Visibility.Collapsed;

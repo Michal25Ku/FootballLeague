@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace FootballLeagueWPFAplication.VievModel
@@ -21,8 +22,13 @@ namespace FootballLeagueWPFAplication.VievModel
         public MatchContentVievModel(Match match)
         {
             _scoredListForMatch = new ScorerListForMatch();
-            SeasonPlayMatch = new SeasonPlayMatch();
+            SeasonPlayMatch = new SeasonPlayMatch(match);
             MatchData = match;
+            TimeVisibility = Visibility.Collapsed;
+
+            SeasonPlayMatch.MatchManager.MatchResultChanged += OnMatchChanged;
+            SeasonPlayMatch.MatchManager.MatchTimeChanged += OnTimeChanged;
+            SeasonPlayMatch.MatchManager.MatchEndChanged += OnEndChanged;
 
             PlayMatchCommand = new RelayCommand(PlayMatch);
         }
@@ -33,13 +39,34 @@ namespace FootballLeagueWPFAplication.VievModel
             MatchData = db.Matches.FirstOrDefault(m => m.IdMatch == MatchData.IdMatch);
         }
 
+        public void OnTimeChanged()
+        {
+            TimeInMatchBar = SeasonPlayMatch.MatchManager.TimeInMatch;
+        }
+
+        public void OnEndChanged()
+        {
+            TimeInMatchBar = SeasonPlayMatch.MatchManager.TimeInMatch;
+            TimeVisibility = Visibility.Collapsed;
+        }
+
+        private Visibility _timeVisibility;
+        public Visibility TimeVisibility
+        {
+            get { return _timeVisibility; }
+            set
+            {
+                _timeVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         private SeasonPlayMatch _seasonPlayMatch;
         public SeasonPlayMatch SeasonPlayMatch
         {
             get { return _seasonPlayMatch; }
             set 
             {
-                //TimeInMatchBar = _seasonPlayMatch.MatchManager.TimeInMatch;
                 _seasonPlayMatch = value;
                 OnPropertyChanged();
             }
@@ -52,6 +79,7 @@ namespace FootballLeagueWPFAplication.VievModel
             set
             {
                 _matchData = value;
+
                 HomeTeamScorerList = string.Join("\n", _scoredListForMatch.CreateScorerList(value, value.HomeTeamId).Select(s => $"{s.Item2.LastName} '{s.Item1}"));
                 AwayTeamScorerList = string.Join("\n", _scoredListForMatch.CreateScorerList(value, value.AwayTeamId).Select(s => $"{s.Item2.LastName} '{s.Item1}"));
                 OnPropertyChanged();
@@ -94,9 +122,10 @@ namespace FootballLeagueWPFAplication.VievModel
         public ICommand PlayMatchCommand { get; set; }
         private void PlayMatch(object obj)
         {
+            TimeVisibility = Visibility.Visible;
             using var db = new FootballLeagueContext();
-            _seasonPlayMatch.PlayMatch(MatchData);
-            SeasonPlayMatch.MatchManager.MatchChanged += OnMatchChanged;
+            _seasonPlayMatch.PlayMatch();
+
             MatchData = db.Matches.FirstOrDefault(m => m.IdMatch == MatchData.IdMatch);
         }
 

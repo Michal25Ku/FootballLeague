@@ -47,12 +47,12 @@ namespace FootballLeagueLib.Season
 
             Rounds[round] = db.Matches.Select(m => m).Where(m => m.Round == round).ToList();
 
-            foreach (var m in Rounds[round])
+            foreach(var m in Rounds[round])
             {
                 if (!m.IsPlayed)
                 {
-                    MatchManager match = new MatchManager(m);
-                    match.StartMatch();
+                    SeasonPlayMatch _seasonPlayMatch = new SeasonPlayMatch(m);
+                    _seasonPlayMatch.PlayMatch();
                 }
             }
 

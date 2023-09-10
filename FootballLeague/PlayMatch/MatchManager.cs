@@ -13,10 +13,14 @@ using FootballLeagueLib.Season;
 
 namespace FootballLeagueLib.PlayMatch
 {
-    public delegate void MatchChangedHandler();
+    public delegate void MatchResultChangedHandler();
+    public delegate void MatchTimeChangedHandler();
+    public delegate void MatchEndChangedHandler();
     public class MatchManager
     {
-        public event MatchChangedHandler MatchChanged;
+        public event MatchResultChangedHandler MatchResultChanged;
+        public event MatchTimeChangedHandler MatchTimeChanged;
+        public event MatchEndChangedHandler MatchEndChanged;
 
         public const int MATCH_TIME = 90;
         public int TimeInMatch { get; private set; }
@@ -56,8 +60,9 @@ namespace FootballLeagueLib.PlayMatch
             db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch).IsPlayed = true;
             db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch).Result = PlayedMatch.GoalsHomeTeam + " - " + PlayedMatch.GoalsAwayTeam;
 
-            for (int i = 1; i <= MATCH_TIME; i++)
+            for (int i = 1; i <= MATCH_TIME + 1; i++)
             {
+                MatchTimeChanged?.Invoke();
                 if (rand.Next(100) <= 1)
                 {
                     int teamShoot = rand.Next(2);
@@ -65,13 +70,13 @@ namespace FootballLeagueLib.PlayMatch
                     {
                         int playerShoot = rand.Next(HomeTeamPlayers.Count);
                         await ScoredGoalManager.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer);
-                        MatchChanged?.Invoke();
+                        MatchResultChanged?.Invoke();
                     }
                     else
                     {
                         int playerShoot = rand.Next(AwayTeamPlayers.Count);
                         await ScoredGoalManager.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer);
-                        MatchChanged?.Invoke();
+                        MatchResultChanged?.Invoke();
                     }
                 }
 
@@ -84,6 +89,7 @@ namespace FootballLeagueLib.PlayMatch
             }
 
             EndingMatch.UpdateAfterMatchIsOver(PlayedMatch);
+            MatchEndChanged?.Invoke();
         }
     }
 }

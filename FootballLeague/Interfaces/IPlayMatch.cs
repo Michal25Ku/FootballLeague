@@ -9,6 +9,6 @@ namespace FootballLeagueLib.Interfaces
 {
     public interface IPlayMatch
     {
-        void PlayMatch(Match match);
+        void PlayMatch();
     }
 }
