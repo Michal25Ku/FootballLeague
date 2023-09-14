@@ -6,18 +6,31 @@ namespace FootballLeagueLib.Entities
 {
     public class FootballLeagueContext : DbContext
     {
-        public virtual DbSet<Club> Clubs { get; set; }
+        public DbSet<Club> Clubs { get; set; }
 
-        public virtual DbSet<Goal> Goals { get; set; }
+        public DbSet<Goal> Goals { get; set; }
 
-        public virtual DbSet<Match> Matches { get; set; }
+        public DbSet<Match> Matches { get; set; }
 
-        public virtual DbSet<Player> Players { get; set; }
+        public DbSet<Player> Players { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "FootballLeague.mdf");
-            optionsBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\mkuci\source\repos\FootballLeague\FootballLeague\FootballLeague.mdf;Integrated Security=True");
+            string _modulePath = "FootballLeague";
+            string _currentDirectory = Path.Combine(Environment.CurrentDirectory);
+
+            for (int i = 0; i < 10; i++)
+            {
+                string filePath = Path.Combine(_currentDirectory, _modulePath);
+
+                if (Directory.Exists(filePath)) break;
+
+                _currentDirectory = Directory.GetParent(_currentDirectory)?.FullName;
+
+                if (_currentDirectory == null) break;
+            }
+
+            optionsBuilder.UseSqlServer($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={_currentDirectory}\\FootballLeague\\FootballLeague.mdf;Integrated Security=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

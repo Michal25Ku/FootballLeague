@@ -15,15 +15,15 @@ namespace FootballLeagueLib.Season
         public static int ActualRound { get; private set; }
         public Dictionary<int, IList<Match>> Rounds { get; }
 
-        private SeasonAllMatchesGenerator generator;
+        private SeasonAllMatchesGenerator _generator;
         static public List<MatchManager> AllMatchesManager { get; private set; } = new List<MatchManager>();
 
         public SeasonManager()
         {
             ActualRound = 1;
             using var db = new FootballLeagueContext();
-            generator = new SeasonAllMatchesGenerator();
-            Rounds = generator.SortMatchesIntoRound(generator.GenerateMatches(db.Clubs.ToList()));
+            _generator = new SeasonAllMatchesGenerator();
+            Rounds = _generator.SortMatchesIntoRound(_generator.GenerateMatches(db.Clubs.ToList()));
             foreach(var m in db.Matches)
             {
                 AllMatchesManager.Add(new MatchManager(m));
