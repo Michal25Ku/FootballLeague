@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace FootballLeagueLib.Entities
 {
@@ -29,8 +32,15 @@ namespace FootballLeagueLib.Entities
 
                 if (_currentDirectory == null) break;
             }
+            
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile($"{_currentDirectory}\\FootballLeague\\appsettings.json", true, true)
+                .AddEnvironmentVariables();
 
-            optionsBuilder.UseSqlServer($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={_currentDirectory}\\FootballLeague\\FootballLeague.mdf;Integrated Security=True");
+            var config = builder.Build();
+            string connectionStringTemplate = config["ConnectionString"];
+            string modifiedConnectionString = connectionStringTemplate.Replace("{_currentDirectory}", _currentDirectory);
+            optionsBuilder.UseSqlServer(modifiedConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
