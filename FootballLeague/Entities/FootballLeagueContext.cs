@@ -32,14 +32,15 @@ namespace FootballLeagueLib.Entities
 
                 if (_currentDirectory == null) break;
             }
-            
+
             var builder = new ConfigurationBuilder()
-                .AddJsonFile($"{_currentDirectory}\\FootballLeague\\appsettings.json", true, true)
+                .AddJsonFile($"{_currentDirectory}\\appsettings.json", true, true)
                 .AddEnvironmentVariables();
 
-            var config = builder.Build();
-            string connectionStringTemplate = config["ConnectionString"];
-            string modifiedConnectionString = connectionStringTemplate.Replace("{_currentDirectory}", _currentDirectory);
+            string connectionStringName = "FootballLeagueConnectionString";
+
+            var config = builder.Build().GetConnectionString(connectionStringName);
+            string modifiedConnectionString = config.Replace("{_currentDirectory}", _currentDirectory);
             optionsBuilder.UseSqlServer(modifiedConnectionString);
         }
 
