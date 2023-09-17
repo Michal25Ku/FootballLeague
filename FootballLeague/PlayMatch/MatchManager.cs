@@ -33,12 +33,16 @@ namespace FootballLeagueLib.PlayMatch
         public int MinuteInMatch { get; private set; }
 
         public Match PlayedMatch { get; private set; }
+        public MatchScoredGoal MatchScoreGoal { get; }
+        public MatchPlayers MatchPlayers { get; }
 
         public List<Player> HomeTeamPlayers { get; private set; }
         public List<Player> AwayTeamPlayers { get; private set; }
 
         public MatchManager(Match playedMatch)
         {
+            MatchScoreGoal = new MatchScoredGoal();
+            MatchPlayers = new MatchPlayers();
             PlayedMatch = playedMatch;
 
             HomeTeamPlayers = MatchPlayers.GetPlayersFromTeam(playedMatch.HomeTeamId);
@@ -66,13 +70,13 @@ namespace FootballLeagueLib.PlayMatch
                     if (teamShoot == 0)
                     {
                         int playerShoot = rand.Next(HomeTeamPlayers.Count);
-                        await MatchScoredGoal.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer, this);
+                        MatchScoreGoal.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer, this);
                         MatchResultChanged?.Invoke();
                     }
                     else
                     {
                         int playerShoot = rand.Next(AwayTeamPlayers.Count);
-                        await MatchScoredGoal.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer, this);
+                        MatchScoreGoal.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer, this);
                         MatchResultChanged?.Invoke();
                     }
                 }

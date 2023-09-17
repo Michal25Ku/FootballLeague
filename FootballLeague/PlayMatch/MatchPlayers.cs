@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FootballLeagueLib.PlayMatch
 {
-    public static class MatchPlayers
+    public class MatchPlayers
     {
-        public static List<Player> GetPlayersFromTeam(int idClub)
+        public List<Player> GetPlayersFromTeam(int idClub)
         {
             Random rand = new Random(); // simulation, which players will be playing
             using var db = new FootballLeagueContext();

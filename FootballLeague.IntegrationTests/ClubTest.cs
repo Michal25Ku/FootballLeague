@@ -13,7 +13,7 @@ namespace FootballLeague.IntegrationTests
             using var db = new FootballLeagueContext();
             _club = new Club
             {
-                ClubName = "Club1",
+                ClubName = "ClubTest",
                 StadiumName = "Stadium1"
             };
 
