@@ -25,58 +25,13 @@ namespace FootballLeagueWPFAplication
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ResetSeason _resetSeason;
+
         public MainWindow()
         {
             InitializeComponent();
-            ResetDatabase(); 
-            AddConnectionsInDatabase(); 
+            _resetSeason = new ResetSeason(); 
             DataContext = new MainVievModel();
-        }
-
-        bool ResetDatabase()
-        {
-            using var db = new FootballLeagueContext();
-            db.Goals.RemoveRange(db.Goals.Select(g => g));
-            db.Matches.RemoveRange(db.Matches.Select(m => m));
-
-            foreach (var club in db.Clubs)
-            {
-                club.Wins = 0;
-                club.Draws = 0;
-                club.Failures = 0;
-                club.GoalsScored = 0;
-                club.GoalsConceded = 0;
-                club.GoalBalance = 0;
-                club.Points = 0;
-                club.Players.Clear();
-                club.MatchesAwayTeam.Clear();
-                club.MatchesHomeTeam.Clear();
-            }
-
-            foreach (var player in db.Players)
-            {
-                player.GoalsScored = 0;
-                player.Goals.Clear();
-            }
-
-            int result = db.SaveChanges();
-            return result == 1;
-        }
-
-        bool AddConnectionsInDatabase()
-        {
-            using var db = new FootballLeagueContext();
-
-            var clubsWithPlayers = db.Clubs.Include(c => c.Players).ToList();
-
-            foreach (var player in db.Players)
-            {
-                var club = clubsWithPlayers.FirstOrDefault(c => c.IdClub == player.ClubId);
-                club?.Players.Add(player);
-            }
-
-            int result = db.SaveChanges();
-            return result == 1;
         }
 
         private void ClubStatisticListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

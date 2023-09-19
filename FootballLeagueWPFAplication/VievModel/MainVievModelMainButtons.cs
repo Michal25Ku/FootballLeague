@@ -20,6 +20,7 @@ namespace FootballLeagueWPFAplication.VievModel
         public ICommand ShowTableCommand { get; set; }
         public ICommand ShowStatisticCommand { get; set; }
         public ICommand ShowClubMatchesCommand { get; set; }
+        public ICommand CreateNewLeagueCommand { get; set; }
 
         private void PlayRound(object obj)
         {
@@ -76,6 +77,12 @@ namespace FootballLeagueWPFAplication.VievModel
             TableVisibility = Visibility.Collapsed;
             MatchesVisibility = Visibility.Visible;
             StatisticVisibility = Visibility.Collapsed;
+        }
+
+        private void CreaateNewLeague(object obj)
+        {
+            NewLeague newLeague = new NewLeague();
+            newLeague.CreateNewLeague();
         }
     }
 }

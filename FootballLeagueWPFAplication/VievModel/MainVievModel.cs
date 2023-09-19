@@ -41,6 +41,7 @@ namespace FootballLeagueWPFAplication.VievModel
             ShowTableCommand = new RelayCommand(ShowTable);
             ShowStatisticCommand = new RelayCommand(ShowStatistic);
             ShowClubMatchesCommand = new RelayCommand(ShowClubMatches);
+            CreateNewLeagueCommand = new RelayCommand(CreaateNewLeague);
 
             MatchesContent = new List<MatchContentVievModel>();
             foreach (var m in _matchesData.UpdateMatchesList())

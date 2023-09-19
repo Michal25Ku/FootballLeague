@@ -53,12 +53,33 @@ namespace FootballLeague.IntegrationTests
         }
 
         [Test, Isolated]
+        public void ScoreGoalMethod_CorrectData_ShouldReturnTrue()
+        {
+            using var db = new FootballLeagueContext();
+            MatchManager testMatchManager = AddTestMatchManager();
+
+            bool ScoreGoalBool = testMatchManager.MatchScoreGoal.ScoreGoal(10, testMatchManager.PlayedMatch.HomeTeamId, testMatchManager.HomeTeamPlayers[0].IdPlayer, testMatchManager);
+
+            Assert.IsTrue(ScoreGoalBool);
+        }
+
+        [Test, Isolated]
         public void UpdateMatchAfterGoal_UpdateMatchResult_ShouldSetGoalsHomeTeamTo_1_GoalsAwayTeamTo_0()
         {
             using var db = new FootballLeagueContext();
             MatchManager testMatchManager = AddTestMatchManager();
 
-            testMatchManager.MatchScoreGoal.ScoreGoal(10, testMatchManager.PlayedMatch.HomeTeamId, testMatchManager.HomeTeamPlayers[0].IdPlayer, testMatchManager);
+            var newGoal = new Goal
+            {
+                MinuteOfTheMatch = 10,
+                ClubId = _testClub1Home.IdClub,
+                PlayerId = testMatchManager.HomeTeamPlayers[0].IdPlayer,
+                MatchId = _testMatch.IdMatch,
+                Player = testMatchManager.HomeTeamPlayers[0],
+                Match = _testMatch
+            };
+
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
 
             _testMatch = db.Matches.FirstOrDefault(m => m.IdMatch == _testMatch.IdMatch);
             Assert.That(_testMatch.GoalsHomeTeam, Is.EqualTo(1));
@@ -72,7 +93,16 @@ namespace FootballLeague.IntegrationTests
             using var db = new FootballLeagueContext();
             MatchManager testMatchManager = AddTestMatchManager();
 
-            testMatchManager.MatchScoreGoal.ScoreGoal(10, testMatchManager.PlayedMatch.AwayTeamId, testMatchManager.AwayTeamPlayers[0].IdPlayer, testMatchManager);
+            var newGoal = new Goal
+            {
+                MinuteOfTheMatch = 10,
+                ClubId = _testClub2Away.IdClub,
+                PlayerId = testMatchManager.AwayTeamPlayers[0].IdPlayer,
+                MatchId = _testMatch.IdMatch,
+                Player = testMatchManager.AwayTeamPlayers[0],
+                Match = _testMatch
+            };
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
 
             _testMatch = db.Matches.FirstOrDefault(m => m.IdMatch == _testMatch.IdMatch);
             Assert.That(_testMatch.GoalsHomeTeam, Is.EqualTo(0));
@@ -86,14 +116,61 @@ namespace FootballLeague.IntegrationTests
             using var db = new FootballLeagueContext();
             MatchManager testMatchManager = AddTestMatchManager();
 
-            testMatchManager.MatchScoreGoal.ScoreGoal(10, testMatchManager.PlayedMatch.HomeTeamId, testMatchManager.HomeTeamPlayers[0].IdPlayer, testMatchManager);
-            testMatchManager.MatchScoreGoal.ScoreGoal(12, testMatchManager.PlayedMatch.AwayTeamId, testMatchManager.AwayTeamPlayers[0].IdPlayer, testMatchManager);
-            testMatchManager.MatchScoreGoal.ScoreGoal(13, testMatchManager.PlayedMatch.HomeTeamId, testMatchManager.HomeTeamPlayers[2].IdPlayer, testMatchManager);
+            var newGoal = new Goal
+            {
+                MinuteOfTheMatch = 10,
+                ClubId = _testClub1Home.IdClub,
+                PlayerId = testMatchManager.HomeTeamPlayers[0].IdPlayer,
+                MatchId = _testMatch.IdMatch,
+                Player = testMatchManager.HomeTeamPlayers[0],
+                Match = _testMatch
+            };
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+            newGoal = new Goal
+            {
+                MinuteOfTheMatch = 12,
+                ClubId = _testClub2Away.IdClub,
+                PlayerId = testMatchManager.AwayTeamPlayers[0].IdPlayer,
+                MatchId = _testMatch.IdMatch,
+                Player = testMatchManager.AwayTeamPlayers[0],
+                Match = _testMatch
+            };
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+            newGoal = new Goal
+            {
+                MinuteOfTheMatch = 13,
+                ClubId = _testClub1Home.IdClub,
+                PlayerId = testMatchManager.HomeTeamPlayers[2].IdPlayer,
+                MatchId = _testMatch.IdMatch,
+                Player = testMatchManager.HomeTeamPlayers[0],
+                Match = _testMatch
+            };
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
 
             _testMatch = db.Matches.FirstOrDefault(m => m.IdMatch == _testMatch.IdMatch);
             Assert.That(_testMatch.GoalsHomeTeam, Is.EqualTo(2));
             Assert.That(_testMatch.GoalsAwayTeam, Is.EqualTo(1));
             Assert.That(_testMatch.Result, Is.EqualTo("2 - 1"));
+        }
+
+        [Test, Isolated]
+        public void UpdateMatchAfterGoal_CorrectData_ShouldRetunTrue()
+        {
+            using var db = new FootballLeagueContext();
+            MatchManager testMatchManager = AddTestMatchManager();
+
+            var newGoal = new Goal
+            {
+                MinuteOfTheMatch = 10,
+                ClubId = _testClub1Home.IdClub,
+                PlayerId = testMatchManager.HomeTeamPlayers[0].IdPlayer,
+                MatchId = _testMatch.IdMatch,
+                Player = testMatchManager.HomeTeamPlayers[0],
+                Match = _testMatch
+            };
+            bool UpdateMatchAfterGoal = testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+
+            Assert.IsTrue(UpdateMatchAfterGoal);
         }
 
         [Test, Isolated]
@@ -127,13 +204,24 @@ namespace FootballLeague.IntegrationTests
         {
             using var db = new FootballLeagueContext();
             MatchManager testMatchManager = AddTestMatchManager();
-
+            
             testMatchManager.MatchScoreGoal.UpdatePlayerCount(testMatchManager.HomeTeamPlayers[1].IdPlayer);
             testMatchManager.MatchScoreGoal.UpdatePlayerCount(testMatchManager.HomeTeamPlayers[1].IdPlayer);
             testMatchManager.MatchScoreGoal.UpdatePlayerCount(testMatchManager.AwayTeamPlayers[0].IdPlayer);
 
             Assert.That(db.Players.FirstOrDefault(p => p.IdPlayer == testMatchManager.HomeTeamPlayers[1].IdPlayer).GoalsScored, Is.EqualTo(2));
             Assert.That(db.Players.FirstOrDefault(p => p.IdPlayer == testMatchManager.AwayTeamPlayers[0].IdPlayer).GoalsScored, Is.EqualTo(1));
+        }
+
+        [Test, Isolated]
+        public void UpdatePlayerCount_CorrectData_ShouldReturnTrue()
+        {
+            using var db = new FootballLeagueContext();
+            MatchManager testMatchManager = AddTestMatchManager();
+
+            bool UpdatePlayerCountBool = testMatchManager.MatchScoreGoal.UpdatePlayerCount(testMatchManager.HomeTeamPlayers[1].IdPlayer);
+
+            Assert.IsTrue(UpdatePlayerCountBool);
         }
 
         [Test, Isolated]
@@ -175,6 +263,17 @@ namespace FootballLeague.IntegrationTests
             Assert.That(_testClub2Away.GoalsScored, Is.EqualTo(1));
             Assert.That(_testClub2Away.GoalsConceded, Is.EqualTo(3));
             Assert.That(_testClub2Away.GoalBalance, Is.EqualTo(-2));
+        }
+
+        [Test, Isolated]
+        public void UpdateClubGoals_CorrectData_ShouldReturnTrue()
+        {
+            using var db = new FootballLeagueContext();
+            MatchManager testMatchManager = AddTestMatchManager();
+
+            bool UpdateClubGoalsBool = testMatchManager.MatchScoreGoal.UpdateClubGoals(testMatchManager.PlayedMatch.HomeTeamId, testMatchManager);
+
+            Assert.IsTrue(UpdateClubGoalsBool);
         }
     }
 }

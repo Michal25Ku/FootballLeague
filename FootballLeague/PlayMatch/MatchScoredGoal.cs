@@ -42,11 +42,11 @@ namespace FootballLeagueLib.PlayMatch
             db.Goals.Add(newGoal);
             db.SaveChanges();
             // when a player scores a goal, the match, player, and club data are updated
-            UpdateMatchAfterGoal(newGoal, matchManager);
-            UpdatePlayerCount(idPlayer);
-            UpdateClubGoals(idClub, matchManager);
+            bool pass = UpdateMatchAfterGoal(newGoal, matchManager);
+            pass = UpdatePlayerCount(idPlayer);
+            pass = UpdateClubGoals(idClub, matchManager);
 
-            return SaveChange(db);
+            return pass;
         }
 
         public bool UpdateMatchAfterGoal(Goal goal, MatchManager matchManager)
@@ -89,29 +89,34 @@ namespace FootballLeagueLib.PlayMatch
         public bool UpdateClubGoals(int idClub, MatchManager matchManager)
         {
             using var db = new FootballLeagueContext();
+            bool pass = false;
 
             if (idClub == matchManager.PlayedMatch.HomeTeamId)
             {
                 var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == matchManager.PlayedMatch.HomeTeamId);
                 clubToUpdate.GoalsScored += 1;
                 clubToUpdate.GoalBalance += 1;
+                pass = SaveChange(db);
 
                 clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == matchManager.PlayedMatch.AwayTeamId);
                 clubToUpdate.GoalsConceded += 1;
                 clubToUpdate.GoalBalance -= 1;
+                pass = SaveChange(db);
             }
             else if (idClub == matchManager.PlayedMatch.AwayTeamId)
             {
                 var clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == matchManager.PlayedMatch.AwayTeamId);
                 clubToUpdate.GoalsScored += 1;
                 clubToUpdate.GoalBalance += 1;
+                pass = SaveChange(db);
 
                 clubToUpdate = db.Clubs.FirstOrDefault(c => c.IdClub == matchManager.PlayedMatch.HomeTeamId);
                 clubToUpdate.GoalsConceded += 1;
                 clubToUpdate.GoalBalance -= 1;
+                pass = SaveChange(db);
             }
 
-            return SaveChange(db);
+            return pass;
         }
 
         bool SaveChange(FootballLeagueContext db)

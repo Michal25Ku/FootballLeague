@@ -13,14 +13,29 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Rectangle Fill="#039331"/>
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Menu>
+                <MenuItem Header="File" >
+                    <MenuItem Header="Create new League" Command="{Binding CreateNewLeagueCommand}"/>
+                </MenuItem>
+                
+            </Menu>
+        </Grid>
 
-        <Grid>
+        <Rectangle Grid.Row="1" Fill="#039331"/>
+
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -146,7 +161,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Viev:TopScorerStatisticHeader Grid.Row="1" HorizontalAlignment="Center" Margin="0,10,0,0" Visibility="{Binding StatisticVisibility}"/>
+        <Viev:TopScorerStatisticHeader Grid.Row="2" HorizontalAlignment="Center" Margin="0,10,0,0" Visibility="{Binding StatisticVisibility}"/>
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding TopScorerList}" Visibility="{Binding StatisticVisibility}"
                   MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" SelectionMode="Single">
             <ListView.ItemTemplate>
