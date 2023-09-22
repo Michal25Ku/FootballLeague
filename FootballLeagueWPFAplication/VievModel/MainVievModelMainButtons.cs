@@ -1,5 +1,6 @@
 ﻿using FootballLeagueLib.Entities;
 using FootballLeagueLib.Season;
+using FootballLeagueWPFAplication.Viev;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,7 +25,7 @@ namespace FootballLeagueWPFAplication.VievModel
 
         private void PlayRound(object obj)
         {
-            if(!MatchContentVievModel.IsPlayNow)
+            if(!MatchContentVievModel.IsPlayNow && MatchesContent.Count > 0)
             {
                 _seasonManager.PlayRound();
 
@@ -79,10 +80,23 @@ namespace FootballLeagueWPFAplication.VievModel
             StatisticVisibility = Visibility.Collapsed;
         }
 
-        private void CreaateNewLeague(object obj)
+        private void CreateNewLeague(object obj)
         {
-            NewLeague newLeague = new NewLeague();
-            newLeague.CreateNewLeague();
+            //NewLeague newLeague = new NewLeague();
+            //newLeague.CreateNewLeague();
+
+            //_seasonManager = new SeasonManager();
+
+            //MatchesContent = new List<MatchContentVievModel>();
+            //foreach (var m in _matchesData.UpdateMatchesList())
+            //{
+            //    MatchesContent.Add(new MatchContentVievModel(m));
+            //}
+
+            NewSeasonRuleVievModel newSeasonRuleViewModel = new NewSeasonRuleVievModel();
+            NewSeasonRulesWindow newSeasonRulesWindow = new NewSeasonRulesWindow();
+            newSeasonRulesWindow.DataContext = newSeasonRuleViewModel;
+            newSeasonRulesWindow.ShowDialog();
         }
     }
 }

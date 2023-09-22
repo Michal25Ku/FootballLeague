@@ -15,7 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" Name="main"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -29,7 +29,6 @@
                 <MenuItem Header="File" >
                     <MenuItem Header="Create new League" Command="{Binding CreateNewLeagueCommand}"/>
                 </MenuItem>
-                
             </Menu>
         </Grid>
 
@@ -153,7 +152,7 @@
         </Grid>
 
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding MatchesContent}" Visibility="{Binding MatchesVisibility}"
-                  MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" SelectionMode="Single">
+                      MaxHeight="{Binding ElementName=main, Path=ActualHeight}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Viev:MatchContent />

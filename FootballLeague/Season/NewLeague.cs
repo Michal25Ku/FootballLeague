@@ -9,8 +9,10 @@ namespace FootballLeagueLib.Season
 {
     public class NewLeague
     {
+        ResetSeason _resetSeason = new ResetSeason();
         public void CreateNewLeague()
         {
+            _resetSeason.ResetDatabase();
             using var db = new FootballLeagueContext();
             Random rand = new Random();
 
