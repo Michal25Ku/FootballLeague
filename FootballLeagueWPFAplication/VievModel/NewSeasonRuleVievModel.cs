@@ -106,7 +106,7 @@ namespace FootballLeagueWPFAplication.VievModel
             return true;
         }
 
-        private bool IsNumeric(string text) => (int.TryParse(text, out var value) && !text.Contains(" "));
+        private bool IsNumeric(string text) => string.IsNullOrEmpty(text) || text.All(char.IsDigit);
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

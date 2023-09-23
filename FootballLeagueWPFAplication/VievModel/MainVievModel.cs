@@ -1,4 +1,5 @@
 ﻿using FootballLeagueLib.Entities;
+using FootballLeagueLib.PlayMatch;
 using FootballLeagueLib.Season;
 using FootballLeagueLib.Table;
 using FootballLeagueWPFAplication.Commands;
@@ -28,11 +29,12 @@ namespace FootballLeagueWPFAplication.VievModel
         public MainVievModel()
         {
             MatchesContent = new List<MatchContentVievModel>();
-
             _tableData = new TableData();
             TableStatistic = _tableData.Table;
             _matchesData = new MatchesData();
             _topScorer = new TopScorer();
+
+            MatchEnd.MatchIsEnd += UpdateTable;
 
             PlayRoundCommand = new RelayCommand(PlayRound);
             ShowMatchesCommand = new RelayCommand(ShowMatches);
@@ -75,6 +77,17 @@ namespace FootballLeagueWPFAplication.VievModel
             set
             {
                 _tableStatistic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _endSeasonMessage;
+        public string EndSeasonMessage
+        {
+            get { return _endSeasonMessage; }
+            set
+            {
+                _endSeasonMessage = value;
                 OnPropertyChanged();
             }
         }

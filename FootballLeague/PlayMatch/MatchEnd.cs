@@ -1,5 +1,6 @@
 ﻿using FootballLeagueLib.Entities;
 using FootballLeagueLib.Interfaces;
+using FootballLeagueLib.Season;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,12 @@ using System.Threading.Tasks;
 
 namespace FootballLeagueLib.PlayMatch
 {
+    public delegate void MatchEnded();
     public static class MatchEnd
     {
+        public static event MatchEnded MatchIsEnd;
+        public static event EndSeason EndSeasonIsSet;
+
         public static async Task<bool> UpdateAfterMatchIsOver(MatchManager matchManager)
         {
             using var db = new FootballLeagueContext();
@@ -53,6 +58,12 @@ namespace FootballLeagueLib.PlayMatch
             db.Matches.FirstOrDefault(m => m.IdMatch == playedMatch.IdMatch).IsPlayed = true;
 
             int result = await Task.Run(() => db.SaveChanges());
+            if (db.Matches.All(m => m.IsPlayed == true))
+            {
+                SeasonManager.IsSeasonEnd = true;
+                EndSeasonIsSet.Invoke();
+            }
+            MatchIsEnd.Invoke();
             return result == 1;
         }
     }

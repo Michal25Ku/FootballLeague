@@ -1,4 +1,5 @@
 ﻿using FootballLeagueLib.Entities;
+using FootballLeagueLib.PlayMatch;
 using FootballLeagueLib.Season;
 using FootballLeagueWPFAplication.Viev;
 using System;
@@ -25,11 +26,12 @@ namespace FootballLeagueWPFAplication.VievModel
 
         private void PlayRound(object obj)
         {
-            if(!MatchContentVievModel.IsPlayNow && MatchesContent.Count > 0)
+            if(!MatchContentVievModel.IsPlayNow && MatchesContent.Count > 0 && !SeasonManager.IsSeasonEnd)
             {
                 SeasonManager.PlayRound();
 
                 TableStatistic = _tableData.UpdateTable();
+                MatchEnd.EndSeasonIsSet += EndSeason;
             }
         }
 
@@ -89,7 +91,7 @@ namespace FootballLeagueWPFAplication.VievModel
             _newSeasonRulesWindow.ShowDialog();
         }
 
-        void CreateAllMatches()
+        private void CreateAllMatches()
         {
             _newSeasonRulesWindow.Close();
             TableStatistic = _tableData.UpdateTable();
@@ -98,6 +100,16 @@ namespace FootballLeagueWPFAplication.VievModel
             {
                 MatchesContent.Add(new MatchContentVievModel(m));
             }
+        }
+
+        private void EndSeason()
+        {
+            EndSeasonMessage = "The season has ended, if you want to play out a new season, create a new league";
+        }
+
+        private void UpdateTable()
+        {
+            TableStatistic = _tableData.UpdateTable();
         }
     }
 }

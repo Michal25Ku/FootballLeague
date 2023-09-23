@@ -16,7 +16,8 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="auto" Name="main"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid >
@@ -169,6 +170,9 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <TextBlock Grid.Row="4" Text="{Binding EndSeasonMessage}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"
+                   FontSize="20" TextWrapping="Wrap" Foreground="Red"/>
 
     </Grid>
 </Window>
