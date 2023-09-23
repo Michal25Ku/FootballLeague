@@ -27,7 +27,7 @@ namespace FootballLeagueWPFAplication.VievModel
         {
             if(!MatchContentVievModel.IsPlayNow && MatchesContent.Count > 0)
             {
-                _seasonManager.PlayRound();
+                SeasonManager.PlayRound();
 
                 TableStatistic = _tableData.UpdateTable();
             }
@@ -82,21 +82,22 @@ namespace FootballLeagueWPFAplication.VievModel
 
         private void CreateNewLeague(object obj)
         {
-            //NewLeague newLeague = new NewLeague();
-            //newLeague.CreateNewLeague();
-
-            //_seasonManager = new SeasonManager();
-
-            //MatchesContent = new List<MatchContentVievModel>();
-            //foreach (var m in _matchesData.UpdateMatchesList())
-            //{
-            //    MatchesContent.Add(new MatchContentVievModel(m));
-            //}
-
             NewSeasonRuleVievModel newSeasonRuleViewModel = new NewSeasonRuleVievModel();
-            NewSeasonRulesWindow newSeasonRulesWindow = new NewSeasonRulesWindow();
-            newSeasonRulesWindow.DataContext = newSeasonRuleViewModel;
-            newSeasonRulesWindow.ShowDialog();
+            newSeasonRuleViewModel.NewSeasonCreate += CreateAllMatches;
+            _newSeasonRulesWindow = new NewSeasonRulesWindow();
+            _newSeasonRulesWindow.DataContext = newSeasonRuleViewModel;
+            _newSeasonRulesWindow.ShowDialog();
+        }
+
+        void CreateAllMatches()
+        {
+            _newSeasonRulesWindow.Close();
+            TableStatistic = _tableData.UpdateTable();
+            MatchesContent = new List<MatchContentVievModel>();
+            foreach (var m in _matchesData.UpdateMatchesList())
+            {
+                MatchesContent.Add(new MatchContentVievModel(m));
+            }
         }
     }
 }

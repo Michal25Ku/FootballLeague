@@ -22,9 +22,9 @@ namespace FootballLeagueWPFAplication.VievModel
         private TableData _tableData;
         private MatchesData _matchesData;
         private TopScorer _topScorer;
+        private NewSeasonRulesWindow _newSeasonRulesWindow;
 
-        private SeasonManager _seasonManager;
-
+        public static SeasonManager SeasonManager { get; set; }
         public MainVievModel()
         {
             MatchesContent = new List<MatchContentVievModel>();

@@ -10,14 +10,14 @@ namespace FootballLeagueLib.Season
     public class NewLeague
     {
         ResetSeason _resetSeason = new ResetSeason();
-        public void CreateNewLeague()
+        public void CreateNewLeague(SeasonRules seasonRules)
         {
             _resetSeason.ResetDatabase();
             using var db = new FootballLeagueContext();
             Random rand = new Random();
 
             // Create 4 clubs
-            for (int i = 1; i <= 4; i++)
+            for (int i = 1; i <= seasonRules.NumberOfClubs; i++)
             {
                 var club = new Club
                 {

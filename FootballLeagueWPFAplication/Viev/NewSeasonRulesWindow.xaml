@@ -7,7 +7,7 @@
         xmlns:vievmodel="clr-namespace:FootballLeagueWPFAplication.VievModel" 
         d:DataContext="{d:DesignInstance Type=vievmodel:NewSeasonRuleVievModel}"
         mc:Ignorable="d"
-        Title="New Season Rules" Height="200" Width="300">
+        Title="New Season Rules" Height="220" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -38,12 +38,17 @@
 
             <TextBlock Text="Number of relegated clubs:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10"/>
             <TextBox Grid.Column="1" HorizontalAlignment="left" VerticalAlignment="Center" Width="40" Margin="10"
-                     Text="{Binding RelagatedClubsNumner, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding RelegatedClubsNumner, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
         <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Button Content="Create new football league" Command="{Binding CreateNewLeagueCommand}"
-                    HorizontalAlignment="Center" VerticalAlignment="center" FontSize="15"
-                    Margin="10"/>
+                    HorizontalAlignment="Center" VerticalAlignment="center" FontSize="15" />
+            <TextBlock Grid.Row="1" Text="{Binding ErrorMessage}" Foreground="red"
+                    HorizontalAlignment="Center" VerticalAlignment="center" FontSize="10"/>
         </Grid>
     </Grid>
 </Window>

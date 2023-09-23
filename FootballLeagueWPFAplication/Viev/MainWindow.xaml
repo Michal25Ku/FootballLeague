@@ -152,7 +152,7 @@
         </Grid>
 
         <ListView Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,0" ItemsSource="{Binding MatchesContent}" Visibility="{Binding MatchesVisibility}"
-                      MaxHeight="{Binding ElementName=main, Path=ActualHeight}" SelectionMode="Single">
+                      MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Viev:MatchContent />
