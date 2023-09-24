@@ -79,7 +79,7 @@ namespace FootballLeague.IntegrationTests
                 Match = _testMatch
             };
 
-            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager.PlayedMatch.IdMatch);
 
             _testMatch = db.Matches.FirstOrDefault(m => m.IdMatch == _testMatch.IdMatch);
             Assert.That(_testMatch.GoalsHomeTeam, Is.EqualTo(1));
@@ -102,7 +102,7 @@ namespace FootballLeague.IntegrationTests
                 Player = testMatchManager.AwayTeamPlayers[0],
                 Match = _testMatch
             };
-            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager.PlayedMatch.IdMatch);
 
             _testMatch = db.Matches.FirstOrDefault(m => m.IdMatch == _testMatch.IdMatch);
             Assert.That(_testMatch.GoalsHomeTeam, Is.EqualTo(0));
@@ -125,7 +125,7 @@ namespace FootballLeague.IntegrationTests
                 Player = testMatchManager.HomeTeamPlayers[0],
                 Match = _testMatch
             };
-            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager.PlayedMatch.IdMatch);
             newGoal = new Goal
             {
                 MinuteOfTheMatch = 12,
@@ -135,7 +135,7 @@ namespace FootballLeague.IntegrationTests
                 Player = testMatchManager.AwayTeamPlayers[0],
                 Match = _testMatch
             };
-            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager.PlayedMatch.IdMatch);
             newGoal = new Goal
             {
                 MinuteOfTheMatch = 13,
@@ -145,7 +145,7 @@ namespace FootballLeague.IntegrationTests
                 Player = testMatchManager.HomeTeamPlayers[0],
                 Match = _testMatch
             };
-            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+            testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager.PlayedMatch.IdMatch);
 
             _testMatch = db.Matches.FirstOrDefault(m => m.IdMatch == _testMatch.IdMatch);
             Assert.That(_testMatch.GoalsHomeTeam, Is.EqualTo(2));
@@ -168,7 +168,7 @@ namespace FootballLeague.IntegrationTests
                 Player = testMatchManager.HomeTeamPlayers[0],
                 Match = _testMatch
             };
-            bool UpdateMatchAfterGoal = testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager);
+            bool UpdateMatchAfterGoal = testMatchManager.MatchScoreGoal.UpdateMatchAfterGoal(newGoal, testMatchManager.PlayedMatch.IdMatch);
 
             Assert.IsTrue(UpdateMatchAfterGoal);
         }

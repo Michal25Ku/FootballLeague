@@ -22,7 +22,7 @@ namespace FootballLeagueLib.PlayMatch
                 return false;
 
             // Is player playing in this match
-            if (db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).ClubId != matchManager.PlayedMatch.HomeTeamId && db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).ClubId != matchManager.PlayedMatch.AwayTeamId)
+            if (!matchManager.HomeTeamPlayers.Select(p => p.IdPlayer).Any() && !matchManager.AwayTeamPlayers.Select(p => p.IdPlayer).Any())
                 return false;
             // Is player playing for the team that scored the goal
             if (db.Players.FirstOrDefault(p => p.IdPlayer == idPlayer).ClubId != idClub)
@@ -42,27 +42,27 @@ namespace FootballLeagueLib.PlayMatch
             db.Goals.Add(newGoal);
             db.SaveChanges();
             // when a player scores a goal, the match, player, and club data are updated
-            bool pass = UpdateMatchAfterGoal(newGoal, matchManager);
+            bool pass = UpdateMatchAfterGoal(newGoal, matchManager.PlayedMatch.IdMatch);
             pass = UpdatePlayerCount(idPlayer);
             pass = UpdateClubGoals(idClub, matchManager);
 
             return pass;
         }
 
-        public bool UpdateMatchAfterGoal(Goal goal, MatchManager matchManager)
+        public bool UpdateMatchAfterGoal(Goal goal, int matchId)
         {
             using var db = new FootballLeagueContext();
 
-            var matchToUpdate = db.Matches.FirstOrDefault(m => m.IdMatch == matchManager.PlayedMatch.IdMatch);
+            var matchToUpdate = db.Matches.FirstOrDefault(m => m.IdMatch == matchId);
 
             if (matchToUpdate is null)
                 return false;
 
-            if (goal.ClubId == db.Matches.FirstOrDefault(m => m.IdMatch == matchManager.PlayedMatch.IdMatch).HomeTeamId)
+            if (goal.ClubId == db.Matches.FirstOrDefault(m => m.IdMatch == matchId).HomeTeamId)
             {
                 matchToUpdate.GoalsHomeTeam += 1;
             }
-            else if (goal.ClubId == db.Matches.FirstOrDefault(m => m.IdMatch == matchManager.PlayedMatch.IdMatch).AwayTeamId)
+            else if (goal.ClubId == db.Matches.FirstOrDefault(m => m.IdMatch == matchId).AwayTeamId)
             {
                 matchToUpdate.GoalsAwayTeam += 1;
             }

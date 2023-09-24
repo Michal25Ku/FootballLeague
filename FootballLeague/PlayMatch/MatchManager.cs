@@ -85,9 +85,7 @@ namespace FootballLeagueLib.PlayMatch
 
                 MinuteInMatch = i;
                 db.SaveChanges();
-                PlayedMatch = db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch);
-
-                // 10 seconds
+                
                 await Task.Run(() => Thread.Sleep(5000 / 100));
             }
 

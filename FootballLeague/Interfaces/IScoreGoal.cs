@@ -12,7 +12,7 @@ namespace FootballLeagueLib.Interfaces
     {
         bool ScoreGoal(int minuteOfMatch, int idClub, int idPlayer, MatchManager matchManager);
 
-        bool UpdateMatchAfterGoal(Goal goal, MatchManager matchManager);
+        bool UpdateMatchAfterGoal(Goal goal, int matchId);
 
         bool UpdatePlayerCount(int idPlayer);
 
