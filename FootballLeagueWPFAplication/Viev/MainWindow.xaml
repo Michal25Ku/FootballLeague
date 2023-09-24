@@ -29,6 +29,7 @@
             <Menu>
                 <MenuItem Header="File" >
                     <MenuItem Header="Create new League" Command="{Binding CreateNewLeagueCommand}"/>
+                    <MenuItem Header="exit" Command="{Binding ExitCommand}"/>
                 </MenuItem>
             </Menu>
         </Grid>

@@ -23,6 +23,7 @@ namespace FootballLeagueWPFAplication.VievModel
         public ICommand ShowStatisticCommand { get; set; }
         public ICommand ShowClubMatchesCommand { get; set; }
         public ICommand CreateNewLeagueCommand { get; set; }
+        public ICommand ExitCommand { get; set; }
 
         private void PlayRound(object obj)
         {
@@ -89,6 +90,11 @@ namespace FootballLeagueWPFAplication.VievModel
             _newSeasonRulesWindow = new NewSeasonRulesWindow();
             _newSeasonRulesWindow.DataContext = newSeasonRuleViewModel;
             _newSeasonRulesWindow.ShowDialog();
+        }
+
+        private void Exit(object obj)
+        {
+            Application.Current.Shutdown();
         }
 
         private void CreateAllMatches()

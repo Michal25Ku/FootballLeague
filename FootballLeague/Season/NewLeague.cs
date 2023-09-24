@@ -16,13 +16,14 @@ namespace FootballLeagueLib.Season
             using var db = new FootballLeagueContext();
             Random rand = new Random();
 
+            RandomClubNames[] listClubName = (RandomClubNames[])Enum.GetValues(typeof(RandomClubNames));
             // Create 4 clubs
             for (int i = 1; i <= seasonRules.NumberOfClubs; i++)
             {
                 var club = new Club
                 {
-                    ClubName = "Club" + i,
-                    StadiumName = "Stadium" + i
+                    ClubName = listClubName[i - 1].ToString(),
+                    StadiumName = listClubName[i - 1].ToString() + " Stadium"
                 };
 
                 db.Clubs.Add(club);
@@ -30,7 +31,7 @@ namespace FootballLeagueLib.Season
             db.SaveChanges();
 
             // For each clubs add 11 players
-            foreach (var c in db.Clubs.Select(c => c).Where(c => c.ClubName.Contains("Club")).ToList())
+            foreach (var c in db.Clubs.Select(c => c).ToList())
             {
                 PlayerPosition[] listPosition = (PlayerPosition[])Enum.GetValues(typeof(PlayerPosition));
 
