@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FootballLeagueLib.Season
+namespace FootballLeagueLib.NewLeague
 {
     public enum PlayerPosition
     {

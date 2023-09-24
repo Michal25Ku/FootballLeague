@@ -1,11 +1,12 @@
 ﻿using FootballLeagueLib.Entities;
+using FootballLeagueLib.Season;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FootballLeagueLib.Season
+namespace FootballLeagueLib.NewLeague
 {
     public class NewLeague
     {

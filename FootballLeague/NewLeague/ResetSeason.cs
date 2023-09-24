@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FootballLeagueLib.Season
+namespace FootballLeagueLib.NewLeague
 {
     public class ResetSeason
     {
-        public ResetSeason() 
+        public ResetSeason()
         {
             ResetDatabase();
             AddConnectionsInDatabase();

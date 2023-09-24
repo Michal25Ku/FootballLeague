@@ -1,4 +1,5 @@
-﻿using FootballLeagueLib.Season;
+﻿using FootballLeagueLib.NewLeague;
+using FootballLeagueLib.Season;
 using FootballLeagueWPFAplication.Commands;
 using FootballLeagueWPFAplication.Viev;
 using System;

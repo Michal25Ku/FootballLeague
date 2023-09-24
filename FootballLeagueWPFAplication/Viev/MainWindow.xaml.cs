@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FootballLeagueLib.Entities;
-using FootballLeagueLib.Season;
+using FootballLeagueLib.NewLeague;
 using FootballLeagueWPFAplication.VievModel;
 
 namespace FootballLeagueWPFAplication

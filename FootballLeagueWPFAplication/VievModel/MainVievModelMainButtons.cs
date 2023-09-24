@@ -70,6 +70,7 @@ namespace FootballLeagueWPFAplication.VievModel
 
         private void ShowClubMatches(object obj)
         {
+            MatchesContent.ForEach(m => m.ShowMatch());
             if (SelectedClubStatistic != null)
             {
                 foreach (var match in _matchesData.UpdateMatchesForOneClub(SelectedClubStatistic.Item2))
