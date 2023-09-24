@@ -27,6 +27,7 @@ namespace FootballLeagueLib.PlayMatch
         #endregion
 
         public const int MATCH_TIME = 90;
+        List<int> _playerWeightNumbers;
         // TODO 
         // need to create separate maybe a progress bar in the menu. we could change this value if we want the match to be played faster or slower
         public int SimulationTime { get; }
@@ -47,6 +48,7 @@ namespace FootballLeagueLib.PlayMatch
 
             HomeTeamPlayers = MatchPlayers.GetPlayersFromTeam(playedMatch.HomeTeamId);
             AwayTeamPlayers = MatchPlayers.GetPlayersFromTeam(playedMatch.AwayTeamId);
+            _playerWeightNumbers = GenerateWeightedNumbers();
 
             SimulationTime = 0;
             MinuteInMatch = 0;
@@ -69,14 +71,14 @@ namespace FootballLeagueLib.PlayMatch
                     int teamShoot = rand.Next(2);
                     if (teamShoot == 0)
                     {
-                        int playerShoot = rand.Next(HomeTeamPlayers.Count);
-                        MatchScoreGoal.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot].IdPlayer, this);
+                        int playerShoot = _playerWeightNumbers[rand.Next(_playerWeightNumbers.Count - 1)];
+                        MatchScoreGoal.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot - 1].IdPlayer, this);
                         MatchResultChanged?.Invoke();
                     }
                     else
                     {
-                        int playerShoot = rand.Next(AwayTeamPlayers.Count);
-                        MatchScoreGoal.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot].IdPlayer, this);
+                        int playerShoot = _playerWeightNumbers[rand.Next(_playerWeightNumbers.Count - 1)];
+                        MatchScoreGoal.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot - 1].IdPlayer, this);
                         MatchResultChanged?.Invoke();
                     }
                 }
@@ -91,6 +93,21 @@ namespace FootballLeagueLib.PlayMatch
 
             await MatchEnd.UpdateAfterMatchIsOver(this);
             MatchEndChanged?.Invoke();
+        }
+
+        List<int> GenerateWeightedNumbers()
+        {
+            List<int> weightedNumbers = new List<int>();
+
+            for (int i = 1; i <= 11; i++)
+            {
+                int weight = i;
+                for (int j = 0; j < weight / 2; j++)
+                {
+                    weightedNumbers.Add(i);
+                }
+            }
+            return weightedNumbers;
         }
     }
 }

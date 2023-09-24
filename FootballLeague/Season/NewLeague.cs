@@ -32,6 +32,8 @@ namespace FootballLeagueLib.Season
             // For each clubs add 11 players
             foreach (var c in db.Clubs.Select(c => c).Where(c => c.ClubName.Contains("Club")).ToList())
             {
+                PlayerPosition[] listPosition = (PlayerPosition[])Enum.GetValues(typeof(PlayerPosition));
+
                 for (int i = 1; i <= 11; i++)
                 {
                     int randomFN = new Random().Next(0, 19);
@@ -45,7 +47,7 @@ namespace FootballLeagueLib.Season
                         LastName = lastName.ToString(),
                         Pesel = $"{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}{rand.Next(0, 9)}",
                         ShirtNumber = i,
-                        Position = "position" + i,
+                        Position = listPosition[i - 1].ToString(),
                         ClubId = c.IdClub
                     };
 
