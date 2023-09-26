@@ -1,4 +1,5 @@
-﻿using FootballLeagueLib.Entities;
+﻿using EFCore.BulkExtensions;
+using FootballLeagueLib.Entities;
 using FootballLeagueLib.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace FootballLeagueLib.Season
         public IList<Match> GenerateMatches(IList<Club> clubList)
         {
             using var db = new FootballLeagueContext();
+            var matches = new List<Match>();
 
             int clubCount = db.Clubs.Count();
             int RoundCount = (clubCount - 1) * 2;
@@ -26,7 +28,7 @@ namespace FootballLeagueLib.Season
 
                     if (awayTeamId != homeTeamId)
                     {
-                        db.Matches.Add(new Match
+                        matches.Add(new Match
                         {
                             HomeTeamName = db.Clubs.FirstOrDefault(c => c.IdClub == homeTeamId).ClubName,
                             AwayTeamName = db.Clubs.FirstOrDefault(c => c.IdClub == awayTeamId).ClubName,
@@ -36,12 +38,11 @@ namespace FootballLeagueLib.Season
                             AwayTeamId = awayTeamId,
                             AwayTeam = db.Clubs.FirstOrDefault(c => c.IdClub == awayTeamId),
                         });
-                        db.SaveChanges();
                     }
                 }
             }
 
-            db.SaveChanges();
+            db.BulkInsert(matches);
             return db.Matches.ToList();
         }
 

@@ -25,12 +25,12 @@ namespace FootballLeagueWPFAplication
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ResetSeason _resetSeason;
+        private ResetSeason _resetSeason = new ResetSeason();
 
         public MainWindow()
         {
             InitializeComponent();
-            _resetSeason = new ResetSeason(); 
+            _resetSeason.ResetDatabase();
             DataContext = new MainVievModel();
         }
 

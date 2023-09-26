@@ -13,10 +13,11 @@ namespace FootballLeagueLib.Table
     {
         public List<Match> MatchesList { get; private set; }
 
+        /// <summary>
+        /// On called to MatchesList assigns list from UpdateMatchesList()
+        /// </summary>
         public MatchesData()
         {
-            using var db = new FootballLeagueContext();
-
             MatchesList = UpdateMatchesList();
         }
 

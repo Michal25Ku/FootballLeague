@@ -4,6 +4,7 @@ using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.Logging;
 
 namespace FootballLeagueLib.Entities
 {
@@ -41,7 +42,12 @@ namespace FootballLeagueLib.Entities
 
             var config = builder.Build().GetConnectionString(connectionStringName);
             string modifiedConnectionString = config.Replace("{_currentDirectory}", _currentDirectory);
-            optionsBuilder.UseSqlServer(modifiedConnectionString);
+            optionsBuilder
+                .LogTo(Console.WriteLine, new[]
+                { DbLoggerCategory.Database.Command.Name},
+                LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .UseSqlServer(modifiedConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

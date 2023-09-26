@@ -10,19 +10,13 @@ namespace FootballLeagueLib.NewLeague
 {
     public class ResetSeason
     {
-        public ResetSeason()
-        {
-            ResetDatabase();
-            AddConnectionsInDatabase();
-        }
-
         public bool ResetDatabase()
         {
             using var db = new FootballLeagueContext();
-            db.Goals.RemoveRange(db.Goals.Select(g => g));
-            db.Matches.RemoveRange(db.Matches.Select(m => m));
-            db.Players.RemoveRange(db.Players.Select(m => m));
-            db.Clubs.RemoveRange(db.Clubs.Select(m => m));
+            db.Goals.RemoveRange(db.Goals);
+            db.Matches.RemoveRange(db.Matches);
+            db.Players.RemoveRange(db.Players);
+            db.Clubs.RemoveRange(db.Clubs);
 
             int result = db.SaveChanges();
             return result == 1;

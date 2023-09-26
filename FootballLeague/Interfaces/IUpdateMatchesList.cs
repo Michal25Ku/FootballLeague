@@ -9,6 +9,10 @@ namespace FootballLeagueLib.Interfaces
 {
     public interface IUpdateMatchesList
     {
+        /// <summary>
+        /// Takes Match list from database and sorts by round
+        /// </summary>
+        /// <returns>Match List</returns>
         List<Match> UpdateMatchesList();
     }
 }

@@ -19,5 +19,4 @@ namespace FootballLeagueLib.Entities
 
         public ICollection<Goal> Goals { get; set; } = new List<Goal>();
     }
-
 }
