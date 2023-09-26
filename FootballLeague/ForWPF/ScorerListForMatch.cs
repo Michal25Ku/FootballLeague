@@ -24,38 +24,18 @@ namespace FootballLeagueLib.Table
             ScorerListForAwayTeam = new StringBuilder();
         }
 
-        public void UpdateListForHomeTeam(Match match, int idClub)
+        public void UpdateScorerInMatch(int minute, Player player, bool isHomeTeamShotGoal)
         {
-            List<Tuple<int, Player>> scorer = new List<Tuple<int, Player>>();
-            using var db = new FootballLeagueContext();
-            var goals = db.Goals.Where(g => g.MatchId == match.IdMatch).AsNoTracking().ToList();
-
-            foreach (var g in goals)
+            if(isHomeTeamShotGoal)
             {
-                if(g.ClubId == idClub)
-                {
-                    scorer.Add(new Tuple<int, Player> (g.MinuteOfTheMatch, db.Players.FirstOrDefault(p => (p.IdPlayer == g.PlayerId) && (p.ClubId == idClub))));
-                }
+                ScorerListForHomeTeam.AppendLine($"{minute} {player.FirstName} {player.LastName}");
+                ScorerListForAwayTeam.AppendLine();
             }
-
-            return scorer;
-        }
-
-        public void UpdateListForAwayTeam(Match match, int idClub)
-        {
-            List<Tuple<int, Player>> scorer = new List<Tuple<int, Player>>();
-            using var db = new FootballLeagueContext();
-            var goals = db.Goals.Where(g => g.MatchId == match.IdMatch).AsNoTracking().ToList();
-
-            foreach (var g in goals)
+            else 
             {
-                if (g.ClubId == idClub)
-                {
-                    scorer.Add(new Tuple<int, Player>(g.MinuteOfTheMatch, db.Players.FirstOrDefault(p => (p.IdPlayer == g.PlayerId) && (p.ClubId == idClub))));
-                }
+                ScorerListForHomeTeam.AppendLine();
+                ScorerListForAwayTeam.AppendLine($"{minute} {player.FirstName} {player.LastName}");
             }
-
-            return scorer;
         }
     }
 }

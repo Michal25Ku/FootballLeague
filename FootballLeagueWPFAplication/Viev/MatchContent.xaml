@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="{Binding MatchData.HomeTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" TextAlignment="Left"/>
-            <TextBlock Grid.Column="1" Text="{Binding MatchData.Result}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+            <TextBlock Grid.Column="1" Text="{Binding MatchResult}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
             <TextBlock Grid.Column="2" Text="{Binding MatchData.AwayTeamName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" TextAlignment="Right"/>
 
         </Grid>

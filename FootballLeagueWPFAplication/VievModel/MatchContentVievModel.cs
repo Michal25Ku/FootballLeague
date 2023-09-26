@@ -25,6 +25,7 @@ namespace FootballLeagueWPFAplication.VievModel
             _scoredListForMatch = new ScorerListForMatch();
             MatchManager = SeasonManager.AllMatchesManager.FirstOrDefault(m => m.PlayedMatch.IdMatch == match.IdMatch);
             MatchData = match;
+            MatchResult = match.Result;
 
             TimeVisibility = Visibility.Collapsed;
             PlayButtonVisibility = Visibility.Visible;
@@ -38,10 +39,14 @@ namespace FootballLeagueWPFAplication.VievModel
             PlayMatchCommand = new RelayCommand(PlayMatch);
         }
 
-        public void OnMatchChanged()
+        public void OnMatchChanged(int minuteOfMatch, Player player, bool isHomeTeamShotGoal)
         {
             using var db = new FootballLeagueContext();
-            MatchData = db.Matches.FirstOrDefault(m => m.IdMatch == MatchData.IdMatch);
+            _scoredListForMatch.UpdateScorerInMatch(minuteOfMatch, player, isHomeTeamShotGoal);
+            HomeTeamScorerList = _scoredListForMatch.ScorerListForHomeTeam;
+            AwayTeamScorerList = _scoredListForMatch.ScorerListForAwayTeam;
+
+            MatchResult = db.Matches.FirstOrDefault(m => m.IdMatch == MatchData.IdMatch).Result;
         }
 
         public void OnTimeChanged()
@@ -57,6 +62,7 @@ namespace FootballLeagueWPFAplication.VievModel
 
         public void OnStartChanged()
         {
+            MatchResult = "0 - 0";
             TimeVisibility = Visibility.Visible;
             PlayButtonVisibility = Visibility.Collapsed;
             IsPlayNow = true;
@@ -116,15 +122,23 @@ namespace FootballLeagueWPFAplication.VievModel
             set
             {
                 _matchData = value;
-
-                HomeTeamScorerList = string.Join("\n", _scoredListForMatch.CreateScorerList(value, value.HomeTeamId).Select(s => $"{s.Item2.LastName} '{s.Item1}"));
-                AwayTeamScorerList = string.Join("\n", _scoredListForMatch.CreateScorerList(value, value.AwayTeamId).Select(s => $"{s.Item2.LastName} '{s.Item1}"));
                 OnPropertyChanged();
             }
         }
 
-        private string _homeTeamScorerList;
-        public string HomeTeamScorerList
+        private string _matchResult;
+        public string MatchResult
+        {
+            get { return _matchResult; }
+            set
+            {
+                _matchResult = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private StringBuilder _homeTeamScorerList;
+        public StringBuilder HomeTeamScorerList
         {
             get { return _homeTeamScorerList; }
             set
@@ -134,8 +148,8 @@ namespace FootballLeagueWPFAplication.VievModel
             }
         }
 
-        private string _awayTeamScorerList;
-        public string AwayTeamScorerList
+        private StringBuilder _awayTeamScorerList;
+        public StringBuilder AwayTeamScorerList
         {
             get { return _awayTeamScorerList; }
             set

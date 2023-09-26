@@ -13,7 +13,7 @@ using FootballLeagueLib.Season;
 
 namespace FootballLeagueLib.PlayMatch
 {
-    public delegate void MatchResultChangedHandler();
+    public delegate void MatchResultChangedHandler(int minuteOfMatch, Player player, bool isHomeTeamShotGoal);
     public delegate void MatchTimeChangedHandler();
     public delegate void MatchEndChangedHandler();
     public delegate void MatchStartChangedHandler();
@@ -73,13 +73,13 @@ namespace FootballLeagueLib.PlayMatch
                     {
                         int playerShoot = _playerWeightNumbers[rand.Next(_playerWeightNumbers.Count - 1)];
                         MatchScoreGoal.ScoreGoal(i, PlayedMatch.HomeTeamId, HomeTeamPlayers[playerShoot - 1].IdPlayer, this);
-                        MatchResultChanged?.Invoke();
+                        MatchResultChanged?.Invoke(i, HomeTeamPlayers[playerShoot - 1], true);
                     }
                     else
                     {
                         int playerShoot = _playerWeightNumbers[rand.Next(_playerWeightNumbers.Count - 1)];
                         MatchScoreGoal.ScoreGoal(i, PlayedMatch.AwayTeamId, AwayTeamPlayers[playerShoot - 1].IdPlayer, this);
-                        MatchResultChanged?.Invoke();
+                        MatchResultChanged?.Invoke(i, AwayTeamPlayers[playerShoot - 1], false);
                     }
                 }
 

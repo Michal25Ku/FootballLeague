@@ -11,11 +11,11 @@ namespace FootballLeagueLib.Interfaces
     public interface IUpdateScorerList
     {
         /// <summary>
-        /// Create a Tuples list which includes a minute of the match as Item1 and the player who scored the goal as Item2
+        /// Checks which team scored a goal and added data about minute and player's first name and last name who scored a goal to scorer list as StringBuilder
         /// </summary>
-        /// <param name="match">match where goals are scored</param>
-        /// <param name="idClub">the club who scored goal</param>
-        /// <returns>return Tuple list where item1 - minute of match, item2 - Player</returns>
-        List<Tuple<int, Player>> CreateScorerList(Match match, int idClub);
+        /// <param name="minute">minute of match when goal is scoed</param>
+        /// <param name="player">player who scored goal</param>
+        /// <param name="isHomeTeamShotGoal">if true, home team scor goal, false away team score goal</param>
+        void UpdateScorerInMatch(int minute, Player player, bool isHomeTeamShotGoal);
     }
 }
