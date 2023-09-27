@@ -13,11 +13,25 @@ namespace FootballLeagueLib.NewLeague
     public class NewLeague
     {
         ResetSeason _resetSeason = new ResetSeason();
+
+        /// <summary>
+        /// On initialize class, resets data in the database
+        /// </summary>
         public NewLeague() 
         {
             _resetSeason.ResetDatabase();
         }
 
+        /// <summary>
+        /// When the season rules are set, creates a new season.
+        /// Creates as much as it is set in the "SeasonRules" parameter. Each club sets its name by a random value from the RandomClubNames enum, 
+        /// and sets the stadium name as "'club name' stadium".
+        /// Each club creates 11 players. Each player sets the first and last names by random values from the RandomFirstName and RandomLastName enums.
+        /// Pesel has 11 random numbers from 0 to 9.
+        /// The player's position set value from the PlayerPosition enum depends on the shirt number.
+        /// Each club and player is added to the database
+        /// </summary>
+        /// <param name="seasonRules">SeasonRule object which have number of clubs and number of relegated club</param>
         public void CreateNewLeague(SeasonRules seasonRules)
         {
             using var db = new FootballLeagueContext();

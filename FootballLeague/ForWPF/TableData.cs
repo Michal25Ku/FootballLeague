@@ -12,10 +12,11 @@ namespace FootballLeagueLib.Table
     {
         public List<Tuple<int, Club, int>> Table { get; private set; }
 
+        /// <summary>
+        /// Initialize List<Tuple<int, Club, int>> Table
+        /// </summary>
         public TableData() 
         {
-            using var db = new FootballLeagueContext();
-
             Table = UpdateTable();
         }
 

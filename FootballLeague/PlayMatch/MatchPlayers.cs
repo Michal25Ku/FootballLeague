@@ -11,6 +11,11 @@ namespace FootballLeagueLib.PlayMatch
 {
     public class MatchPlayers
     {
+        /// <summary>
+        /// Creates IQueryable<Player> which filtres Player who plays in a club defined by idClub in the parameter
+        /// </summary>
+        /// <param name="idClub">club id from Club object</param>
+        /// <returns>List of players who play in club defined by idClub in parameter</returns>
         public List<Player> GetPlayersFromTeam(int idClub)
         {
             using var db = new FootballLeagueContext();

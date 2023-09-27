@@ -1,4 +1,5 @@
 ﻿using FootballLeagueLib.Entities;
+using FootballLeagueLib.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace FootballLeagueLib.NewLeague
 {
-    public class ResetSeason
+    public class ResetSeason : IResetLeague
     {
-        public bool ResetDatabase()
+        public void ResetDatabase()
         {
             using var db = new FootballLeagueContext();
             db.Goals.RemoveRange(db.Goals);
@@ -18,10 +19,13 @@ namespace FootballLeagueLib.NewLeague
             db.Players.RemoveRange(db.Players);
             db.Clubs.RemoveRange(db.Clubs);
 
-            int result = db.SaveChanges();
-            return result == 1;
+            db.SaveChanges();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool AddConnectionsInDatabase()
         {
             using var db = new FootballLeagueContext();
