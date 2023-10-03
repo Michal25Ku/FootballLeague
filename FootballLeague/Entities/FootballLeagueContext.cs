@@ -22,16 +22,12 @@ namespace FootballLeagueLib.Entities
         {
             string _modulePath = "FootballLeague";
             string _currentDirectory = Path.Combine(Environment.CurrentDirectory);
+            string filePath = "";
 
-            for (int i = 0; i < 10; i++)
+            while(!Directory.Exists(filePath))
             {
-                string filePath = Path.Combine(_currentDirectory, _modulePath);
-
-                if (Directory.Exists(filePath)) break;
-
                 _currentDirectory = Directory.GetParent(_currentDirectory)?.FullName;
-
-                if (_currentDirectory == null) break;
+                filePath = Path.Combine(_currentDirectory, _modulePath);
             }
 
             var builder = new ConfigurationBuilder()

@@ -105,9 +105,12 @@ namespace FootballLeagueLib.PlayMatch
         /// <returns></returns>
         public async Task StartMatch()
         {
+            using var db = new FootballLeagueContext();
+            if (db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch).IsPlayed)
+                return;
+
             MatchStartChanged?.Invoke();
             var rand = new Random();
-            using var db = new FootballLeagueContext();
 
             db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch).IsPlayed = true;
             db.Matches.FirstOrDefault(m => m.IdMatch == PlayedMatch.IdMatch).Result = PlayedMatch.GoalsHomeTeam + " - " + PlayedMatch.GoalsAwayTeam;
